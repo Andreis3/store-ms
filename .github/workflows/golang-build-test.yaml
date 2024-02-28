@@ -1,0 +1,31 @@
+name: Golang Build and Test
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - main
+
+jobs:
+  build-test:
+    name: Build and Test
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        go-version: ['1.22.0']
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup up Golang
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Build application
+        run:  go mod download
+
+      - name: Testing application
+        run: go test ./tests/unit/... --tags=unit -v
