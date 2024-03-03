@@ -6,12 +6,24 @@ package stores_test
 import (
 	"net/http"
 	"net/http/httptest"
+	"testing"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
 	"github.com/andreis3/stores-ms/internal/interface/http/stores"
 )
+
+func Test_StoresControllerSuite(t *testing.T) {
+	suiteConfig, reporterConfig := GinkgoConfiguration()
+
+	suiteConfig.SkipStrings = []string{"NEVER-RUN"}
+	reporterConfig.FullTrace = true
+	reporterConfig.Succinct = true
+
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "Store Controller Test Suite ", suiteConfig, reporterConfig)
+}
 
 var _ = Describe("INTERFACE :: HTTP :: STORES :: STORES_CONTROLLER", func() {
 	Describe("#CreateStores", func() {
