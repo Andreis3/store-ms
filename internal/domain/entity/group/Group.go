@@ -1,46 +1,35 @@
 package group
 
 import (
-	"slices"
-
+	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 	"github.com/andreis3/stores-ms/internal/util"
 )
-
-const (
-	Active   = "active"
-	Inactive = "inactive"
-)
-
-var STATUS = [...]string{Active, Inactive}
 
 type Group struct {
 	GroupName string
 	Code      string
-	Status    string
+	Status    valueobject.Status
 	util.NotificationContext
 }
 
-func NewGroup(groupName, code, status string) *Group {
+func NewGroup(groupName, code string, status *valueobject.Status) *Group {
+
 	return &Group{
 		GroupName: groupName,
 		Code:      code,
-		Status:    status,
+		Status:    *status,
 	}
 }
 
-func (g *Group) Validate() []map[string]interface{} {
+func (g *Group) Validate() []map[string]any {
 	if g.GroupName == "" {
-		g.AddNotification(map[string]interface{}{"group_name": "is required"})
+		g.AddNotification(map[string]any{"group_name": "is required"})
 	}
 	if g.Code == "" {
-		g.AddNotification(map[string]interface{}{"code": "is required"})
-	}
-	if g.Status == "" {
-		g.AddNotification(map[string]interface{}{"status": "is required"})
+		g.AddNotification(map[string]any{"code": "is required"})
 	}
 
-	if g.Status != "" && !slices.Contains(STATUS[:], g.Status) {
-		g.AddNotification(map[string]interface{}{"status": "is invalid, valid values are active or inactive"})
-	}
+	g.Status.Validate(&g.NotificationContext)
+
 	return g.Notification
 }

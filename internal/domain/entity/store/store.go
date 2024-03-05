@@ -2,8 +2,8 @@ package store
 
 import (
 	"fmt"
-	"slices"
 
+	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
@@ -17,10 +17,10 @@ var STATUS = []string{Active, Inactive}
 type Store struct {
 	StoreKey    string
 	CompanyName string
-	Status      string
 	CNPJ        string
 	Domain      string
 	GroupCOD    string
+	Status      valueobject.Status
 	Contacts    []Contact
 	util.NotificationContext
 }
@@ -32,11 +32,11 @@ type Contact struct {
 	Ramal string
 }
 
-func NewStore(storeKey, companyName, status, cnpj, domain, groupCOD string, contacts []Contact) *Store {
+func NewStore(storeKey, companyName, cnpj, domain, groupCOD string, status *valueobject.Status, contacts []Contact) *Store {
 	return &Store{
 		StoreKey:    storeKey,
 		CompanyName: companyName,
-		Status:      status,
+		Status:      *status,
 		CNPJ:        cnpj,
 		Domain:      domain,
 		GroupCOD:    groupCOD,
@@ -44,47 +44,43 @@ func NewStore(storeKey, companyName, status, cnpj, domain, groupCOD string, cont
 	}
 }
 
-func (s *Store) Validate() []map[string]string {
-	notifications := make([]map[string]string, 0)
+func (s *Store) Validate() []map[string]any {
 	if s.StoreKey == "" {
-		notifications = append(notifications, map[string]string{"store_key": "is required"})
+		s.AddNotification(map[string]any{"store_key": "is required"})
 	}
 	if s.CompanyName == "" {
-		notifications = append(notifications, map[string]string{"company_name": "is required"})
+		s.AddNotification(map[string]any{"company_name": "is required"})
 	}
-	if s.Status == "" {
-		notifications = append(notifications, map[string]string{"status": "is required"})
-	}
-	if s.Status != "" && !slices.Contains(STATUS, s.Status) {
-		notifications = append(notifications, map[string]string{"status": "is invalid, valid values are active or inactive"})
-	}
+
+	s.Status.Validate(&s.NotificationContext)
+
 	if s.CNPJ == "" {
-		notifications = append(notifications, map[string]string{"cnpj": "is required"})
+		s.AddNotification(map[string]any{"cnpj": "is required"})
 	}
 	if s.Domain == "" {
-		notifications = append(notifications, map[string]string{"domain": "is required"})
+		s.AddNotification(map[string]any{"domain": "is required"})
 	}
 	if s.GroupCOD == "" {
-		notifications = append(notifications, map[string]string{"group_code": "is required"})
+		s.AddNotification(map[string]any{"group_code": "is required"})
 	}
 	if len(s.Contacts) < 1 {
-		notifications = append(notifications, map[string]string{"contacts": "min 1 contact is required"})
+		s.AddNotification(map[string]any{"contacts": "min 1 contact is required"})
 	}
 
 	for index, contact := range s.Contacts {
 		if contact.Name == "" {
 			key := fmt.Sprintf("contacts[%d].name", index)
-			notifications = append(notifications, map[string]string{key: "is required"})
+			s.AddNotification(map[string]any{key: "is required"})
 		}
 		if contact.Email == "" {
 			key := fmt.Sprintf("contacts[%d].email", index)
-			notifications = append(notifications, map[string]string{key: "is required"})
+			s.AddNotification(map[string]any{key: "is required"})
 		}
 		if contact.Phone == "" {
 			key := fmt.Sprintf("contacts[%d].phone", index)
-			notifications = append(notifications, map[string]string{key: "is required"})
+			s.AddNotification(map[string]any{key: "is required"})
 		}
 
 	}
-	return notifications
+	return s.Notification
 }

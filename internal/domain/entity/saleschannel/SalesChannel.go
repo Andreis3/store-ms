@@ -1,23 +1,15 @@
 package saleschannel
 
 import (
-	"slices"
-
+	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 	"github.com/andreis3/stores-ms/internal/util"
 )
-
-const (
-	Active   = "active"
-	Inactive = "inactive"
-)
-
-var STATUS = [...]string{Active, Inactive}
 
 type SalesChannel struct {
 	SalesChannel string
 	Code         string
-	Status       string
 	StoreKey     string
+	Status       valueobject.Status
 	Config
 	util.NotificationContext
 }
@@ -26,29 +18,25 @@ type Config struct {
 	AutomaticActive bool
 }
 
-func NewSalesChannel(salesChannel, code, status string, config bool) *SalesChannel {
+func NewSalesChannel(salesChannel, code string, status *valueobject.Status, config bool) *SalesChannel {
 	return &SalesChannel{
 		SalesChannel: salesChannel,
 		Code:         code,
-		Status:       status,
+		Status:       *status,
 		Config: Config{
 			AutomaticActive: config,
 		},
 	}
 }
 
-func (sc *SalesChannel) Validate() []map[string]interface{} {
+func (sc *SalesChannel) Validate() []map[string]any {
 	if sc.SalesChannel == "" {
-		sc.AddNotification(map[string]interface{}{"sales_channel": "is required"})
+		sc.AddNotification(map[string]any{"sales_channel": "is required"})
 	}
 	if sc.Code == "" {
-		sc.AddNotification(map[string]interface{}{"code": "is required"})
+		sc.AddNotification(map[string]any{"code": "is required"})
 	}
-	if sc.Status == "" {
-		sc.AddNotification(map[string]interface{}{"status": "is required"})
-	}
-	if sc.Status != "" && !slices.Contains(STATUS[:], sc.Status) {
-		sc.AddNotification(map[string]interface{}{"status": "is invalid, valid values are active or inactive"})
-	}
+	sc.Status.Validate(&sc.NotificationContext)
+
 	return sc.Notification
 }

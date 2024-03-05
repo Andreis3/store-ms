@@ -1,8 +1,7 @@
 package seller
 
 import (
-	"slices"
-
+	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
@@ -16,8 +15,8 @@ var STATUS = [...]string{Active, Inactive}
 type Seller struct {
 	SellerName string
 	Code       string
-	Status     string
 	StoreKey   string
+	Status     valueobject.Status
 	Config
 	util.NotificationContext
 }
@@ -26,29 +25,24 @@ type Config struct {
 	AutomaticActive bool
 }
 
-func NewSeller(sellerName, code, status string, config bool) *Seller {
+func NewSeller(sellerName, code string, status *valueobject.Status, config bool) *Seller {
 	return &Seller{
 		SellerName: sellerName,
 		Code:       code,
-		Status:     status,
+		Status:     *status,
 		Config: Config{
 			AutomaticActive: config,
 		},
 	}
 }
 
-func (s *Seller) Validate() []map[string]interface{} {
+func (s *Seller) Validate() []map[string]any {
 	if s.SellerName == "" {
-		s.AddNotification(map[string]interface{}{"seller_name": "is required"})
+		s.AddNotification(map[string]any{"seller_name": "is required"})
 	}
 	if s.Code == "" {
-		s.AddNotification(map[string]interface{}{"code": "is required"})
+		s.AddNotification(map[string]any{"code": "is required"})
 	}
-	if s.Status == "" {
-		s.AddNotification(map[string]interface{}{"status": "is required"})
-	}
-	if s.Status != "" && !slices.Contains(STATUS[:], s.Status) {
-		s.AddNotification(map[string]interface{}{"status": "is invalid, valid values are active or inactive"})
-	}
+	s.Status.Validate(&s.NotificationContext)
 	return s.Notification
 }
