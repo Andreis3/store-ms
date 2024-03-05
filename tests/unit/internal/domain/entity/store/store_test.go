@@ -1,3 +1,6 @@
+//go:build unit
+// +build unit
+
 package store_test
 
 import (
@@ -7,6 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/andreis3/stores-ms/internal/domain/entity/store"
+	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 )
 
 func Test_StoreEntitySuite(t *testing.T) {
@@ -24,7 +28,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 	Describe("#Validate", func() {
 		Context("When I call the method Validate", func() {
 			It("Should return a notifications when StoreKey is empty", func() {
-				store := store.NewStore("", "Company Name", "active", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -40,7 +45,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications when CompanyName is empty", func() {
-				store := store.NewStore("storeKey", "", "active", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -56,7 +62,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications when Status is empty", func() {
-				store := store.NewStore("storeKey", "Company Name", "", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -72,7 +79,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications when Status is invalid", func() {
-				store := store.NewStore("storeKey", "Company Name", "invalid", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("invalid")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -88,7 +96,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications when CNPJ is empty", func() {
-				store := store.NewStore("storeKey", "Company Name", "active", "", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "Company Name", "", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -104,7 +113,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications when Domain is empty", func() {
-				store := store.NewStore("storeKey", "Company Name", "active", "12345678901234", "", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -120,7 +130,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications when GroupCOD is empty", func() {
-				store := store.NewStore("storeKey", "Company Name", "active", "12345678901234", "domain.com", "", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -136,7 +147,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications when Contact is empty", func() {
-				store := store.NewStore("storeKey", "Company Name", "active", "12345678901234", "domain.com", "groupCOD", []store.Contact{})
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{})
 
 				notifications := store.Validate()
 
@@ -145,7 +157,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications when Contact.Name is empty", func() {
-				store := store.NewStore("storeKey", "Company Name", "active", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "",
 						Email: "email@.com.br",
@@ -161,7 +174,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications when Contact.Email is empty", func() {
-				store := store.NewStore("storeKey", "Company Name", "active", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "",
@@ -173,11 +187,12 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 				notifications := store.Validate()
 
 				Expect(notifications).To(HaveLen(1))
-				Expect(notifications).To(ContainElement(map[string]string{"contacts[0].email": "is required"}))
+				Expect(notifications).To(ContainElement(map[string]any{"contacts[0].email": "is required"}))
 			})
 
 			It("Should return a notifications when Contact.Phone is empty", func() {
-				store := store.NewStore("storeKey", "Company Name", "active", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -189,11 +204,12 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 				notifications := store.Validate()
 
 				Expect(notifications).To(HaveLen(1))
-				Expect(notifications).To(ContainElement(map[string]string{"contacts[0].phone": "is required"}))
+				Expect(notifications).To(ContainElement(map[string]any{"contacts[0].phone": "is required"}))
 			})
 
 			It("Should return a notifications when Contact contains 2 elements with elements 1 empty name and 2 empty email", func() {
-				store := store.NewStore("storeKey", "Company Name", "active", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "",
 						Email: "email@.com.br",
@@ -211,12 +227,13 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 				notifications := store.Validate()
 
 				Expect(notifications).To(HaveLen(2))
-				Expect(notifications).To(ContainElement(map[string]string{"contacts[0].name": "is required"}))
-				Expect(notifications).To(ContainElement(map[string]string{"contacts[1].email": "is required"}))
+				Expect(notifications).To(ContainElement(map[string]any{"contacts[0].name": "is required"}))
+				Expect(notifications).To(ContainElement(map[string]any{"contacts[1].email": "is required"}))
 			})
 
 			It("Should return a notifications empty when all fields are filled and status active", func() {
-				store := store.NewStore("storeKey", "Company Name", "active", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("active")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -231,7 +248,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 			})
 
 			It("Should return a notifications empty when all fields are filled and status inactive", func() {
-				store := store.NewStore("storeKey", "Company Name", "inactive", "12345678901234", "domain.com", "groupCOD", []store.Contact{
+				status := valueobject.NewStatus("inactive")
+				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
