@@ -29,7 +29,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 		Context("When I call the method Validate", func() {
 			It("Should return a notifications when StoreKey is empty", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -46,7 +47,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when CompanyName is empty", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -63,7 +65,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when Status is empty", func() {
 				status := valueobject.NewStatus("")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -80,7 +83,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when Status is invalid", func() {
 				status := valueobject.NewStatus("invalid")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -97,7 +101,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when CNPJ is empty", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "Company Name", "", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -112,9 +117,64 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 				Expect(notifications[0]).To(HaveKeyWithValue("cnpj", "is required"))
 			})
 
+			It("Should return a notifications when CNPJ with less than 14 characters", func() {
+				status := valueobject.NewStatus("active")
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-4")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
+					{
+						Name:  "Contact Name",
+						Email: "email@.com.br",
+						Phone: "1234567890",
+						Ramal: "123",
+					},
+				})
+
+				notifications := store.Validate()
+
+				Expect(notifications).To(HaveLen(1))
+				Expect(notifications[0]).To(HaveKeyWithValue("cnpj", "is invalid, must have 14 characters"))
+			})
+
+			It("Should return a notifications when CNPJ is in the black list", func() {
+				status := valueobject.NewStatus("active")
+				cnpj := valueobject.NewCNPJ("00.000.000/0000-00")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
+					{
+						Name:  "Contact Name",
+						Email: "email@.com.br",
+						Phone: "1234567890",
+						Ramal: "123",
+					},
+				})
+
+				notifications := store.Validate()
+
+				Expect(notifications).To(HaveLen(1))
+				Expect(notifications[0]).To(HaveKeyWithValue("cnpj", "is invalid, must be a valid CNPJ number"))
+			})
+
+			It("Should return a notifications when CNPJ is invalid", func() {
+				status := valueobject.NewStatus("active")
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-49")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
+					{
+						Name:  "Contact Name",
+						Email: "email@.com.br",
+						Phone: "1234567890",
+						Ramal: "123",
+					},
+				})
+
+				notifications := store.Validate()
+
+				Expect(notifications).To(HaveLen(1))
+				Expect(notifications[0]).To(HaveKeyWithValue("cnpj", "is invalid, must be a valid CNPJ number calculated with the module 11 algorithm"))
+			})
+
 			It("Should return a notifications when Domain is empty", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -131,7 +191,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when GroupCOD is empty", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -148,7 +209,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when Contact is empty", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{})
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{})
 
 				notifications := store.Validate()
 
@@ -158,7 +220,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when Contact.Name is empty", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "",
 						Email: "email@.com.br",
@@ -175,7 +238,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when Contact.Email is empty", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "",
@@ -192,7 +256,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when Contact.Phone is empty", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -209,7 +274,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications when Contact contains 2 elements with elements 1 empty name and 2 empty email", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "",
 						Email: "email@.com.br",
@@ -233,7 +299,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications empty when all fields are filled and status active", func() {
 				status := valueobject.NewStatus("active")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
@@ -249,7 +316,8 @@ var _ = Describe("DOMAIN :: ENTITY :: STORE", func() {
 
 			It("Should return a notifications empty when all fields are filled and status inactive", func() {
 				status := valueobject.NewStatus("inactive")
-				store := store.NewStore("storeKey", "Company Name", "12345678901234", "domain.com", "groupCOD", status, []store.Contact{
+				cnpj := valueobject.NewCNPJ("10.140.120/0001-48")
+				store := store.NewStore("storeKey", "Company Name", "domain.com", "groupCOD", cnpj, status, []store.Contact{
 					{
 						Name:  "Contact Name",
 						Email: "email@.com.br",
