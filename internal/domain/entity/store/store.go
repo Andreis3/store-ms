@@ -17,7 +17,7 @@ var STATUS = []string{Active, Inactive}
 type Store struct {
 	StoreKey    string
 	CompanyName string
-	CNPJ        string
+	CNPJ        valueobject.CNPJ
 	Domain      string
 	GroupCOD    string
 	Status      valueobject.Status
@@ -32,12 +32,12 @@ type Contact struct {
 	Ramal string
 }
 
-func NewStore(storeKey, companyName, cnpj, domain, groupCOD string, status *valueobject.Status, contacts []Contact) *Store {
+func NewStore(storeKey, companyName, domain, groupCOD string, cnpj *valueobject.CNPJ, status *valueobject.Status, contacts []Contact) *Store {
 	return &Store{
 		StoreKey:    storeKey,
 		CompanyName: companyName,
 		Status:      *status,
-		CNPJ:        cnpj,
+		CNPJ:        *cnpj,
 		Domain:      domain,
 		GroupCOD:    groupCOD,
 		Contacts:    contacts,
@@ -54,9 +54,8 @@ func (s *Store) Validate() []map[string]any {
 
 	s.Status.Validate(&s.NotificationContext)
 
-	if s.CNPJ == "" {
-		s.AddNotification(map[string]any{"cnpj": "is required"})
-	}
+	s.CNPJ.Validate(&s.NotificationContext)
+
 	if s.Domain == "" {
 		s.AddNotification(map[string]any{"domain": "is required"})
 	}
