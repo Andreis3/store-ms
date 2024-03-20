@@ -7,11 +7,11 @@ import (
 )
 
 const (
-	Active   = "active"
-	Inactive = "inactive"
+	ACTIVE   = "active"
+	INACTIVE = "inactive"
 )
 
-var STATUS = [...]string{Active, Inactive}
+var STATUS = [...]string{ACTIVE, INACTIVE}
 
 type Status struct {
 	Status string

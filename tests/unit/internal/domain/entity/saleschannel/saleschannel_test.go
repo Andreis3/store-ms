@@ -29,7 +29,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 		Context("When I call the method Validate", func() {
 			It("Should return a notification when sales channel is empty", func() {
 				status := valueobject.NewStatus("active")
-				salesChannel := saleschannel.NewSalesChannel("", "123", status, true)
+				salesChannel := entity_saleschannel.NewSalesChannel("", "123", status, true)
 
 				notification := salesChannel.Validate()
 
@@ -39,7 +39,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 
 			It("Should return a notification when code is empty", func() {
 				status := valueobject.NewStatus("active")
-				salesChannel := saleschannel.NewSalesChannel("salesChannel", "", status, true)
+				salesChannel := entity_saleschannel.NewSalesChannel("salesChannel", "", status, true)
 
 				notification := salesChannel.Validate()
 
@@ -49,7 +49,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 
 			It("Should return a notification when status is empty", func() {
 				status := valueobject.NewStatus("")
-				salesChannel := saleschannel.NewSalesChannel("salesChannel", "123", status, true)
+				salesChannel := entity_saleschannel.NewSalesChannel("salesChannel", "123", status, true)
 
 				notification := salesChannel.Validate()
 
@@ -59,7 +59,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 
 			It("Should return a notification when sales channel, code and status are empty", func() {
 				status := valueobject.NewStatus("")
-				salesChannel := saleschannel.NewSalesChannel("", "", status, true)
+				salesChannel := entity_saleschannel.NewSalesChannel("", "", status, true)
 
 				notification := salesChannel.Validate()
 
@@ -69,7 +69,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 
 			It("Should return a notification when status is invalid", func() {
 				status := valueobject.NewStatus("invalid")
-				salesChannel := saleschannel.NewSalesChannel("salesChannel", "123", status, true)
+				salesChannel := entity_saleschannel.NewSalesChannel("salesChannel", "123", status, true)
 
 				notification := salesChannel.Validate()
 
@@ -79,7 +79,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 
 			It("Should not return a notification when status is active", func() {
 				status := valueobject.NewStatus("active")
-				salesChannel := saleschannel.NewSalesChannel("salesChannel", "123", status, true)
+				salesChannel := entity_saleschannel.NewSalesChannel("salesChannel", "123", status, true)
 
 				notification := salesChannel.Validate()
 
@@ -88,7 +88,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 
 			It("Should not return a notification when status is inactive", func() {
 				status := valueobject.NewStatus("inactive")
-				salesChannel := saleschannel.NewSalesChannel("salesChannel", "123", status, true)
+				salesChannel := entity_saleschannel.NewSalesChannel("salesChannel", "123", status, true)
 
 				notification := salesChannel.Validate()
 

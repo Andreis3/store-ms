@@ -1,4 +1,4 @@
-package group
+package entity_group
 
 import (
 	"github.com/andreis3/stores-ms/internal/domain/entity/base"

@@ -1,4 +1,4 @@
-package saleschannel
+package entity_saleschannel
 
 import (
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"

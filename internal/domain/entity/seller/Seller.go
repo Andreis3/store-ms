@@ -1,4 +1,4 @@
-package seller
+package entity_seller
 
 import (
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
