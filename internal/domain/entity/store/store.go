@@ -7,13 +7,6 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-const (
-	Active   = "active"
-	Inactive = "inactive"
-)
-
-var STATUS = []string{Active, Inactive}
-
 type Store struct {
 	StoreKey    string
 	CompanyName string
