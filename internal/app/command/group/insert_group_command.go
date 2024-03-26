@@ -1,14 +1,22 @@
 package group_command
 
 import (
-	"github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/domain/service/group_service/interfaces"
+	group_dto "github.com/andreis3/stores-ms/internal/interface/http/group/dto"
+	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type InsertGroupCommand struct {
 	GroupService group_service.IInsertGroupService
 }
 
-func (c InsertGroupCommand) Execute(data entity_group.Group) (entity_group.Group, error) {
-	return c.GroupService.InsertGroup(data)
+func NewInsertGroupCommand(service group_service.IInsertGroupService) *InsertGroupCommand {
+	return &InsertGroupCommand{
+		GroupService: service,
+	}
+}
+
+func (c InsertGroupCommand) Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
+	group, err := c.GroupService.InsertGroup(data)
+	return group, err
 }

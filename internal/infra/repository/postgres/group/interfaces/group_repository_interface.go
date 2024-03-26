@@ -1,4 +1,4 @@
-package repo_group
+package irepo_group
 
 import "github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
 

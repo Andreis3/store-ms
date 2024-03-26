@@ -2,6 +2,7 @@ package uow
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/jackc/pgx/v5"
@@ -27,14 +28,7 @@ func (u *UnitOfWork) Register(name string, callback iuow.RepositoryFactory) {
 	u.Repositories[name] = callback
 }
 
-func (u *UnitOfWork) GetRepository(ctx context.Context, name string) any {
-	if u.TX == nil {
-		tx, err := u.DB.Begin(ctx)
-		if err != nil {
-			return nil
-		}
-		u.TX = tx
-	}
+func (u *UnitOfWork) GetRepository(name string) any {
 	repo := u.Repositories[name](u.TX)
 	return repo
 }
@@ -51,7 +45,14 @@ func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork)
 
 	u.TX = tx
 	err = callback(u)
-	return nil
+	if err != nil {
+		errRb := u.Rollback()
+		if errRb != nil {
+			return errors.New(fmt.Sprintf("original error: %s, rollback error: %s", err.Error(), errRb.Error()))
+		}
+		return err
+	}
+	return u.CommitOrRollback()
 }
 
 func (u *UnitOfWork) Rollback() error {

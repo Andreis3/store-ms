@@ -34,7 +34,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 				notification := seller.Validate()
 
 				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]["seller_name"]).To(Equal("is required"))
+				Expect(notification[0]).To(Equal("seller_name: is required"))
 			})
 
 			It("Should return a notification when code is empty", func() {
@@ -44,7 +44,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 				notification := seller.Validate()
 
 				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]["code"]).To(Equal("is required"))
+				Expect(notification[0]).To(Equal("code: is required"))
 			})
 
 			It("Should return a notification when status is empty", func() {
@@ -54,7 +54,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 				notification := seller.Validate()
 
 				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]["status"]).To(Equal("is required"))
+				Expect(notification[0]).To(Equal("status: is required"))
 			})
 
 			It("Should return a notification when seller name, code and status are empty", func() {
@@ -64,9 +64,9 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 				notification := seller.Validate()
 
 				Expect(notification).To(HaveLen(3))
-				Expect(notification[0]["seller_name"]).To(Equal("is required"))
-				Expect(notification[1]["code"]).To(Equal("is required"))
-				Expect(notification[2]["status"]).To(Equal("is required"))
+				Expect(notification[0]).To(Equal("seller_name: is required"))
+				Expect(notification[1]).To(Equal("code: is required"))
+				Expect(notification[2]).To(Equal("status: is required"))
 			})
 
 			It("Should return a notification when status is invalid", func() {
@@ -76,7 +76,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 				notification := seller.Validate()
 
 				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]["status"]).To(Equal("is invalid, valid values are active or inactive"))
+				Expect(notification[0]).To(Equal("status: is invalid, valid values are active or inactive"))
 			})
 
 			It("Should not return a notification when status is active", func() {

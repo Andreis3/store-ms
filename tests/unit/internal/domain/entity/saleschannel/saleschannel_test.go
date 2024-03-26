@@ -34,7 +34,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 				notification := salesChannel.Validate()
 
 				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]["sales_channel"]).To(Equal("is required"))
+				Expect(notification[0]).To(Equal("sales_channel: is required"))
 			})
 
 			It("Should return a notification when code is empty", func() {
@@ -44,7 +44,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 				notification := salesChannel.Validate()
 
 				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]["code"]).To(Equal("is required"))
+				Expect(notification[0]).To(Equal("code: is required"))
 			})
 
 			It("Should return a notification when status is empty", func() {
@@ -54,7 +54,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 				notification := salesChannel.Validate()
 
 				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]["status"]).To(Equal("is required"))
+				Expect(notification[0]).To(Equal("status: is required"))
 			})
 
 			It("Should return a notification when sales channel, code and status are empty", func() {
@@ -64,7 +64,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 				notification := salesChannel.Validate()
 
 				Expect(notification).To(HaveLen(3))
-				Expect(notification[0]["sales_channel"]).To(Equal("is required"))
+				Expect(notification[0]).To(Equal("sales_channel: is required"))
 			})
 
 			It("Should return a notification when status is invalid", func() {
@@ -74,7 +74,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SALES_CHANNEL", func() {
 				notification := salesChannel.Validate()
 
 				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]["status"]).To(Equal("is invalid, valid values are active or inactive"))
+				Expect(notification[0]).To(Equal("status: is invalid, valid values are active or inactive"))
 			})
 
 			It("Should not return a notification when status is active", func() {

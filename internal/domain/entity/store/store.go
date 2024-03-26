@@ -37,12 +37,12 @@ func NewStore(storeKey, companyName, domain, groupCOD string, cnpj *valueobject.
 	}
 }
 
-func (s *Store) Validate() []map[string]any {
+func (s *Store) Validate() []string {
 	if s.StoreKey == "" {
-		s.AddNotification(map[string]any{"store_key": "is required"})
+		s.AddNotification(`store_key: is required`)
 	}
 	if s.CompanyName == "" {
-		s.AddNotification(map[string]any{"company_name": "is required"})
+		s.AddNotification(`company_name: is required`)
 	}
 
 	s.Status.Validate(&s.NotificationContext)
@@ -50,27 +50,27 @@ func (s *Store) Validate() []map[string]any {
 	s.CNPJ.Validate(&s.NotificationContext)
 
 	if s.Domain == "" {
-		s.AddNotification(map[string]any{"domain": "is required"})
+		s.AddNotification(`domain: is required`)
 	}
 	if s.GroupCOD == "" {
-		s.AddNotification(map[string]any{"group_code": "is required"})
+		s.AddNotification(`code: is required`)
 	}
 	if len(s.Contacts) < 1 {
-		s.AddNotification(map[string]any{"contacts": "min 1 contact is required"})
+		s.AddNotification(`contacts: min 1 contact is required`)
 	}
 
 	for index, contact := range s.Contacts {
 		if contact.Name == "" {
 			key := fmt.Sprintf("contacts[%d].name", index)
-			s.AddNotification(map[string]any{key: "is required"})
+			s.AddNotification(fmt.Sprintf(`%s: is required`, key))
 		}
 		if contact.Email == "" {
 			key := fmt.Sprintf("contacts[%d].email", index)
-			s.AddNotification(map[string]any{key: "is required"})
+			s.AddNotification(fmt.Sprintf(`%s: is required`, key))
 		}
 		if contact.Phone == "" {
 			key := fmt.Sprintf("contacts[%d].phone", index)
-			s.AddNotification(map[string]any{key: "is required"})
+			s.AddNotification(fmt.Sprintf(`%s: is required`, key))
 		}
 
 	}

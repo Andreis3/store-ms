@@ -29,12 +29,12 @@ func NewSalesChannel(salesChannel, code string, status *valueobject.Status, conf
 	}
 }
 
-func (sc *SalesChannel) Validate() []map[string]any {
+func (sc *SalesChannel) Validate() []string {
 	if sc.SalesChannel == "" {
-		sc.AddNotification(map[string]any{"sales_channel": "is required"})
+		sc.AddNotification(`sales_channel: is required`)
 	}
 	if sc.Code == "" {
-		sc.AddNotification(map[string]any{"code": "is required"})
+		sc.AddNotification(`code: is required`)
 	}
 	sc.Status.Validate(&sc.NotificationContext)
 

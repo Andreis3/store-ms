@@ -34,19 +34,19 @@ func (c *CNPJ) Validate(ctx *util.NotificationContext) {
 	cnpj := regex.ReplaceAllString(c.CNPJ, "")
 
 	if cnpj == "" {
-		ctx.AddNotification(map[string]interface{}{"cnpj": "is required"})
+		ctx.AddNotification(`cnpj: is required`)
 	}
 
 	if cnpj != "" && len(cnpj) < 14 {
-		ctx.AddNotification(map[string]interface{}{"cnpj": "is invalid, must have 14 characters"})
+		ctx.AddNotification(`cnpj: is invalid, must have 14 characters`)
 	}
 
 	if cnpj != "" && slices.Contains(blackListCNPJ, cnpj) {
-		ctx.AddNotification(map[string]interface{}{"cnpj": "is invalid, must be a valid CNPJ number"})
+		ctx.AddNotification(`cnpj: is invalid, must be a valid CNPJ number`)
 	}
 
 	if cnpj != "" && !validateCNPJ(cnpj) && len(cnpj) == 14 {
-		ctx.AddNotification(map[string]interface{}{"cnpj": "is invalid, must be a valid CNPJ number calculated with the module 11 algorithm"})
+		ctx.AddNotification(`cnpj: is invalid, must be a valid CNPJ number calculated with the module 11 algorithm`)
 	}
 
 }

@@ -3,31 +3,39 @@ package group_service
 import (
 	"context"
 
-	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
+	irepo_group "github.com/andreis3/stores-ms/internal/infra/repository/postgres/group/interfaces"
 	iuow "github.com/andreis3/stores-ms/internal/infra/uow/interfaces"
+	group_dto "github.com/andreis3/stores-ms/internal/interface/http/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type InsertGroupService struct {
 	uow       iuow.IUnitOfWork
-	repoGroup repo_group.GroupRepository
+	repoGroup irepo_group.IGroupRepository
 	ctx       context.Context
 }
 
 func NewInsertGroupService(uow iuow.IUnitOfWork) *InsertGroupService {
 	ctx := context.Background()
-	repoGroup := uow.GetRepository(ctx, util.GROUP_REPOSITORY_KEY).(repo_group.GroupRepository)
+	repoGroup := uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
 	return &InsertGroupService{
 		uow:       uow,
-		repoGroup: repoGroup,
 		ctx:       ctx,
+		repoGroup: repoGroup,
 	}
 }
 
-func (s *InsertGroupService) InsertGroup(data entity_group.Group) (entity_group.Group, error) {
+func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
+	var groupModel *repo_group.GroupModel
+	groupEntity := data.MapperInputDtoToEntity()
+	validate := groupEntity.Validate()
+	if len(validate) > 0 {
+		errorJSON := util.NewValidationError(validate)
+		return group_dto.GroupOutputDTO{}, errorJSON
+	}
 	err := s.uow.Do(s.ctx, func(tx iuow.IUnitOfWork) error {
-		groupModel := repo_group.MapperGroupModel(data)
+		groupModel = repo_group.MapperGroupModel(*groupEntity)
 		_, err := s.repoGroup.InsertGroup(*groupModel)
 		if err != nil {
 			return err
@@ -35,8 +43,15 @@ func (s *InsertGroupService) InsertGroup(data entity_group.Group) (entity_group.
 		return nil
 	})
 	if err != nil {
-		return entity_group.Group{}, err
+		return group_dto.GroupOutputDTO{}, util.NewValidationError([]string{err.Error()})
 	}
 
-	return data, nil
+	return group_dto.GroupOutputDTO{
+		ID:        groupModel.ID,
+		Status:    groupModel.Status,
+		Code:      groupModel.Code,
+		GroupName: groupModel.GroupName,
+		CreatedAt: groupModel.CreatedAt,
+		UpdatedAt: groupModel.UpdatedAt,
+	}, nil
 }
