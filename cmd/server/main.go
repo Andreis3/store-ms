@@ -5,7 +5,7 @@ import (
 
 	"github.com/andreis3/stores-ms/cmd/configs"
 	"github.com/andreis3/stores-ms/internal/infra/adapters/database/postgres"
-	make_command "github.com/andreis3/stores-ms/internal/infra/make/command"
+	make_controller "github.com/andreis3/stores-ms/internal/infra/make/controller"
 	"github.com/andreis3/stores-ms/internal/infra/router"
 	group_controller "github.com/andreis3/stores-ms/internal/interface/http/group"
 	"github.com/andreis3/stores-ms/internal/interface/http/stores"
@@ -13,18 +13,18 @@ import (
 
 func main() {
 	mux := http.NewServeMux()
-	configs, err := configs.LoadConfig(".")
+	conf, err := configs.LoadConfig(".")
 	if err != nil {
 		panic(err)
 	}
 
-	pool := postgres.NewPostgresDB(*configs)
+	pool := postgres.NewPostgresDB(*conf)
 
 	registerRouter := router.NewRegisterRouter()
 
 	storesController := stores.NewStoresController()
 
-	groupController := make_command.MakeCommandGroup(pool.DB)
+	groupController := make_controller.MakeControllerGroup(pool.DB)
 
 	storesRouter := stores.NewStoresRouter(storesController)
 
@@ -32,6 +32,9 @@ func main() {
 
 	router.NewRouter(mux, registerRouter, storesRouter, groupRouter).ApiRoutes()
 
-	http.ListenAndServe("0.0.0.0:8080", mux)
+	err = http.ListenAndServe(":"+conf.ServerPort, mux)
+	if err != nil {
+		panic(err)
+	}
 
 }

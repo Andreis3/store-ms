@@ -1,4 +1,4 @@
-package make_command
+package make_controller
 
 import (
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -10,7 +10,7 @@ import (
 	"github.com/andreis3/stores-ms/internal/interface/http/group/interfaces"
 )
 
-func MakeCommandGroup(pool *pgxpool.Pool) group_controller.IGroupController {
+func MakeControllerGroup(pool *pgxpool.Pool) group_controller.IGroupController {
 	uow := proxy_uow.NewUnitOfWork(pool)
 	groupService := group_service.NewInsertGroupService(uow)
 	groupCommand := group_command.NewInsertGroupCommand(groupService)
