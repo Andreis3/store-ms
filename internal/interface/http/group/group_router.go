@@ -7,10 +7,10 @@ import (
 )
 
 type Router struct {
-	controller group_controller.IGroupController
+	controller igroup_controller.IGroupController
 }
 
-func NewGroupRouter(controller group_controller.IGroupController) *Router {
+func NewGroupRouter(controller igroup_controller.IGroupController) *Router {
 	return &Router{
 		controller: controller,
 	}

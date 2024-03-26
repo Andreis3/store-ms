@@ -24,3 +24,11 @@ ALTER TABLE "groups" ADD UNIQUE (group_name, code);
 ------------------------------------------------------------------
 
 CREATE INDEX IF NOT EXISTS "idx_groups_group_name" ON "groups" (group_name, code);
+
+--
+--
+-- ------------------------------------------------------------------
+-- -- LIMPEZA DA BASE
+-- ------------------------------------------------------------------
+--
+TRUNCATE TABLE groups RESTART IDENTITY CASCADE;
