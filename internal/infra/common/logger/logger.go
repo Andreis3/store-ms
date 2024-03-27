@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"log/slog"
 	"os"
 )
@@ -10,7 +11,7 @@ type Logger struct {
 }
 
 func NewLogger() *Logger {
-	logger := slog.New(slog.NewJSONHandler(os.Stdout,
+	logger := slog.New(slog.NewTextHandler(os.Stdout,
 		&slog.HandlerOptions{
 			Level: slog.LevelDebug,
 		}))
@@ -19,15 +20,16 @@ func NewLogger() *Logger {
 	return &Logger{*logger}
 }
 
-func (l *Logger) Debug(msg string, info map[string]any) {
-	l.logger.Debug(msg, info)
+func (l *Logger) Debug(msg string, info any) {
+	l.logger.Debug(msg, slog.String("info", fmt.Sprintf("%s", info)))
 }
-func (l *Logger) Info(msg string, info map[string]any) {
-	l.logger.Info(msg, info)
+func (l *Logger) Info(msg string, info any) {
+
+	l.logger.Info(msg, slog.String("info", fmt.Sprintf("%s", info)))
 }
-func (l *Logger) Warn(msg string, info map[string]any) {
-	l.logger.Warn(msg, info)
+func (l *Logger) Warn(msg string, info any) {
+	l.logger.Warn(msg, slog.String("info", fmt.Sprintf("%s", info)))
 }
-func (l *Logger) Error(msg string, info map[string]any) {
-	l.logger.Error(msg, info)
+func (l *Logger) Error(msg string, info any) {
+	l.logger.Error(msg, slog.String("info", fmt.Sprintf("%s", info)))
 }

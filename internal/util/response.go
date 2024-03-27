@@ -16,8 +16,7 @@ type ResponseBadRequest struct {
 func Response[T any](write http.ResponseWriter, status int, data T) {
 	write.Header().Set("Content-Type", "application/json")
 	write.WriteHeader(status)
-	dataMarshal, _ := json.Marshal(data)
-	write.Write(dataMarshal)
+	json.NewEncoder(write).Encode(data)
 }
 
 func ResponseBadRequestError[T any](write http.ResponseWriter, status int, data T) {
@@ -28,6 +27,5 @@ func ResponseBadRequestError[T any](write http.ResponseWriter, status int, data 
 		StatusCode:   status,
 		ErrorMessage: data,
 	}
-	dataMarshal, _ := json.Marshal(result)
-	write.Write(dataMarshal)
+	json.NewEncoder(write).Encode(result)
 }
