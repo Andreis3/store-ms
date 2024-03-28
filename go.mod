@@ -1,12 +1,11 @@
 module github.com/andreis3/stores-ms
 
-go 1.22
+go 1.22.1
 
 require (
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.5.4
 	github.com/lmittmann/tint v1.0.4
-	github.com/mattn/go-isatty v0.0.17
 	github.com/onsi/ginkgo/v2 v2.15.0
 	github.com/onsi/gomega v1.31.1
 	github.com/spf13/viper v1.18.2

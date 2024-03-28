@@ -11,14 +11,19 @@ type ResponseBadRequest struct {
 	ErrorMessage any    `json:"error_message"`
 }
 
+const (
+	CONTENT_TYPE     = "Content-Type"
+	APPLICATION_JSON = "application/json"
+)
+
 func Response[T any](write http.ResponseWriter, status int, data T) {
-	write.Header().Set("Content-Type", "application/json")
+	write.Header().Set(CONTENT_TYPE, APPLICATION_JSON)
 	write.WriteHeader(status)
 	json.NewEncoder(write).Encode(data)
 }
 
 func ResponseBadRequestError[T any](write http.ResponseWriter, status int, requestID string, data T) {
-	write.Header().Set("Content-Type", "application/json")
+	write.Header().Set(CONTENT_TYPE, APPLICATION_JSON)
 	write.WriteHeader(status)
 	result := ResponseBadRequest{
 		RequestID:    requestID,

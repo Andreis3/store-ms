@@ -13,18 +13,18 @@ import (
 )
 
 type Controller struct {
-	groupCommand group_command.IInsertGroupCommand
-	logger       ilogger.ILogger
+	insertGroupCommand group_command.IInsertGroupCommand
+	logger             ilogger.ILogger
 }
 
 func NewGroupController(groupCommand group_command.IInsertGroupCommand, logger ilogger.ILogger) *Controller {
 	return &Controller{
-		groupCommand: groupCommand,
-		logger:       logger,
+		insertGroupCommand: groupCommand,
+		logger:             logger,
 	}
 }
 
-func (p *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
+func (c *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
 	requestID := uuid.New().String()
 	groupInputDTO, err := util.RecoverBody[*group_dto.GroupInputDTO](r)
 	if err != nil {
@@ -32,10 +32,10 @@ func (p *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	group, erroCM := p.groupCommand.Execute(*groupInputDTO)
-	if erroCM != nil {
-		p.logger.Error("Create Group Error", "REQUEST_ID", requestID, "ERROR_MESSAGE", strings.Join(erroCM.LogError, ", "))
-		util.ResponseBadRequestError[[]string](w, erroCM.Status, requestID, erroCM.ClientError)
+	group, errCM := c.insertGroupCommand.Execute(*groupInputDTO)
+	if errCM != nil {
+		c.logger.Error("Create Group Error", "REQUEST_ID", requestID, "ERROR_MESSAGE", strings.Join(errCM.LogError, ", "))
+		util.ResponseBadRequestError[[]string](w, errCM.Status, requestID, errCM.ClientError)
 		return
 	}
 

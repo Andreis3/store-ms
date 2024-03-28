@@ -16,7 +16,7 @@ func NewInsertGroupCommand(service group_service.IInsertGroupService) *InsertGro
 	}
 }
 
-func (c InsertGroupCommand) Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
+func (c *InsertGroupCommand) Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	group, err := c.GroupService.InsertGroup(data)
 	return group, err
 }
