@@ -1,6 +1,20 @@
 name: store
 
 services:
+  server:
+    container_name: store-ms
+    build:
+      target: builder
+      context: .
+    ports:
+      - "8080:8080"
+    depends_on:
+        - postgres
+    env_file:
+      - .env
+    network_mode: host
+    entrypoint: ["/go/bin/server"]
+
   postgres:
       container_name: postgres-store
       image: postgres:16.2
