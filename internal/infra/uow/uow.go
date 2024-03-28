@@ -23,7 +23,6 @@ func NewUnitOfWork(db *pgxpool.Pool) *UnitOfWork {
 		Repositories: make(map[string]iuow.RepositoryFactory),
 	}
 }
-
 func (u *UnitOfWork) Register(name string, callback iuow.RepositoryFactory) {
 	u.Repositories[name] = callback
 }
@@ -32,7 +31,6 @@ func (u *UnitOfWork) GetRepository(name string) any {
 	repo := u.Repositories[name](u.TX)
 	return repo
 }
-
 func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
 	if u.TX != nil {
 		return &util.ValidationError{
@@ -40,7 +38,6 @@ func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork)
 			ClientError: []string{"Internal Server Error"},
 			Status:      http.StatusInternalServerError}
 	}
-
 	tx, err := u.DB.Begin(ctx)
 	if err != nil {
 		return &util.ValidationError{
@@ -48,7 +45,6 @@ func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork)
 			ClientError: []string{"Internal Server Error"},
 			Status:      http.StatusInternalServerError}
 	}
-
 	u.TX = tx
 	errCB := callback(u)
 	if errCB.ExistError() {
@@ -63,7 +59,6 @@ func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork)
 	}
 	return u.CommitOrRollback()
 }
-
 func (u *UnitOfWork) Rollback() *util.ValidationError {
 	if u.TX == nil {
 		return &util.ValidationError{
@@ -72,7 +67,6 @@ func (u *UnitOfWork) Rollback() *util.ValidationError {
 			Status:      http.StatusInternalServerError,
 		}
 	}
-
 	err := u.TX.Rollback(context.Background())
 	if err != nil {
 		return &util.ValidationError{
@@ -81,16 +75,13 @@ func (u *UnitOfWork) Rollback() *util.ValidationError {
 			Status:      http.StatusInternalServerError,
 		}
 	}
-
 	u.TX = nil
 	return nil
 }
-
 func (u *UnitOfWork) CommitOrRollback() *util.ValidationError {
 	if u.TX == nil {
 		return nil
 	}
-
 	if err := u.TX.Commit(context.Background()); err != nil {
 		if errRB := u.Rollback(); errRB != nil {
 			return errRB
@@ -100,7 +91,6 @@ func (u *UnitOfWork) CommitOrRollback() *util.ValidationError {
 			ClientError: []string{"Internal Server Error"},
 			Status:      http.StatusInternalServerError}
 	}
-
 	u.TX = nil
 	return nil
 }

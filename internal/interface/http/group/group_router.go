@@ -22,7 +22,7 @@ func (r *Router) GroupRoutes() []map[string]any {
 			"method":      http.MethodPost,
 			"path":        "/groups",
 			"handler":     r.controller.CreateGroup,
-			"description": "CreateGroup",
+			"description": "Create Group",
 		},
 	}
 }

@@ -1,4 +1,4 @@
-package group_service
+package igroup_service
 
 import (
 	"github.com/andreis3/stores-ms/internal/interface/http/group/dto"

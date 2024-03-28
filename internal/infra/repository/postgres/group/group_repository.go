@@ -26,6 +26,5 @@ func (r *GroupRepository) InsertGroup(group GroupModel) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	return id, nil
 }

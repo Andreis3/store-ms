@@ -48,12 +48,9 @@ func NewPostgresDB(conf configs.Conf) *Postgres {
 		if err != nil {
 			panic(err)
 		}
-
 	})
-
 	return &Postgres{DB: pool}
 }
-
 func (p *Postgres) InstanceDB() any {
 	return p.DB
 }
@@ -61,15 +58,12 @@ func (p *Postgres) InstanceDB() any {
 func (p *Postgres) Exec(ctx context.Context, sql string, arguments ...any) (commandTag pgconn.CommandTag, err error) {
 	return p.DB.Exec(ctx, sql, arguments...)
 }
-
 func (p *Postgres) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
 	return p.DB.Query(ctx, sql, args...)
 }
-
 func (p *Postgres) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
 	return p.DB.QueryRow(ctx, sql, args...)
 }
-
 func (p *Postgres) Close() {
 	p.DB.Close()
 }

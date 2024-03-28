@@ -2,15 +2,15 @@ package group_command
 
 import (
 	"github.com/andreis3/stores-ms/internal/domain/service/group_service/interfaces"
-	group_dto "github.com/andreis3/stores-ms/internal/interface/http/group/dto"
+	"github.com/andreis3/stores-ms/internal/interface/http/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type InsertGroupCommand struct {
-	GroupService group_service.IInsertGroupService
+	GroupService igroup_service.IInsertGroupService
 }
 
-func NewInsertGroupCommand(service group_service.IInsertGroupService) *InsertGroupCommand {
+func NewInsertGroupCommand(service igroup_service.IInsertGroupService) *InsertGroupCommand {
 	return &InsertGroupCommand{
 		GroupService: service,
 	}

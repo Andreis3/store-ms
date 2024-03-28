@@ -17,7 +17,6 @@ type Store struct {
 	Contacts    []Contact
 	util.NotificationContext
 }
-
 type Contact struct {
 	Name  string
 	Email string
@@ -44,11 +43,8 @@ func (s *Store) Validate() []string {
 	if s.CompanyName == "" {
 		s.AddNotification(`company_name: is required`)
 	}
-
 	s.Status.Validate(&s.NotificationContext)
-
 	s.CNPJ.Validate(&s.NotificationContext)
-
 	if s.Domain == "" {
 		s.AddNotification(`domain: is required`)
 	}
@@ -58,7 +54,6 @@ func (s *Store) Validate() []string {
 	if len(s.Contacts) < 1 {
 		s.AddNotification(`contacts: min 1 contact is required`)
 	}
-
 	for index, contact := range s.Contacts {
 		if contact.Name == "" {
 			key := fmt.Sprintf("contacts[%d].name", index)
@@ -72,7 +67,6 @@ func (s *Store) Validate() []string {
 			key := fmt.Sprintf("contacts[%d].phone", index)
 			s.AddNotification(fmt.Sprintf(`%s: is required`, key))
 		}
-
 	}
 	return s.Notification
 }

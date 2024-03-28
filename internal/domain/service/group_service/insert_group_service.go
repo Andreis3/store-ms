@@ -26,14 +26,16 @@ func NewInsertGroupService(uow iuow.IUnitOfWork) *InsertGroupService {
 		repoGroup: repoGroup,
 	}
 }
-
 func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	var groupModel *repo_group.GroupModel
 	groupEntity := data.MapperInputDtoToEntity()
 	validate := groupEntity.Validate()
 	if len(validate) > 0 {
-		errorJSON := util.NewValidationError(validate, http.StatusBadRequest)
-		return group_dto.GroupOutputDTO{}, errorJSON
+		return group_dto.GroupOutputDTO{}, &util.ValidationError{
+			LogError:    validate,
+			ClientError: validate,
+			Status:      http.StatusBadRequest,
+		}
 	}
 	err := s.uow.Do(s.ctx, func(tx iuow.IUnitOfWork) *util.ValidationError {
 		groupModel = repo_group.MapperGroupModel(*groupEntity)
@@ -50,7 +52,6 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 	if err.ExistError() {
 		return group_dto.GroupOutputDTO{}, err
 	}
-
 	return group_dto.GroupOutputDTO{
 		ID:        groupModel.ID,
 		Status:    groupModel.Status,

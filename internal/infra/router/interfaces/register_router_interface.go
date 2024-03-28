@@ -1,4 +1,4 @@
-package interfaces
+package irouter
 
 import "net/http"
 

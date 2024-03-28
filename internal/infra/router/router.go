@@ -4,21 +4,21 @@ import (
 	"net/http"
 
 	"github.com/andreis3/stores-ms/internal/infra/router/interfaces"
-	group_controller "github.com/andreis3/stores-ms/internal/interface/http/group/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/group/interfaces"
 	stores "github.com/andreis3/stores-ms/internal/interface/http/stores/interfaces"
 )
 
 type Router struct {
 	router         *http.ServeMux
-	registerRouter interfaces.IRegisterRouter
+	registerRouter irouter.IRegisterRouter
 	storesRouter   stores.IStoresRouter
-	groupRouter    group_controller.IGroupRouter
+	groupRouter    igroup_controller.IGroupRouter
 }
 
 func NewRouter(server *http.ServeMux,
-	registerRouter interfaces.IRegisterRouter,
+	registerRouter irouter.IRegisterRouter,
 	storesRouter stores.IStoresRouter,
-	groupRouter group_controller.IGroupRouter) *Router {
+	groupRouter igroup_controller.IGroupRouter) *Router {
 	return &Router{
 		router:         server,
 		registerRouter: registerRouter,

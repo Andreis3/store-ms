@@ -1,4 +1,4 @@
-package group_command
+package igroup_command
 
 import (
 	"github.com/andreis3/stores-ms/internal/interface/http/group/dto"

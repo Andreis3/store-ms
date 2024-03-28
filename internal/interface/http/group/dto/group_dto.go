@@ -10,7 +10,6 @@ type GroupInputDTO struct {
 	Code      string `json:"code"`
 	Status    string `json:"status"`
 }
-
 type GroupOutputDTO struct {
 	ID        string `json:"id"`
 	GroupName string `json:"group_name"`

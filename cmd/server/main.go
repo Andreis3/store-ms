@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/andreis3/stores-ms/internal/infra/common/logger"
 	"net/http"
 
 	"github.com/andreis3/stores-ms/cmd/configs"
@@ -19,8 +20,9 @@ func main() {
 	}
 
 	pool := postgres.NewPostgresDB(*conf)
+	logger := logger.NewLogger()
 
-	registerRouter := router.NewRegisterRouter()
+	registerRouter := router.NewRegisterRouter(logger)
 
 	storesController := stores.NewStoresController()
 

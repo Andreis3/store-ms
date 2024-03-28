@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"fmt"
 	"log/slog"
 	"os"
 	"time"
@@ -25,16 +24,15 @@ func NewLogger() *Logger {
 	slog.SetDefault(logger)
 	return &Logger{*logger}
 }
-
 func (l *Logger) Debug(msg string, info ...any) {
-	l.logger.Debug(msg, slog.String("data", fmt.Sprintf("%s", info)))
+	l.logger.Debug(msg, info...)
 }
 func (l *Logger) Info(msg string, info ...any) {
 
-	l.logger.Info(msg, slog.String("data", fmt.Sprintf("%s", info)))
+	l.logger.Info(msg, info...)
 }
 func (l *Logger) Warn(msg string, info ...any) {
-	l.logger.Warn(msg, slog.String("data", fmt.Sprintf("%s", info)))
+	l.logger.Warn(msg, info...)
 }
 func (l *Logger) Error(msg string, info ...any) {
 	l.logger.Error(msg, info...)

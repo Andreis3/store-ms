@@ -10,9 +10,7 @@ import (
 )
 
 func NewUnitOfWork(db *pgxpool.Pool) *uow.UnitOfWork {
-
 	uow := uow.NewUnitOfWork(db)
-
 	uow.Register(util.GROUP_REPOSITORY_KEY, func(tx pgx.Tx) any {
 		return repo_group.NewGroupRepository(db)
 	})

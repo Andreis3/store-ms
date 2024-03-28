@@ -13,7 +13,6 @@ type Seller struct {
 	Config
 	util.NotificationContext
 }
-
 type Config struct {
 	AutomaticActive bool
 }
@@ -28,7 +27,6 @@ func NewSeller(sellerName, code string, status *valueobject.Status, config bool)
 		},
 	}
 }
-
 func (s *Seller) Validate() []string {
 	if s.SellerName == "" {
 		s.AddNotification(`seller_name: is required`)

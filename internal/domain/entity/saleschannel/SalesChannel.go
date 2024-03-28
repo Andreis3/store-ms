@@ -13,7 +13,6 @@ type SalesChannel struct {
 	Config
 	util.NotificationContext
 }
-
 type Config struct {
 	AutomaticActive bool
 }
@@ -37,6 +36,5 @@ func (sc *SalesChannel) Validate() []string {
 		sc.AddNotification(`code: is required`)
 	}
 	sc.Status.Validate(&sc.NotificationContext)
-
 	return sc.Notification
 }
