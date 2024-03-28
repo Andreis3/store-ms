@@ -1,3 +1,5 @@
+run-app:
+	@go run ./cmd/server/main.go
 docker-up:
 	@docker compose -f ./docker/docker-compose.yml up -d --build
 
@@ -8,6 +10,7 @@ unit-test:
 	@go test ./tests/unit/... --tags=unit -v
 
 
-.PHONY: docker-up,
+.PHONY: run-app,
+		docker-up,
 		docker-down,
 		unit-test
