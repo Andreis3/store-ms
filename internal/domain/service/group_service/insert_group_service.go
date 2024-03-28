@@ -2,6 +2,7 @@ package group_service
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
 	irepo_group "github.com/andreis3/stores-ms/internal/infra/repository/postgres/group/interfaces"
@@ -31,19 +32,23 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 	groupEntity := data.MapperInputDtoToEntity()
 	validate := groupEntity.Validate()
 	if len(validate) > 0 {
-		errorJSON := util.NewValidationError(validate)
+		errorJSON := util.NewValidationError(validate, http.StatusBadRequest)
 		return group_dto.GroupOutputDTO{}, errorJSON
 	}
-	err := s.uow.Do(s.ctx, func(tx iuow.IUnitOfWork) error {
+	err := s.uow.Do(s.ctx, func(tx iuow.IUnitOfWork) *util.ValidationError {
 		groupModel = repo_group.MapperGroupModel(*groupEntity)
 		_, err := s.repoGroup.InsertGroup(*groupModel)
 		if err != nil {
-			return err
+			return &util.ValidationError{
+				LogError:    []string{err.Error()},
+				ClientError: []string{"Internal Server Error"},
+				Status:      http.StatusInternalServerError,
+			}
 		}
 		return nil
 	})
-	if err != nil {
-		return group_dto.GroupOutputDTO{}, util.NewValidationError([]string{err.Error()})
+	if err.ExistError() {
+		return group_dto.GroupOutputDTO{}, err
 	}
 
 	return group_dto.GroupOutputDTO{

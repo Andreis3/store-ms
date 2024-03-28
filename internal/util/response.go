@@ -3,12 +3,10 @@ package util
 import (
 	"encoding/json"
 	"net/http"
-
-	"github.com/google/uuid"
 )
 
 type ResponseBadRequest struct {
-	ID           string `json:"id"`
+	RequestID    string `json:"request_id"`
 	StatusCode   int    `json:"status_code"`
 	ErrorMessage any    `json:"error_message"`
 }
@@ -19,11 +17,11 @@ func Response[T any](write http.ResponseWriter, status int, data T) {
 	json.NewEncoder(write).Encode(data)
 }
 
-func ResponseBadRequestError[T any](write http.ResponseWriter, status int, data T) {
+func ResponseBadRequestError[T any](write http.ResponseWriter, status int, requestID string, data T) {
 	write.Header().Set("Content-Type", "application/json")
 	write.WriteHeader(status)
 	result := ResponseBadRequest{
-		ID:           uuid.UUID.String(uuid.New()),
+		RequestID:    requestID,
 		StatusCode:   status,
 		ErrorMessage: data,
 	}

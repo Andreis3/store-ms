@@ -1,9 +1,10 @@
 package group_controller
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
+	"strings"
+
+	"github.com/google/uuid"
 
 	"github.com/andreis3/stores-ms/internal/app/command/group/interfaces"
 	ilogger "github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
@@ -24,17 +25,17 @@ func NewGroupController(groupCommand group_command.IInsertGroupCommand, logger i
 }
 
 func (p *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
-	groupInputDTO, erro := util.RecoverBody[*group_dto.GroupInputDTO](r)
-	data, _ := json.Marshal(groupInputDTO)
-	p.logger.Debug("CreateGroup", fmt.Sprintf("%s", string(data)))
-	if erro != nil {
-		util.Response(w, http.StatusBadRequest, erro.Error())
+	requestID := uuid.New().String()
+	groupInputDTO, err := util.RecoverBody[*group_dto.GroupInputDTO](r)
+	if err != nil {
+		util.Response(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	group, erroCM := p.groupCommand.Execute(*groupInputDTO)
 	if erroCM != nil {
-		util.ResponseBadRequestError(w, http.StatusBadRequest, erroCM.Error())
+		p.logger.Error("Create Group Error", "REQUEST_ID", requestID, "ERROR_MESSAGE", strings.Join(erroCM.LogError, ", "))
+		util.ResponseBadRequestError[[]string](w, erroCM.Status, requestID, erroCM.ClientError)
 		return
 	}
 

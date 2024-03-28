@@ -1,19 +1,19 @@
 package util
 
 type ValidationError struct {
-	Message      []string `json:"message"`
-	notification []string
+	Status      int
+	ClientError []string
+	LogError    []string
 }
 
-func NewValidationError(notification []string) *ValidationError {
+func NewValidationError(erros []string, status int) *ValidationError {
 	return &ValidationError{
-		notification: notification,
+		ClientError: erros,
+		Status:      status,
 	}
 }
 
-func (v *ValidationError) Error() []string {
-	for _, value := range v.notification {
-		v.Message = append(v.Message, value)
-	}
-	return v.Message
+func (v *ValidationError) ExistError() bool {
+	result := v != nil && (len(v.ClientError) > 0 || len(v.LogError) > 0)
+	return result
 }

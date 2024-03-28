@@ -2,13 +2,13 @@ package uow
 
 import (
 	"context"
-	"errors"
-	"fmt"
+	"net/http"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/andreis3/stores-ms/internal/infra/uow/interfaces"
+	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type UnitOfWork struct {
@@ -33,52 +33,72 @@ func (u *UnitOfWork) GetRepository(name string) any {
 	return repo
 }
 
-func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork) error) error {
+func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
 	if u.TX != nil {
-		return fmt.Errorf("transaction is already open")
+		return &util.ValidationError{
+			LogError:    []string{"transaction already exists"},
+			ClientError: []string{"Internal Server Error"},
+			Status:      http.StatusInternalServerError}
 	}
 
 	tx, err := u.DB.Begin(ctx)
 	if err != nil {
-		return err
+		return &util.ValidationError{
+			LogError:    []string{err.Error()},
+			ClientError: []string{"Internal Server Error"},
+			Status:      http.StatusInternalServerError}
 	}
 
 	u.TX = tx
-	err = callback(u)
-	if err != nil {
+	errCB := callback(u)
+	if errCB.ExistError() {
 		errRb := u.Rollback()
 		if errRb != nil {
-			return errors.New(fmt.Sprintf("original error: %s, rollback error: %s", err.Error(), errRb.Error()))
+			return &util.ValidationError{
+				LogError:    append(errCB.LogError, errRb.LogError...),
+				ClientError: []string{"Internal Server Error"},
+				Status:      http.StatusInternalServerError}
 		}
-		return err
+		return errCB
 	}
 	return u.CommitOrRollback()
 }
 
-func (u *UnitOfWork) Rollback() error {
+func (u *UnitOfWork) Rollback() *util.ValidationError {
 	if u.TX == nil {
-		return fmt.Errorf("no transaction to rollback")
+		return &util.ValidationError{
+			LogError:    []string{"transaction not exists"},
+			ClientError: []string{"Internal Server Error"},
+			Status:      http.StatusInternalServerError,
+		}
 	}
 
 	err := u.TX.Rollback(context.Background())
 	if err != nil {
-		return err
+		return &util.ValidationError{
+			LogError:    []string{err.Error()},
+			ClientError: []string{"Internal Server Error"},
+			Status:      http.StatusInternalServerError,
+		}
 	}
 
 	u.TX = nil
 	return nil
 }
 
-func (u *UnitOfWork) CommitOrRollback() error {
+func (u *UnitOfWork) CommitOrRollback() *util.ValidationError {
 	if u.TX == nil {
 		return nil
 	}
 
 	if err := u.TX.Commit(context.Background()); err != nil {
 		if errRB := u.Rollback(); errRB != nil {
-			return fmt.Errorf("erro original: %s, erro de rollback: %s", err.Error(), errRB.Error())
+			return errRB
 		}
-		return err
+		return &util.ValidationError{
+			LogError:    []string{err.Error()},
+			ClientError: []string{"Internal Server Error"},
+			Status:      http.StatusInternalServerError}
 	}
 
 	u.TX = nil
