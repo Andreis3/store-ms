@@ -15,7 +15,7 @@ import (
 )
 
 type Postgres struct {
-	DB *pgxpool.Pool
+	db *pgxpool.Pool
 }
 
 func NewPostgresDB(conf configs.Conf) *Postgres {
@@ -49,21 +49,21 @@ func NewPostgresDB(conf configs.Conf) *Postgres {
 			panic(err)
 		}
 	})
-	return &Postgres{DB: pool}
+	return &Postgres{db: pool}
 }
 func (p *Postgres) InstanceDB() any {
-	return p.DB
+	return p.db
 }
 
 func (p *Postgres) Exec(ctx context.Context, sql string, arguments ...any) (commandTag pgconn.CommandTag, err error) {
-	return p.DB.Exec(ctx, sql, arguments...)
+	return p.db.Exec(ctx, sql, arguments...)
 }
 func (p *Postgres) Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error) {
-	return p.DB.Query(ctx, sql, args...)
+	return p.db.Query(ctx, sql, args...)
 }
 func (p *Postgres) QueryRow(ctx context.Context, sql string, args ...any) pgx.Row {
-	return p.DB.QueryRow(ctx, sql, args...)
+	return p.db.QueryRow(ctx, sql, args...)
 }
 func (p *Postgres) Close() {
-	p.DB.Close()
+	p.db.Close()
 }
