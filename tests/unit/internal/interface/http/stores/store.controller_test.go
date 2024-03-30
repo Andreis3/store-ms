@@ -29,7 +29,7 @@ var _ = Describe("INTERFACE :: HTTP :: STORES :: STORES_CONTROLLER", func() {
 	Describe("#CreateStores", func() {
 		Context("When I call the method CreateStores", func() {
 			It("Should create a new store", func() {
-				storeController := stores.NewStoresController()
+				storeController := stores_controller.NewStoresController()
 
 				req, err := http.NewRequest("POST", "/stores", nil)
 				rr := httptest.NewRecorder()
