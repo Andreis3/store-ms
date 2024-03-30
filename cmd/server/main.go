@@ -1,15 +1,16 @@
 package main
 
 import (
-	"github.com/andreis3/stores-ms/internal/infra/common/logger"
 	"net/http"
+
+	"github.com/andreis3/stores-ms/internal/infra/common/logger"
+	"github.com/andreis3/stores-ms/internal/interface/http/stores"
 
 	"github.com/andreis3/stores-ms/cmd/configs"
 	"github.com/andreis3/stores-ms/internal/infra/adapters/database/postgres"
-	make_controller "github.com/andreis3/stores-ms/internal/infra/make/controller"
+	"github.com/andreis3/stores-ms/internal/infra/make/controller"
 	"github.com/andreis3/stores-ms/internal/infra/router"
-	group_controller "github.com/andreis3/stores-ms/internal/interface/http/group"
-	"github.com/andreis3/stores-ms/internal/interface/http/stores"
+	"github.com/andreis3/stores-ms/internal/interface/http/group"
 )
 
 func main() {
@@ -24,11 +25,11 @@ func main() {
 
 	registerRouter := router.NewRegisterRouter(logger)
 
-	storesController := stores.NewStoresController()
+	storesController := stores_controller.NewStoresController()
 
 	groupController := make_controller.MakeControllerGroup(pool.DB)
 
-	storesRouter := stores.NewStoresRouter(storesController)
+	storesRouter := stores_controller.NewStoresRouter(storesController)
 
 	groupRouter := group_controller.NewGroupRouter(groupController)
 

@@ -1,4 +1,4 @@
-package middleware
+package stores_middleware
 
 import (
 	"fmt"

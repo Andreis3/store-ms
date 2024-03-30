@@ -1,16 +1,10 @@
 package util
 
 type ValidationError struct {
+	Code        string
 	Status      int
 	ClientError []string
 	LogError    []string
-}
-
-func NewValidationError(erros []string, status int) *ValidationError {
-	return &ValidationError{
-		ClientError: erros,
-		Status:      status,
-	}
 }
 
 func (v *ValidationError) ExistError() bool {

@@ -17,29 +17,31 @@ type Controller struct {
 	logger             ilogger.ILogger
 }
 
-func NewGroupController(groupCommand igroup_command.IInsertGroupCommand, logger ilogger.ILogger) *Controller {
+func NewGroupController(insertGroupCommand igroup_command.IInsertGroupCommand, logger ilogger.ILogger) *Controller {
 	return &Controller{
-		insertGroupCommand: groupCommand,
+		insertGroupCommand: insertGroupCommand,
 		logger:             logger,
 	}
 }
+
 func (c *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
 	requestID := uuid.New().String()
-	groupInputDTO, err := util.RecoverBody[*group_dto.GroupInputDTO](r)
+	groupInputDTO, err := util.DecoderBodyRequest[*group_dto.GroupInputDTO](r)
 	if err != nil {
-		errValidate := util.ValidationError{
-			LogError:    []string{err.Error()},
-			ClientError: []string{"payload sent is invalid"},
-			Status:      http.StatusBadRequest,
-		}
-		c.logger.Error("Create Group Error", "REQUEST_ID", requestID, "ERROR_MESSAGE", strings.Join(errValidate.LogError, ", "))
-		util.ResponseError[[]string](w, errValidate.Status, requestID, errValidate.ClientError)
+		c.logger.Error("Create Group Error",
+			"REQUEST_ID", requestID,
+			"CODE_ERROR", err.Code,
+			"ERROR_MESSAGE", strings.Join(err.LogError, ", "))
+		util.ResponseError[[]string](w, err.Status, requestID, err.Code, err.ClientError)
 		return
 	}
 	group, errCM := c.insertGroupCommand.Execute(*groupInputDTO)
 	if errCM != nil {
-		c.logger.Error("Create Group Error", "REQUEST_ID", requestID, "ERROR_MESSAGE", strings.Join(errCM.LogError, ", "))
-		util.ResponseError[[]string](w, errCM.Status, requestID, errCM.ClientError)
+		c.logger.Error("Create Group Error",
+			"REQUEST_ID", requestID,
+			"CODE_ERROR", errCM.Code,
+			"ERROR_MESSAGE", strings.Join(errCM.LogError, ", "))
+		util.ResponseError[[]string](w, errCM.Status, requestID, errCM.Code, errCM.ClientError)
 		return
 	}
 	util.ResponseSuccess[group_dto.GroupOutputDTO](w, requestID, http.StatusCreated, group)

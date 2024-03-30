@@ -1,17 +1,17 @@
-package stores
+package stores_controller
 
 import (
 	"net/http"
 
-	stores "github.com/andreis3/stores-ms/internal/interface/http/stores/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/stores/middleware"
+	"github.com/andreis3/stores-ms/internal/interface/http/stores/interfaces"
+	stores_middleware "github.com/andreis3/stores-ms/internal/interface/http/stores/middleware"
 )
 
 type Router struct {
-	controller stores.IStoreController
+	controller istores_controller.IStoreController
 }
 
-func NewStoresRouter(controller stores.IStoreController) *Router {
+func NewStoresRouter(controller istores_controller.IStoreController) *Router {
 	return &Router{
 		controller: controller,
 	}
@@ -27,7 +27,7 @@ func (r *Router) StoresRoutes() []map[string]any {
 		{
 			"method":      http.MethodPut,
 			"path":        "/stores",
-			"handler":     middleware.ValidatePath(r.controller.UpdateStores),
+			"handler":     stores_middleware.ValidatePath(r.controller.UpdateStores),
 			"description": "Update Stores",
 		},
 		{

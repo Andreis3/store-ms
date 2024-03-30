@@ -1,17 +1,19 @@
 package repo_group
 
 import (
+	"time"
+
 	"github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type GroupModel struct {
-	ID        string `db:"id"`
-	GroupName string `db:"group_name"`
-	Code      string `db:"code"`
-	Status    string `db:"status"`
-	CreatedAt string `db:"created_at"`
-	UpdatedAt string `db:"updated_at"`
+	ID        string    `db:"id"`
+	GroupName string    `db:"group_name"`
+	Code      string    `db:"code"`
+	Status    string    `db:"status"`
+	CreatedAt time.Time `db:"created_at"`
+	UpdatedAt time.Time `db:"updated_at"`
 }
 
 func MapperGroupModel(group entity_group.Group) *GroupModel {
@@ -20,7 +22,7 @@ func MapperGroupModel(group entity_group.Group) *GroupModel {
 		GroupName: group.GroupName,
 		Code:      group.Code,
 		Status:    group.Status.Status,
-		CreatedAt: util.FormatDate(),
-		UpdatedAt: util.FormatDate(),
+		CreatedAt: util.FormatDateTime(),
+		UpdatedAt: util.FormatDateTime(),
 	}
 }

@@ -16,6 +16,15 @@ func FormatDate() string {
 	return formattedDate
 
 }
+func FormatDateTime() time.Time {
+	utcTime := time.Now()
+	locationTimeZone, _ := time.LoadLocation(location)
+
+	locationTime := utcTime.In(locationTimeZone)
+	formattedDate := locationTime.Format(layout)
+	parsedDate, _ := time.Parse(layout, formattedDate)
+	return parsedDate
+}
 
 func FormatDateString(date time.Time) string {
 	formattedDate := date.Format(layout)

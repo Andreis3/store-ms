@@ -34,6 +34,7 @@ func (u *UnitOfWork) GetRepository(name string) any {
 func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
 	if u.TX != nil {
 		return &util.ValidationError{
+			Code:        "PDB-0001",
 			LogError:    []string{"transaction already exists"},
 			ClientError: []string{"Internal Server Error"},
 			Status:      http.StatusInternalServerError}
@@ -41,16 +42,18 @@ func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork)
 	tx, err := u.DB.Begin(ctx)
 	if err != nil {
 		return &util.ValidationError{
+			Code:        "PDB-0000",
 			LogError:    []string{err.Error()},
 			ClientError: []string{"Internal Server Error"},
 			Status:      http.StatusInternalServerError}
 	}
 	u.TX = tx
 	errCB := callback(u)
-	if errCB.ExistError() {
+	if errCB != nil {
 		errRb := u.Rollback()
 		if errRb != nil {
 			return &util.ValidationError{
+				Code:        errRb.Code,
 				LogError:    append(errCB.LogError, errRb.LogError...),
 				ClientError: []string{"Internal Server Error"},
 				Status:      http.StatusInternalServerError}
@@ -62,6 +65,7 @@ func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork)
 func (u *UnitOfWork) Rollback() *util.ValidationError {
 	if u.TX == nil {
 		return &util.ValidationError{
+			Code:        "PDB-0003",
 			LogError:    []string{"transaction not exists"},
 			ClientError: []string{"Internal Server Error"},
 			Status:      http.StatusInternalServerError,
@@ -70,6 +74,7 @@ func (u *UnitOfWork) Rollback() *util.ValidationError {
 	err := u.TX.Rollback(context.Background())
 	if err != nil {
 		return &util.ValidationError{
+			Code:        "PDB-0002",
 			LogError:    []string{err.Error()},
 			ClientError: []string{"Internal Server Error"},
 			Status:      http.StatusInternalServerError,
@@ -87,6 +92,7 @@ func (u *UnitOfWork) CommitOrRollback() *util.ValidationError {
 			return errRB
 		}
 		return &util.ValidationError{
+			Code:        "PDB-0004",
 			LogError:    []string{err.Error()},
 			ClientError: []string{"Internal Server Error"},
 			Status:      http.StatusInternalServerError}

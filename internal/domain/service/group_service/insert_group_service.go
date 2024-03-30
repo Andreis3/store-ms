@@ -32,6 +32,7 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 	validate := groupEntity.Validate()
 	if len(validate) > 0 {
 		return group_dto.GroupOutputDTO{}, &util.ValidationError{
+			Code:        "VBR-0001",
 			LogError:    validate,
 			ClientError: validate,
 			Status:      http.StatusBadRequest,
@@ -41,11 +42,7 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 		groupModel = repo_group.MapperGroupModel(*groupEntity)
 		_, err := s.repoGroup.InsertGroup(*groupModel)
 		if err != nil {
-			return &util.ValidationError{
-				LogError:    []string{err.Error()},
-				ClientError: []string{"Internal Server Error"},
-				Status:      http.StatusInternalServerError,
-			}
+			return err
 		}
 		return nil
 	})
@@ -57,7 +54,7 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 		Status:    groupModel.Status,
 		Code:      groupModel.Code,
 		GroupName: groupModel.GroupName,
-		CreatedAt: groupModel.CreatedAt,
-		UpdatedAt: groupModel.UpdatedAt,
+		CreatedAt: util.FormatDateString(groupModel.CreatedAt),
+		UpdatedAt: util.FormatDateString(groupModel.UpdatedAt),
 	}, nil
 }

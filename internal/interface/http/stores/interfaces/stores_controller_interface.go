@@ -1,4 +1,4 @@
-package stores
+package istores_controller
 
 import "net/http"
 

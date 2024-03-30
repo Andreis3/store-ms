@@ -8,6 +8,7 @@ require (
 	github.com/lmittmann/tint v1.0.4
 	github.com/onsi/ginkgo/v2 v2.15.0
 	github.com/onsi/gomega v1.31.1
+	github.com/pkg/errors v0.9.1
 	github.com/spf13/viper v1.18.2
 )
 
