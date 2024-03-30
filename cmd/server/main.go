@@ -35,7 +35,7 @@ func main() {
 	signal.Notify(shutdownSignal, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	sig := <-shutdownSignal
 	defer func() {
-		log.Info(fmt.Sprintf(`Received signal: "%s". Initiating graceful shutdown...`, strings.ToUpper(sig.String())))
+		log.Info(fmt.Sprintf(`Received signal: %s. Initiating graceful shutdown...`, strings.ToUpper(sig.String())))
 		pool.Close()
 		log.Info("Completed close postgres connection...")
 		log.Info("Shutdown complete exit code 0...")
