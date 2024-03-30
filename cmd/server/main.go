@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -28,7 +29,7 @@ func main() {
 
 	// HTTP server configuration
 	server := &http.Server{
-		Addr:    fmt.Sprintf(":%s", conf.ServerPort),
+		Addr:    fmt.Sprintf("0.0.0.0:%s", conf.ServerPort),
 		Handler: mux,
 	}
 
@@ -36,7 +37,7 @@ func main() {
 	go func() {
 		proxy.ProxyDependency(mux, pool, log, conf)
 		log.Info(fmt.Sprintf("Start server on port %s", conf.ServerPort))
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Error(fmt.Sprintf("Error starting server: %s", err.Error()))
 			os.Exit(1)
 		}
