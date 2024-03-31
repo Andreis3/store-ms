@@ -15,12 +15,10 @@ import (
 
 func Start(conf *configs.Conf, pool *postgres.Postgres, log *logger.Logger) *http.Server {
 	mux := http.NewServeMux()
-
 	server := &http.Server{
 		Addr:    fmt.Sprintf("0.0.0.0:%s", conf.ServerPort),
 		Handler: mux,
 	}
-
 	go func() {
 		proxy.ProxyDependency(mux, pool, log, conf)
 		log.Info(fmt.Sprintf("Start server on port %s", conf.ServerPort))
@@ -29,6 +27,5 @@ func Start(conf *configs.Conf, pool *postgres.Postgres, log *logger.Logger) *htt
 			os.Exit(util.EXIT_FAILURE)
 		}
 	}()
-
 	return server
 }
