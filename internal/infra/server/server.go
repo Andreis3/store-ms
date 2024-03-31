@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/andreis3/stores-ms/cmd/configs"
-	"github.com/andreis3/stores-ms/cmd/proxy"
 	"github.com/andreis3/stores-ms/internal/infra/adapters/database/postgres"
+	"github.com/andreis3/stores-ms/internal/infra/common/configs"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
+	"github.com/andreis3/stores-ms/internal/infra/proxy"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 

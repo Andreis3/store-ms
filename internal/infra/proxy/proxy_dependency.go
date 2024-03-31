@@ -5,8 +5,8 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/andreis3/stores-ms/cmd/configs"
 	"github.com/andreis3/stores-ms/internal/infra/adapters/database/postgres"
+	"github.com/andreis3/stores-ms/internal/infra/common/configs"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
 	"github.com/andreis3/stores-ms/internal/infra/make/controller"
 	"github.com/andreis3/stores-ms/internal/infra/router"

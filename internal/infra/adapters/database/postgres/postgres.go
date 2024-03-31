@@ -11,7 +11,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"github.com/andreis3/stores-ms/cmd/configs"
+	"github.com/andreis3/stores-ms/internal/infra/common/configs"
 )
 
 type Postgres struct {

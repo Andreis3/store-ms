@@ -1,7 +1,7 @@
 ##################################
 # STEP 1 build executable binary #
 ##################################
-FROM golang:1.22.1-alpine as builder
+FROM golang:1.22.1-alpine AS builder
 
 WORKDIR /app
 COPY . .
@@ -10,12 +10,12 @@ COPY . .
 RUN go mod download
 
 # Build the binary.
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags musl -o /go/bin/server cmd/server/main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags musl -o /go/bin/server cmd/store/store.go
 
 ##############################
 # STEP 2 time zone           #
 ##############################
-FROM alpine:latest as time-zone
+FROM alpine:latest AS time-zone
 RUN apk --no-cache add tzdata zip
 WORKDIR /usr/share/zoneinfo
 # -0 means no compression.  Needed because go's
@@ -25,7 +25,7 @@ RUN zip -q -r -0 /zoneinfo.zip .
 ##############################
 # STEP 3 build a small image #
 ##############################
-FROM scratch
+FROM scratch:latest
 
 # Copy our static executable.
 COPY --from=builder /go/bin/server /go/bin/server

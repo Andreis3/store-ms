@@ -1,5 +1,5 @@
 run-app:
-	@go run ./cmd/server/main.go
+	@go run ./cmd/store/store.go
 docker-up:
 	@docker compose -f ./docker/docker-compose.yml up -d --build
 
