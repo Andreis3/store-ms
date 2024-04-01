@@ -10,16 +10,14 @@ const location = "America/Sao_Paulo"
 func FormatDate() string {
 	utcTime := time.Now()
 	locationTimeZone, _ := time.LoadLocation(location)
-
 	locationTime := utcTime.In(locationTimeZone)
 	formattedDate := locationTime.Format(layout)
 	return formattedDate
-
 }
+
 func FormatDateTime() time.Time {
 	utcTime := time.Now()
 	locationTimeZone, _ := time.LoadLocation(location)
-
 	locationTime := utcTime.In(locationTimeZone)
 	formattedDate := locationTime.Format(layout)
 	parsedDate, _ := time.Parse(layout, formattedDate)
