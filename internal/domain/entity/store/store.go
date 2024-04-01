@@ -36,7 +36,7 @@ func NewStore(storeKey, companyName, domain, groupCOD string, cnpj *valueobject.
 	}
 }
 
-func (s *Store) Validate() []string {
+func (s *Store) Validate() util.NotificationContext {
 	if s.StoreKey == "" {
 		s.AddNotification(`store_key: is required`)
 	}
@@ -68,5 +68,5 @@ func (s *Store) Validate() []string {
 			s.AddNotification(fmt.Sprintf(`%s: is required`, key))
 		}
 	}
-	return s.Notification
+	return s.NotificationContext
 }

@@ -19,6 +19,5 @@ func main() {
 		os.Exit(util.EXIT_FAILURE)
 	}
 	pool := postgres.NewPostgresDB(*conf)
-	util.RecoverFromPanic(log)
 	server.GracefulShutdown(server.Start(conf, pool, log), pool, log)
 }

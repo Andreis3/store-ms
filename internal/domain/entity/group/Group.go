@@ -22,7 +22,7 @@ func NewGroup(groupName, code string, status *valueobject.Status) *Group {
 		Status:    *status,
 	}
 }
-func (g *Group) Validate() []string {
+func (g *Group) Validate() *util.NotificationContext {
 	if g.GroupName == "" {
 		g.AddNotification(`group_name: is required`)
 	}
@@ -30,5 +30,5 @@ func (g *Group) Validate() []string {
 		g.AddNotification(`code: is required`)
 	}
 	g.Status.Validate(&g.NotificationContext)
-	return g.Notification
+	return &g.NotificationContext
 }

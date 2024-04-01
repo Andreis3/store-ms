@@ -9,6 +9,7 @@ import (
 	"github.com/andreis3/stores-ms/internal/app/command/group/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
 	"github.com/andreis3/stores-ms/internal/interface/http/group/dto"
+	"github.com/andreis3/stores-ms/internal/interface/http/helpers"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
@@ -25,14 +26,15 @@ func NewGroupController(insertGroupCommand igroup_command.IInsertGroupCommand, l
 }
 
 func (c *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
+	defer util.RecoverFromPanic()
 	requestID := uuid.New().String()
-	groupInputDTO, err := util.DecoderBodyRequest[*group_dto.GroupInputDTO](r)
+	groupInputDTO, err := helpers.DecoderBodyRequest[*group_dto.GroupInputDTO](r)
 	if err != nil {
 		c.logger.Error("Create Group Error",
 			"REQUEST_ID", requestID,
 			"CODE_ERROR", err.Code,
 			"ERROR_MESSAGE", strings.Join(err.LogError, ", "))
-		util.ResponseError[[]string](w, err.Status, requestID, err.Code, err.ClientError)
+		helpers.ResponseError[[]string](w, err.Status, requestID, err.Code, err.ClientError)
 		return
 	}
 	group, errCM := c.insertGroupCommand.Execute(*groupInputDTO)
@@ -41,8 +43,8 @@ func (c *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
 			"REQUEST_ID", requestID,
 			"CODE_ERROR", errCM.Code,
 			"ERROR_MESSAGE", strings.Join(errCM.LogError, ", "))
-		util.ResponseError[[]string](w, errCM.Status, requestID, errCM.Code, errCM.ClientError)
+		helpers.ResponseError[[]string](w, errCM.Status, requestID, errCM.Code, errCM.ClientError)
 		return
 	}
-	util.ResponseSuccess[group_dto.GroupOutputDTO](w, requestID, http.StatusCreated, group)
+	helpers.ResponseSuccess[group_dto.GroupOutputDTO](w, requestID, http.StatusCreated, group)
 }

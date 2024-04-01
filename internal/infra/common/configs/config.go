@@ -1,8 +1,6 @@
 package configs
 
 import (
-	"fmt"
-
 	"github.com/spf13/viper"
 )
 
@@ -46,7 +44,7 @@ func LoadConfig(path string) (*Conf, error) {
 	}
 	err = viper.Unmarshal(&cfg)
 	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s \n", err))
+		return nil, err
 	}
 	return cfg, err
 }

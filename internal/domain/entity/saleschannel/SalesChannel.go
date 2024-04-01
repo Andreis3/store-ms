@@ -28,7 +28,7 @@ func NewSalesChannel(salesChannel, code string, status *valueobject.Status, conf
 	}
 }
 
-func (sc *SalesChannel) Validate() []string {
+func (sc *SalesChannel) Validate() util.NotificationContext {
 	if sc.SalesChannel == "" {
 		sc.AddNotification(`sales_channel: is required`)
 	}
@@ -36,5 +36,5 @@ func (sc *SalesChannel) Validate() []string {
 		sc.AddNotification(`code: is required`)
 	}
 	sc.Status.Validate(&sc.NotificationContext)
-	return sc.Notification
+	return sc.NotificationContext
 }

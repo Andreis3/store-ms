@@ -33,8 +33,8 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 				notification := group.Validate()
 
-				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]).To(Equal("group_name: is required"))
+				Expect(notification.ReturnNotification()).To(HaveLen(1))
+				Expect(notification.ReturnNotification()[0]).To(Equal("group_name: is required"))
 			})
 
 			It("Should return a notification when code is empty", func() {
@@ -43,8 +43,8 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 				notification := group.Validate()
 
-				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]).To(Equal("code: is required"))
+				Expect(notification.ReturnNotification()).To(HaveLen(1))
+				Expect(notification.ReturnNotification()[0]).To(Equal("code: is required"))
 			})
 
 			It("Should return a notification when status is empty", func() {
@@ -53,8 +53,8 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 				notification := group.Validate()
 
-				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]).To(Equal("status: is required"))
+				Expect(notification.ReturnNotification()).To(HaveLen(1))
+				Expect(notification.ReturnNotification()[0]).To(Equal("status: is required"))
 			})
 
 			It("Should return a notification when group name, code and status are empty", func() {
@@ -63,10 +63,10 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 				notification := group.Validate()
 
-				Expect(notification).To(HaveLen(3))
-				Expect(notification[0]).To(Equal("group_name: is required"))
-				Expect(notification[1]).To(Equal("code: is required"))
-				Expect(notification[2]).To(Equal("status: is required"))
+				Expect(notification.ReturnNotification()).To(HaveLen(3))
+				Expect(notification.ReturnNotification()[0]).To(Equal("group_name: is required"))
+				Expect(notification.ReturnNotification()[1]).To(Equal("code: is required"))
+				Expect(notification.ReturnNotification()[2]).To(Equal("status: is required"))
 			})
 
 			It("Should return a notification when status is invalid", func() {
@@ -75,8 +75,8 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 				notification := group.Validate()
 
-				Expect(notification).To(HaveLen(1))
-				Expect(notification[0]).To(Equal("status: is invalid, valid values are active or inactive"))
+				Expect(notification.ReturnNotification()).To(HaveLen(1))
+				Expect(notification.ReturnNotification()[0]).To(Equal("status: is invalid, valid values are active or inactive"))
 			})
 
 			It("Should return not return a notification when status is active", func() {
@@ -85,7 +85,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 				notification := group.Validate()
 
-				Expect(notification).To(HaveLen(0))
+				Expect(notification.ReturnNotification()).To(HaveLen(0))
 			})
 
 			It("Should return not return a notification when status is inactive", func() {
@@ -94,7 +94,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 				notification := group.Validate()
 
-				Expect(notification).To(HaveLen(0))
+				Expect(notification.ReturnNotification()).To(HaveLen(0))
 			})
 		})
 	})

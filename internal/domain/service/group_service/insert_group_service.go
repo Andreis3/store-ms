@@ -30,11 +30,11 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 	var groupModel *repo_group.GroupModel
 	groupEntity := data.MapperInputDtoToEntity()
 	validate := groupEntity.Validate()
-	if len(validate) > 0 {
+	if validate.HasNotification() {
 		return group_dto.GroupOutputDTO{}, &util.ValidationError{
 			Code:        "VBR-0001",
-			LogError:    validate,
-			ClientError: validate,
+			LogError:    validate.ReturnNotification(),
+			ClientError: validate.ReturnNotification(),
 			Status:      http.StatusBadRequest,
 		}
 	}
@@ -46,7 +46,7 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 		}
 		return nil
 	})
-	if err.ExistError() {
+	if err != nil {
 		return group_dto.GroupOutputDTO{}, err
 	}
 	return group_dto.GroupOutputDTO{

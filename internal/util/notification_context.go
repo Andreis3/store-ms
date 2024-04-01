@@ -1,17 +1,17 @@
 package util
 
 type NotificationContext struct {
-	Notification []string
+	notification []string
 }
 
 func (n *NotificationContext) AddNotification(notification string) {
-	n.Notification = append(n.Notification, notification)
+	n.notification = append(n.notification, notification)
 }
 
 func (n *NotificationContext) HasNotification() bool {
-	return len(n.Notification) > 0
+	return len(n.notification) > 0
 }
 
 func (n *NotificationContext) ReturnNotification() []string {
-	return n.Notification
+	return n.notification
 }

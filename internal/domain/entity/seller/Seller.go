@@ -27,7 +27,7 @@ func NewSeller(sellerName, code string, status *valueobject.Status, config bool)
 		},
 	}
 }
-func (s *Seller) Validate() []string {
+func (s *Seller) Validate() util.NotificationContext {
 	if s.SellerName == "" {
 		s.AddNotification(`seller_name: is required`)
 	}
@@ -35,5 +35,5 @@ func (s *Seller) Validate() []string {
 		s.AddNotification(`code: is required`)
 	}
 	s.Status.Validate(&s.NotificationContext)
-	return s.Notification
+	return s.NotificationContext
 }
