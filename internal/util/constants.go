@@ -2,7 +2,7 @@ package util
 
 // repository register key
 const (
-	GROUP_REPOSITORY_KEY = "groupRepository"
+	GROUP_REPOSITORY_KEY = "GroupRepository"
 )
 
 // Command exit status
