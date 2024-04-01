@@ -29,7 +29,7 @@ func NewCNPJ(cnpj string) *CNPJ {
 	return &CNPJ{CNPJ: cnpj}
 }
 
-func (c *CNPJ) Validate(ctx *notification.NotificationContext) {
+func (c *CNPJ) Validate(ctx *notification.NotificationError) {
 	regex := regexp.MustCompile("[^0-9]")
 	cnpj := regex.ReplaceAllString(c.CNPJ, "")
 	if cnpj == "" {

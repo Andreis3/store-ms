@@ -15,7 +15,7 @@ type Store struct {
 	GroupCOD    string
 	Status      valueobject.Status
 	Contacts    []Contact
-	notification.NotificationContext
+	notification.NotificationError
 }
 type Contact struct {
 	Name  string
@@ -36,15 +36,15 @@ func NewStore(storeKey, companyName, domain, groupCOD string, cnpj *valueobject.
 	}
 }
 
-func (s *Store) Validate() notification.NotificationContext {
+func (s *Store) Validate() notification.NotificationError {
 	if s.StoreKey == "" {
 		s.AddNotification(`store_key: is required`)
 	}
 	if s.CompanyName == "" {
 		s.AddNotification(`company_name: is required`)
 	}
-	s.Status.Validate(&s.NotificationContext)
-	s.CNPJ.Validate(&s.NotificationContext)
+	s.Status.Validate(&s.NotificationError)
+	s.CNPJ.Validate(&s.NotificationError)
 	if s.Domain == "" {
 		s.AddNotification(`domain: is required`)
 	}
@@ -68,5 +68,5 @@ func (s *Store) Validate() notification.NotificationContext {
 			s.AddNotification(fmt.Sprintf(`%s: is required`, key))
 		}
 	}
-	return s.NotificationContext
+	return s.NotificationError
 }

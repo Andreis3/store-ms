@@ -11,7 +11,7 @@ type SalesChannel struct {
 	StoreKey     string
 	Status       valueobject.Status
 	Config
-	notification.NotificationContext
+	notification.NotificationError
 }
 type Config struct {
 	AutomaticActive bool
@@ -28,13 +28,13 @@ func NewSalesChannel(salesChannel, code string, status *valueobject.Status, conf
 	}
 }
 
-func (sc *SalesChannel) Validate() notification.NotificationContext {
+func (sc *SalesChannel) Validate() notification.NotificationError {
 	if sc.SalesChannel == "" {
 		sc.AddNotification(`sales_channel: is required`)
 	}
 	if sc.Code == "" {
 		sc.AddNotification(`code: is required`)
 	}
-	sc.Status.Validate(&sc.NotificationContext)
-	return sc.NotificationContext
+	sc.Status.Validate(&sc.NotificationError)
+	return sc.NotificationError
 }

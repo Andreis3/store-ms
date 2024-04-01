@@ -11,7 +11,7 @@ type Seller struct {
 	StoreKey   string
 	Status     valueobject.Status
 	Config
-	notification.NotificationContext
+	notification.NotificationError
 }
 type Config struct {
 	AutomaticActive bool
@@ -27,13 +27,13 @@ func NewSeller(sellerName, code string, status *valueobject.Status, config bool)
 		},
 	}
 }
-func (s *Seller) Validate() notification.NotificationContext {
+func (s *Seller) Validate() notification.NotificationError {
 	if s.SellerName == "" {
 		s.AddNotification(`seller_name: is required`)
 	}
 	if s.Code == "" {
 		s.AddNotification(`code: is required`)
 	}
-	s.Status.Validate(&s.NotificationContext)
-	return s.NotificationContext
+	s.Status.Validate(&s.NotificationError)
+	return s.NotificationError
 }

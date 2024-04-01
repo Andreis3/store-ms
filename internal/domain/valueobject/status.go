@@ -23,7 +23,7 @@ func NewStatus(status string) *Status {
 	}
 }
 
-func (s *Status) Validate(notification *notification.NotificationContext) {
+func (s *Status) Validate(notification *notification.NotificationError) {
 	if s.Status == "" {
 		notification.AddNotification(`status: is required`)
 	}

@@ -11,7 +11,7 @@ type Group struct {
 	GroupName string
 	Code      string
 	Status    valueobject.Status
-	notification.NotificationContext
+	notification.NotificationError
 }
 
 func NewGroup(groupName, code string, status *valueobject.Status) *Group {
@@ -22,13 +22,13 @@ func NewGroup(groupName, code string, status *valueobject.Status) *Group {
 		Status:    *status,
 	}
 }
-func (g *Group) Validate() *notification.NotificationContext {
+func (g *Group) Validate() *notification.NotificationError {
 	if g.GroupName == "" {
 		g.AddNotification(`group_name: is required`)
 	}
 	if g.Code == "" {
 		g.AddNotification(`code: is required`)
 	}
-	g.Status.Validate(&g.NotificationContext)
-	return &g.NotificationContext
+	g.Status.Validate(&g.NotificationError)
+	return &g.NotificationError
 }
