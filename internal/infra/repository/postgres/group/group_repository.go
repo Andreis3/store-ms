@@ -7,27 +7,27 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/pkg/errors"
 
+	ipostgres "github.com/andreis3/stores-ms/internal/infra/adapters/database/postgres/interfaces"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type GroupRepository struct {
-	db *pgxpool.Pool
+	postgres ipostgres.IPostgres
 	*pgconn.PgError
 }
 
-func NewGroupRepository(db *pgxpool.Pool) *GroupRepository {
+func NewGroupRepository(pool ipostgres.IPostgres) *GroupRepository {
 	return &GroupRepository{
-		db: db,
+		postgres: pool,
 	}
 }
 
 func (r *GroupRepository) InsertGroup(data GroupModel) (string, *util.ValidationError) {
 	query := `INSERT INTO groups (id, group_name, code, status, created_at, updated_at) 
 				VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
-	rows, _ := r.db.Query(context.Background(), query,
+	rows, _ := r.postgres.Query(context.Background(), query,
 		data.ID,
 		data.GroupName,
 		data.Code,

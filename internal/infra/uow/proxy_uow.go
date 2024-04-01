@@ -8,10 +8,10 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-func NewProxyUnitOfWork(db *pgxpool.Pool) *UnitOfWork {
-	uow := NewUnitOfWork(db)
+func NewProxyUnitOfWork(pool *pgxpool.Pool) *UnitOfWork {
+	uow := NewUnitOfWork(pool)
 	uow.Register(util.GROUP_REPOSITORY_KEY, func(tx pgx.Tx) any {
-		return repo_group.NewGroupRepository(db)
+		return repo_group.NewGroupRepository(pool)
 	})
 	return uow
 }
