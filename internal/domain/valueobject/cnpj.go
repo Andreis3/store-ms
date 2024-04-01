@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strconv"
 
-	"github.com/andreis3/stores-ms/internal/util"
+	"github.com/andreis3/stores-ms/internal/domain/error/notification"
 )
 
 var blackListCNPJ = []string{
@@ -29,7 +29,7 @@ func NewCNPJ(cnpj string) *CNPJ {
 	return &CNPJ{CNPJ: cnpj}
 }
 
-func (c *CNPJ) Validate(ctx *util.NotificationContext) {
+func (c *CNPJ) Validate(ctx *notification.NotificationContext) {
 	regex := regexp.MustCompile("[^0-9]")
 	cnpj := regex.ReplaceAllString(c.CNPJ, "")
 	if cnpj == "" {

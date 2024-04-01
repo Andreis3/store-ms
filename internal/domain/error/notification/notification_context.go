@@ -1,4 +1,4 @@
-package util
+package notification
 
 type NotificationContext struct {
 	notification []string

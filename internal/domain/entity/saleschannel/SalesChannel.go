@@ -1,8 +1,8 @@
 package entity_saleschannel
 
 import (
+	"github.com/andreis3/stores-ms/internal/domain/error/notification"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
-	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type SalesChannel struct {
@@ -11,7 +11,7 @@ type SalesChannel struct {
 	StoreKey     string
 	Status       valueobject.Status
 	Config
-	util.NotificationContext
+	notification.NotificationContext
 }
 type Config struct {
 	AutomaticActive bool
@@ -28,7 +28,7 @@ func NewSalesChannel(salesChannel, code string, status *valueobject.Status, conf
 	}
 }
 
-func (sc *SalesChannel) Validate() util.NotificationContext {
+func (sc *SalesChannel) Validate() notification.NotificationContext {
 	if sc.SalesChannel == "" {
 		sc.AddNotification(`sales_channel: is required`)
 	}
