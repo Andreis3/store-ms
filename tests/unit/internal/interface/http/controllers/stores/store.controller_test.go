@@ -11,7 +11,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/stores"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores"
 )
 
 func Test_StoresControllerSuite(t *testing.T) {
@@ -25,7 +25,7 @@ func Test_StoresControllerSuite(t *testing.T) {
 	RunSpecs(t, "Store Controller Test Suite ", suiteConfig, reporterConfig)
 }
 
-var _ = Describe("INTERFACE :: HTTP :: STORES :: STORES_CONTROLLER", func() {
+var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: STORES :: STORES_CONTROLLER", func() {
 	Describe("#CreateStores", func() {
 		Context("When I call the method CreateStores", func() {
 			It("Should create a new store", func() {

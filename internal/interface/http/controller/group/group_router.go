@@ -3,7 +3,7 @@ package group_controller
 import (
 	"net/http"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/group/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/interfaces"
 )
 
 type Router struct {

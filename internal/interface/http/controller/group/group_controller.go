@@ -4,30 +4,30 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/google/uuid"
-
 	"github.com/andreis3/stores-ms/internal/app/command/group/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/group/dto"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
 	"github.com/andreis3/stores-ms/internal/interface/http/helpers"
-	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type Controller struct {
 	insertGroupCommand igroup_command.IInsertGroupCommand
 	logger             ilogger.ILogger
+	requestID          helpers.IRequestID
 }
 
-func NewGroupController(insertGroupCommand igroup_command.IInsertGroupCommand, logger ilogger.ILogger) *Controller {
+func NewGroupController(insertGroupCommand igroup_command.IInsertGroupCommand,
+	logger ilogger.ILogger,
+	requestID helpers.IRequestID) *Controller {
 	return &Controller{
 		insertGroupCommand: insertGroupCommand,
 		logger:             logger,
+		requestID:          requestID,
 	}
 }
 
 func (c *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
-	defer util.RecoverFromPanic()
-	requestID := uuid.New().String()
+	requestID := c.requestID.Generate()
 	groupInputDTO, err := helpers.DecoderBodyRequest[*group_dto.GroupInputDTO](r)
 	if err != nil {
 		c.logger.Error("Create Group Error",

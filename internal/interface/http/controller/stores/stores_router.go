@@ -3,8 +3,8 @@ package stores_controller
 import (
 	"net/http"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/stores/interfaces"
-	stores_middleware "github.com/andreis3/stores-ms/internal/interface/http/stores/middleware"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores/middleware"
 )
 
 type Router struct {

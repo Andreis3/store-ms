@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/andreis3/stores-ms/internal/infra/router/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/group/interfaces"
-	stores "github.com/andreis3/stores-ms/internal/interface/http/stores/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/interfaces"
+	stores "github.com/andreis3/stores-ms/internal/interface/http/controller/stores/interfaces"
 )
 
 type Router struct {

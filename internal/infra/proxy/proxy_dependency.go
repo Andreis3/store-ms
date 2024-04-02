@@ -10,8 +10,8 @@ import (
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
 	"github.com/andreis3/stores-ms/internal/infra/make/controller"
 	"github.com/andreis3/stores-ms/internal/infra/router"
-	"github.com/andreis3/stores-ms/internal/interface/http/group"
-	"github.com/andreis3/stores-ms/internal/interface/http/stores"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/group"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores"
 )
 
 func ProxyDependency(mux *http.ServeMux, postgres idatabase.IDatabase, logger *logger.Logger, conf *configs.Conf) {
