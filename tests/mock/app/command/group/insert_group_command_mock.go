@@ -6,9 +6,14 @@ import (
 )
 
 type InsertGroupCommandMock struct {
-	ExecuteFunc func(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError)
+	FuncParamsInput  []any
+	FuncParamsOutput []any
+	ExecuteFunc      func(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError)
 }
 
 func (i *InsertGroupCommandMock) Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
-	return i.ExecuteFunc(data)
+	i.FuncParamsInput = []any{data}
+	returnOne, returnTwo := i.ExecuteFunc(data)
+	i.FuncParamsOutput = []any{returnOne, returnTwo}
+	return returnOne, returnTwo
 }
