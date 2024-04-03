@@ -3,12 +3,10 @@ package iuow
 import (
 	"context"
 
-	"github.com/jackc/pgx/v5"
-
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-type RepositoryFactory func(tx pgx.Tx) any
+type RepositoryFactory func(tx any) any
 
 type IUnitOfWork interface {
 	Register(name string, callback RepositoryFactory)
