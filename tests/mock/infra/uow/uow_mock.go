@@ -42,6 +42,7 @@ func (u *UnitOfWorkMock) GetRepository(name string) any {
 }
 
 func (u *UnitOfWorkMock) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
+	callback(u)
 	return u.DoFunc(ctx, callback)
 }
 
