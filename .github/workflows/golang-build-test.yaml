@@ -24,8 +24,11 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
 
-      - name: Build application
+      - name: Install Dependencies Application
         run:  go mod download
 
-      - name: Testing application
-        run: make unit-test
+      - name: Install Ginkgo
+        run: go install -mod=mod github.com/onsi/ginkgo/v2/ginkgo
+
+      - name: Test Unit Verbose
+        run: make unit-tests-verbose
