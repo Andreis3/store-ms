@@ -17,19 +17,6 @@ type UnitOfWorkMock struct {
 	CommitOrRollbackFunc func() *util.ValidationError
 }
 
-func NewUnitOfWorkMock() *UnitOfWorkMock {
-	return &UnitOfWorkMock{
-		RepositoryMocks:   make(map[string]iuow.RepositoryFactory),
-		RegisterFunc:      func(name string, callback iuow.RepositoryFactory) {},
-		GetRepositoryFunc: func(name string) any { return nil },
-		DoFunc: func(ctx context.Context, callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
-			return nil
-		},
-		RollbackFunc:         func() *util.ValidationError { return nil },
-		CommitOrRollbackFunc: func() *util.ValidationError { return nil },
-	}
-}
-
 func (u *UnitOfWorkMock) Register(name string, callback iuow.RepositoryFactory) {
 	u.RepositoryMocks[name] = callback
 	u.RegisterFunc(name, callback)
