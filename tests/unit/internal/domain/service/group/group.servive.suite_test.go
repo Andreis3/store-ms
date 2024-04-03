@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func Test_InsertGroupServiceSuite(t *testing.T) {
+func Test_GroupServiceSuite(t *testing.T) {
 	suiteConfig, reporterConfig := GinkgoConfiguration()
 
 	suiteConfig.SkipStrings = []string{"SKIPPED", "PENDING", "NEVER-RUN", "SKIP"}

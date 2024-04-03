@@ -5,6 +5,7 @@ package group_service_test
 
 import (
 	"github.com/andreis3/stores-ms/internal/util"
+	"net/http"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -16,8 +17,8 @@ import (
 var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", func() {
 	Describe("#InsertGroup", func() {
 		Context("When I call the method InsertGroup", func() {
-			It("Should insert a new group not errors", func() {
-				groupServiceUowDependency := Success()
+			It("Should insert a new group not return errors", func() {
+				groupServiceUowDependency := ContextInsertSuccess()
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
 					GroupName: "Group 1",
@@ -38,7 +39,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 			})
 
 			It("Should return an error when the method InsertGroup of the repository is call", func() {
-				groupServiceUowDependency := ReturnErrorGroupRepositoryInsertGroup()
+				groupServiceUowDependency := ContextInsertReturnErrorGroupRepositoryInsertGroup()
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
 					GroupName: "Group 1",
@@ -52,6 +53,50 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 					Status:      500,
 					ClientError: []string{"Internal Server Error"},
 					LogError:    []string{"Insert group error"},
+				}
+
+				Expect(err).ToNot(BeNil())
+				Expect(groupOutputDTO).To(BeZero())
+				Expect(err).To(Equal(expectedError))
+			})
+
+			It("Should return an error when the method CommitOrRollback of the UOW is call", func() {
+				groupServiceUowDependency := ContextInsertReturnErrorWhenCommitCommandUow()
+				service := group_service.NewInsertGroupService(groupServiceUowDependency)
+				groupInputDTO := group_dto.GroupInputDTO{
+					GroupName: "Group 1",
+					Code:      "G1",
+					Status:    "active",
+				}
+
+				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				expectedError := &util.ValidationError{
+					Code:        "PIDB-235",
+					Status:      http.StatusInternalServerError,
+					LogError:    []string{"Commit error"},
+					ClientError: []string{"Internal Server Error"},
+				}
+
+				Expect(err).ToNot(BeNil())
+				Expect(groupOutputDTO).To(BeZero())
+				Expect(err).To(Equal(expectedError))
+			})
+
+			It("Should return an error when the payload input is invalid", func() {
+				groupServiceUowDependency := ContextInsertSuccess()
+				service := group_service.NewInsertGroupService(groupServiceUowDependency)
+				groupInputDTO := group_dto.GroupInputDTO{
+					GroupName: "",
+					Code:      "G1",
+					Status:    "active",
+				}
+
+				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				expectedError := &util.ValidationError{
+					Code:        "VBR-0001",
+					Status:      http.StatusBadRequest,
+					ClientError: []string{"group_name: is required"},
+					LogError:    []string{"group_name: is required"},
 				}
 
 				Expect(err).ToNot(BeNil())
