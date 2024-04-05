@@ -20,7 +20,6 @@ type PrometheusAdapter struct {
 func NewPrometheusAdapter() *PrometheusAdapter {
 	exporter, _ := prometheus.New()
 	provider := metric.NewMeterProvider(metric.WithReader(exporter))
-
 	meter := provider.Meter(meterName, api.WithInstrumentationVersion(meterVersion))
 	counter, _ := meter.Int64Counter("proxy_requests_total",
 		api.WithDescription("Total number of proxy requests"))
