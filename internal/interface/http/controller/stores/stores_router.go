@@ -17,28 +17,28 @@ func NewStoresRouter(controller istores_controller.IStoreController) *Router {
 		controller: controller,
 	}
 }
-func (r *Router) StoresRoutes() []map[string]any {
-	return []map[string]any{
+func (r *Router) StoresRoutes() util.RouterType {
+	return util.RouterType{
 		{
-			util.METHOD:      http.MethodPost,
-			util.PATH:        "/stores",
-			util.CONTROLLER:  r.controller.CreateStores,
-			util.DESCRIPTION: "Create Stores",
-			util.TYPE:        util.HANDLER_FUNC,
+			Method:      http.MethodPost,
+			Path:        "/stores",
+			Controller:  r.controller.CreateStores,
+			Description: "Create Stores",
+			Type:        util.HANDLER_FUNC,
 		},
 		{
-			util.METHOD:      http.MethodPut,
-			util.PATH:        "/stores",
-			util.CONTROLLER:  stores_middleware.ValidatePath(r.controller.UpdateStores),
-			util.DESCRIPTION: "Update Stores",
-			util.TYPE:        util.HANDLER_FUNC,
+			Method:      http.MethodPut,
+			Path:        "/stores",
+			Controller:  stores_middleware.ValidatePath(r.controller.UpdateStores),
+			Description: "Update Stores",
+			Type:        util.HANDLER_FUNC,
 		},
 		{
-			util.METHOD:      http.MethodGet,
-			util.PATH:        "/stores/{id}",
-			util.CONTROLLER:  r.controller.ListStoresByID,
-			util.DESCRIPTION: "List Stores by id",
-			util.TYPE:        util.HANDLER_FUNC,
+			Method:      http.MethodGet,
+			Path:        "/stores/{id}",
+			Controller:  r.controller.ListStoresByID,
+			Description: "List Stores by id",
+			Type:        util.HANDLER_FUNC,
 		},
 	}
 }

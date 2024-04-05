@@ -17,14 +17,14 @@ func NewGroupRouter(controller igroup_controller.IGroupController) *Router {
 	}
 }
 
-func (r *Router) GroupRoutes() []map[string]any {
-	return []map[string]any{
+func (r *Router) GroupRoutes() util.RouterType {
+	return util.RouterType{
 		{
-			util.METHOD:      http.MethodPost,
-			util.PATH:        "/groups",
-			util.CONTROLLER:  r.controller.CreateGroup,
-			util.DESCRIPTION: "Create Group",
-			util.TYPE:        util.HANDLER_FUNC,
+			Method:      http.MethodPost,
+			Path:        "/groups",
+			Controller:  r.controller.CreateGroup,
+			Description: "Create Group",
+			Type:        util.HANDLER_FUNC,
 		},
 	}
 }

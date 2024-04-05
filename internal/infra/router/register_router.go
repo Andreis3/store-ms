@@ -17,18 +17,18 @@ func NewRegisterRouter(logger ilogger.ILogger) *RegisterRouter {
 	}
 }
 
-func (r *RegisterRouter) Register(app *http.ServeMux, router []map[string]any) {
+func (r *RegisterRouter) Register(app *http.ServeMux, router util.RouterType) {
 	message, info := "Registering Route ", "ROUTER"
 	for _, route := range router {
-		switch route[util.TYPE].(string) {
+		switch route.Type {
 		case util.HANDLER:
-			r.logger.Info(message, info, fmt.Sprintf("%s %s %s", route[util.METHOD], route[util.PATH], route[util.DESCRIPTION]))
-			app.Handle(route[util.PATH].(string), route[util.CONTROLLER].(http.Handler))
+			r.logger.Info(message, info, fmt.Sprintf("%s %s %s", route.Method, route.Path, route.Description))
+			app.Handle(route.Path, route.Controller.(http.Handler))
 		case util.HANDLER_FUNC:
-			r.logger.Info(message, info, fmt.Sprintf("%s %s %s", route[util.METHOD], route[util.PATH], route[util.DESCRIPTION]))
+			r.logger.Info(message, info, fmt.Sprintf("%s %s %s", route.Method, route.Path, route.Description))
 			app.HandleFunc(
-				fmt.Sprintf("%s %s", route[util.METHOD],
-					route[util.PATH]), route[util.CONTROLLER].(func(http.ResponseWriter, *http.Request)))
+				fmt.Sprintf("%s %s", route.Method,
+					route.Path), route.Controller.(func(http.ResponseWriter, *http.Request)))
 		}
 	}
 }

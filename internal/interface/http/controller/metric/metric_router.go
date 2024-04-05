@@ -13,14 +13,14 @@ func NewMetricRouter() *Router {
 	return &Router{}
 }
 
-func (r *Router) MetricRoutes() []map[string]any {
-	return []map[string]any{
+func (r *Router) MetricRoutes() util.RouterType {
+	return util.RouterType{
 		{
-			util.METHOD:      http.MethodGet,
-			util.PATH:        "/metrics",
-			util.CONTROLLER:  promhttp.Handler(),
-			util.DESCRIPTION: "Metrics Prometheus",
-			util.TYPE:        util.HANDLER,
+			Method:      http.MethodGet,
+			Path:        "/metrics",
+			Controller:  promhttp.Handler(),
+			Description: "Metrics Prometheus",
+			Type:        util.HANDLER,
 		},
 	}
 }
