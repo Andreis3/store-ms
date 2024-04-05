@@ -18,14 +18,14 @@ func NewRegisterRouter(logger ilogger.ILogger) *RegisterRouter {
 }
 
 func (r *RegisterRouter) Register(app *http.ServeMux, router util.RouterType) {
-	message, info := "Registering Route ", "ROUTER"
+	message, info := "[RegisterRouter] ", "MAPPED_ROUTER"
 	for _, route := range router {
 		switch route.Type {
 		case util.HANDLER:
-			r.logger.Info(message, info, fmt.Sprintf("%s %s %s", route.Method, route.Path, route.Description))
+			r.logger.Info(message, info, fmt.Sprintf("%s %s - %s", route.Method, route.Path, route.Description))
 			app.Handle(route.Path, route.Controller.(http.Handler))
 		case util.HANDLER_FUNC:
-			r.logger.Info(message, info, fmt.Sprintf("%s %s %s", route.Method, route.Path, route.Description))
+			r.logger.Info(message, info, fmt.Sprintf("%s %s - %s", route.Method, route.Path, route.Description))
 			app.HandleFunc(
 				fmt.Sprintf("%s %s", route.Method,
 					route.Path), route.Controller.(func(http.ResponseWriter, *http.Request)))
