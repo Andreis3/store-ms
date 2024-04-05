@@ -13,11 +13,6 @@ const (
 
 // Router field
 const (
-	TYPE         = "type"
 	HANDLER      = "handler"
 	HANDLER_FUNC = "handlerFunc"
-	METHOD       = "method"
-	PATH         = "path"
-	CONTROLLER   = "controller"
-	DESCRIPTION  = "description"
 )
