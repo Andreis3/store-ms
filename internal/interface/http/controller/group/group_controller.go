@@ -41,11 +41,11 @@ func (c *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
 			"REQUEST_ID", requestID,
 			"CODE_ERROR", err.Code,
 			"ERROR_MESSAGE", strings.Join(err.LogError, ", "))
-		helpers.ResponseError[[]string](w, err.Status, requestID, err.Code, err.ClientError)
 		c.prometheus.CounterRequestHttpStatusCode(context.Background(), "/groups", err.Status)
 		end := time.Now()
 		duration := end.Sub(start).Milliseconds()
 		c.prometheus.HistogramRequestDuration(context.Background(), "/groups", err.Status, float64(duration))
+		helpers.ResponseError[[]string](w, err.Status, requestID, err.Code, err.ClientError)
 		return
 	}
 	group, errCM := c.insertGroupCommand.Execute(*groupInputDTO)
@@ -54,11 +54,11 @@ func (c *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
 			"REQUEST_ID", requestID,
 			"CODE_ERROR", errCM.Code,
 			"ERROR_MESSAGE", strings.Join(errCM.LogError, ", "))
-		helpers.ResponseError[[]string](w, errCM.Status, requestID, errCM.Code, errCM.ClientError)
 		c.prometheus.CounterRequestHttpStatusCode(context.Background(), "/groups", errCM.Status)
 		end := time.Now()
 		duration := end.Sub(start).Milliseconds()
 		c.prometheus.HistogramRequestDuration(context.Background(), "/groups", errCM.Status, float64(duration))
+		helpers.ResponseError[[]string](w, errCM.Status, requestID, errCM.Code, errCM.ClientError)
 		return
 	}
 	c.prometheus.CounterRequestHttpStatusCode(context.Background(), "/groups", http.StatusCreated)
