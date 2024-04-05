@@ -12,7 +12,6 @@ type Router struct {
 func NewMetricRouter() *Router {
 	return &Router{}
 }
-
 func (r *Router) MetricRoutes() util.RouterType {
 	return util.RouterType{
 		{
