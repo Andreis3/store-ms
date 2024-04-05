@@ -16,7 +16,6 @@ func NewRegisterRouter(logger ilogger.ILogger) *RegisterRouter {
 		logger: logger,
 	}
 }
-
 func (r *RegisterRouter) Register(app *http.ServeMux, router util.RouterType) {
 	message, info := "[RegisterRouter] ", "MAPPED_ROUTER"
 	for _, route := range router {
