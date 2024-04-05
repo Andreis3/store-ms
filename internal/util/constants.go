@@ -11,7 +11,7 @@ const (
 	EXIT_FAILURE = 1
 )
 
-// Router field
+// Router types
 const (
 	HANDLER      = "handler"
 	HANDLER_FUNC = "handlerFunc"

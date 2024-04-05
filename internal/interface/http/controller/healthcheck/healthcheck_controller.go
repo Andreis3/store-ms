@@ -29,7 +29,7 @@ type ComponentInfo struct {
 func HealthCheck(w http.ResponseWriter, r *http.Request) {
 	systemInfo := getSystemInformation()
 	response := HealthCheckResponse{
-		Status:    "OK",
+		Status:    http.StatusText(http.StatusOK),
 		Timestamp: time.Now().Format(time.RFC3339),
 		System:    systemInfo,
 		Component: ComponentInfo{
