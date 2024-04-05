@@ -9,6 +9,9 @@ import (
 	"go.opentelemetry.io/otel/sdk/metric"
 )
 
+var meterName = "store-ms"
+var meterVersion = "1.0.0"
+
 type PrometheusAdapter struct {
 	counter   api.Int64Counter
 	histogram api.Float64Histogram
@@ -17,10 +20,13 @@ type PrometheusAdapter struct {
 func NewPrometheusAdapter() *PrometheusAdapter {
 	exporter, _ := prometheus.New()
 	provider := metric.NewMeterProvider(metric.WithReader(exporter))
-	meter := provider.Meter("store-ms")
-	counter, _ := meter.Int64Counter("proxy_requests_total", api.WithDescription("Total number of proxy requests"))
-	histogram, _ := meter.Float64Histogram("request_duration_seconds", api.WithDescription("Request duration in seconds"))
 
+	meter := provider.Meter(meterName, api.WithInstrumentationVersion(meterVersion))
+	counter, _ := meter.Int64Counter("proxy_requests_total",
+		api.WithDescription("Total number of proxy requests"))
+	histogram, _ := meter.Float64Histogram("request_duration_seconds",
+		api.WithDescription("Request duration in seconds"),
+		api.WithExplicitBucketBoundaries(5, 10, 15, 20, 30, 50, 100, 200, 300, 500, 1000, 2000, 5000, 10000, 20000, 30000))
 	return &PrometheusAdapter{
 		counter:   counter,
 		histogram: histogram,
@@ -34,9 +40,9 @@ func (p *PrometheusAdapter) CounterRequestHttpStatusCode(ctx context.Context, st
 	p.counter.Add(ctx, 1, opt)
 }
 
-func (p *PrometheusAdapter) HistogramRequestDuration(ctx context.Context, groupName string, duration float64) {
+func (p *PrometheusAdapter) HistogramRequestDuration(ctx context.Context, router string, duration float64) {
 	opt := api.WithAttributes(
-		attribute.Key("group_name").String(groupName),
+		attribute.Key("router").String(router),
 	)
 	p.histogram.Record(ctx, duration, opt)
 }

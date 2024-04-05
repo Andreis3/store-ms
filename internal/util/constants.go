@@ -10,3 +10,14 @@ const (
 	EXIT_SUCCESS = 0
 	EXIT_FAILURE = 1
 )
+
+// Router field
+const (
+	TYPE         = "type"
+	HANDLER      = "handler"
+	HANDLER_FUNC = "handlerFunc"
+	METHOD       = "method"
+	PATH         = "path"
+	CONTROLLER   = "controller"
+	DESCRIPTION  = "description"
+)

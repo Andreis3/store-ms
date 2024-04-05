@@ -1,6 +1,7 @@
 package group_controller
 
 import (
+	"github.com/andreis3/stores-ms/internal/util"
 	"net/http"
 
 	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/interfaces"
@@ -19,10 +20,11 @@ func NewGroupRouter(controller igroup_controller.IGroupController) *Router {
 func (r *Router) GroupRoutes() []map[string]any {
 	return []map[string]any{
 		{
-			"method":      http.MethodPost,
-			"path":        "/groups",
-			"handler":     r.controller.CreateGroup,
-			"description": "Create Group",
+			util.METHOD:      http.MethodPost,
+			util.PATH:        "/groups",
+			util.CONTROLLER:  r.controller.CreateGroup,
+			util.DESCRIPTION: "Create Group",
+			util.TYPE:        util.HANDLER_FUNC,
 		},
 	}
 }
