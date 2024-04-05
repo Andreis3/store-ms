@@ -42,10 +42,10 @@ func (c *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
 			"CODE_ERROR", err.Code,
 			"ERROR_MESSAGE", strings.Join(err.LogError, ", "))
 		helpers.ResponseError[[]string](w, err.Status, requestID, err.Code, err.ClientError)
-		c.prometheus.CounterRequestHttpStatusCode(context.Background(), err.Status)
+		c.prometheus.CounterRequestHttpStatusCode(context.Background(), "/groups", err.Status)
 		end := time.Now()
 		duration := end.Sub(start).Milliseconds()
-		c.prometheus.HistogramRequestDuration(context.Background(), "/groups", float64(duration))
+		c.prometheus.HistogramRequestDuration(context.Background(), "/groups", err.Status, float64(duration))
 		return
 	}
 	group, errCM := c.insertGroupCommand.Execute(*groupInputDTO)
@@ -55,15 +55,15 @@ func (c *Controller) CreateGroup(w http.ResponseWriter, r *http.Request) {
 			"CODE_ERROR", errCM.Code,
 			"ERROR_MESSAGE", strings.Join(errCM.LogError, ", "))
 		helpers.ResponseError[[]string](w, errCM.Status, requestID, errCM.Code, errCM.ClientError)
-		c.prometheus.CounterRequestHttpStatusCode(context.Background(), errCM.Status)
+		c.prometheus.CounterRequestHttpStatusCode(context.Background(), "/groups", errCM.Status)
 		end := time.Now()
 		duration := end.Sub(start).Milliseconds()
-		c.prometheus.HistogramRequestDuration(context.Background(), "/groups", float64(duration))
+		c.prometheus.HistogramRequestDuration(context.Background(), "/groups", errCM.Status, float64(duration))
 		return
 	}
-	c.prometheus.CounterRequestHttpStatusCode(context.Background(), http.StatusCreated)
+	c.prometheus.CounterRequestHttpStatusCode(context.Background(), "/groups", http.StatusCreated)
 	end := time.Now()
 	duration := end.Sub(start).Milliseconds()
-	c.prometheus.HistogramRequestDuration(context.Background(), "/groups", float64(duration))
+	c.prometheus.HistogramRequestDuration(context.Background(), "/groups", http.StatusCreated, float64(duration))
 	helpers.ResponseSuccess[group_dto.GroupOutputDTO](w, requestID, http.StatusCreated, group)
 }

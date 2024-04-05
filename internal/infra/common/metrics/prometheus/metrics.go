@@ -33,16 +33,18 @@ func NewPrometheusAdapter() *PrometheusAdapter {
 	}
 }
 
-func (p *PrometheusAdapter) CounterRequestHttpStatusCode(ctx context.Context, statusCode int) {
+func (p *PrometheusAdapter) CounterRequestHttpStatusCode(ctx context.Context, router string, statusCode int) {
 	opt := api.WithAttributes(
+		attribute.Key("router").String(router),
 		attribute.Key("status_code").Int(statusCode),
 	)
 	p.counter.Add(ctx, 1, opt)
 }
 
-func (p *PrometheusAdapter) HistogramRequestDuration(ctx context.Context, router string, duration float64) {
+func (p *PrometheusAdapter) HistogramRequestDuration(ctx context.Context, router string, statusCode int, duration float64) {
 	opt := api.WithAttributes(
 		attribute.Key("router").String(router),
+		attribute.Key("status_code").Int(statusCode),
 	)
 	p.histogram.Record(ctx, duration, opt)
 }
