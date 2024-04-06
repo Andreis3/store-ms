@@ -1,4 +1,4 @@
-package prometheus
+package metric_prometheus
 
 import (
 	"context"

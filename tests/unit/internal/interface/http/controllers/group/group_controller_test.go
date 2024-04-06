@@ -4,7 +4,9 @@
 package group_controller_test
 
 import (
+	"context"
 	"encoding/json"
+	metric_prometheus_mock "github.com/andreis3/stores-ms/tests/mock/infra/common/metric/prometheus"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -36,6 +38,7 @@ func Test_GroupControllerSuite(t *testing.T) {
 var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER", func() {
 	Describe("#CreateGroup", func() {
 		var groupCommandMock *group_command_mock.InsertGroupCommandMock
+		var prometheusMock *metric_prometheus_mock.PrometheusAdapterMock
 		var loggerMock *logger_mock.LoggerMock
 		var requestIDMock *helpers_mock.RequestIDMock
 		var groupController *group_controller.Controller
@@ -61,8 +64,12 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 						return
 					},
 				}
+				prometheusMock = &metric_prometheus_mock.PrometheusAdapterMock{
+					CounterRequestHttpStatusCodeFunc: func(ctx context.Context, router string, statusCode int) {},
+					HistogramRequestDurationFunc:     func(ctx context.Context, router string, statusCode int, duration float64) {},
+				}
 
-				groupController = group_controller.NewGroupController(groupCommandMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
 							"group_name":"teste 1",
 							"code": "23",
@@ -110,8 +117,12 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 						return
 					},
 				}
+				prometheusMock = &metric_prometheus_mock.PrometheusAdapterMock{
+					CounterRequestHttpStatusCodeFunc: func(ctx context.Context, router string, statusCode int) {},
+					HistogramRequestDurationFunc:     func(ctx context.Context, router string, statusCode int, duration float64) {},
+				}
 
-				groupController = group_controller.NewGroupController(groupCommandMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
 							"group_name":"teste 1",
 							"code": "23",
@@ -159,8 +170,12 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 						return
 					},
 				}
+				prometheusMock = &metric_prometheus_mock.PrometheusAdapterMock{
+					CounterRequestHttpStatusCodeFunc: func(ctx context.Context, router string, statusCode int) {},
+					HistogramRequestDurationFunc:     func(ctx context.Context, router string, statusCode int, duration float64) {},
+				}
 
-				groupController = group_controller.NewGroupController(groupCommandMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
 							"group_name":"teste 1",
 							"code": "23",
@@ -208,8 +223,12 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 						return
 					},
 				}
+				prometheusMock = &metric_prometheus_mock.PrometheusAdapterMock{
+					CounterRequestHttpStatusCodeFunc: func(ctx context.Context, router string, statusCode int) {},
+					HistogramRequestDurationFunc:     func(ctx context.Context, router string, statusCode int, duration float64) {},
+				}
 
-				groupController = group_controller.NewGroupController(groupCommandMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
 							"group_name":"teste 1",
 							"code": 23,
@@ -259,9 +278,13 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 						return "123"
 					},
 				}
+				prometheusMock = &metric_prometheus_mock.PrometheusAdapterMock{
+					CounterRequestHttpStatusCodeFunc: func(ctx context.Context, router string, statusCode int) {},
+					HistogramRequestDurationFunc:     func(ctx context.Context, router string, statusCode int, duration float64) {},
+				}
 				loggerMock = &logger_mock.LoggerMock{}
 
-				groupController = group_controller.NewGroupController(groupCommandMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
     						"group_name":"teste 1",
 							"code": "23",

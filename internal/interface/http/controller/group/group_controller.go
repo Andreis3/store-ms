@@ -2,7 +2,7 @@ package group_controller
 
 import (
 	"context"
-	"github.com/andreis3/stores-ms/internal/infra/common/metrics/prometheus"
+	imetric "github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
 	"net/http"
 	"strings"
 	"time"
@@ -17,18 +17,18 @@ type Controller struct {
 	insertGroupCommand igroup_command.IInsertGroupCommand
 	logger             ilogger.ILogger
 	requestID          helpers.IRequestID
-	prometheus         prometheus.PrometheusAdapter
+	prometheus         imetric.IPrometheusAdapter
 }
 
 func NewGroupController(insertGroupCommand igroup_command.IInsertGroupCommand,
+	prometheus imetric.IPrometheusAdapter,
 	logger ilogger.ILogger,
 	requestID helpers.IRequestID) *Controller {
-	prom := prometheus.NewPrometheusAdapter()
 	return &Controller{
 		insertGroupCommand: insertGroupCommand,
 		logger:             logger,
 		requestID:          requestID,
-		prometheus:         *prom,
+		prometheus:         prometheus,
 	}
 }
 

@@ -1,6 +1,7 @@
 package make_controller
 
 import (
+	"github.com/andreis3/stores-ms/internal/infra/common/metrics/prometheus"
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"github.com/andreis3/stores-ms/internal/app/command/group"
@@ -18,6 +19,7 @@ func MakeControllerGroup(pool *pgxpool.Pool) igroup_controller.IGroupController 
 	groupService := group_service.NewInsertGroupService(uow)
 	groupCommand := group_command.NewInsertGroupCommand(groupService)
 	requestID := helpers.NewRequestID()
-	groupController := group_controller.NewGroupController(groupCommand, logger, requestID)
+	prometheus := metric_prometheus.NewPrometheusAdapter()
+	groupController := group_controller.NewGroupController(groupCommand, prometheus, logger, requestID)
 	return groupController
 }
