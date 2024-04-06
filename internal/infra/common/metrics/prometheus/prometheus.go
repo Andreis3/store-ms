@@ -9,8 +9,10 @@ import (
 	"go.opentelemetry.io/otel/sdk/metric"
 )
 
-var meterName = "store-ms"
-var meterVersion = "1.0.0"
+const (
+	METER_NAME    = "store-ms"
+	METER_VERSION = "1.0.0"
+)
 
 type PrometheusAdapter struct {
 	counter   api.Int64Counter
@@ -20,7 +22,7 @@ type PrometheusAdapter struct {
 func NewPrometheusAdapter() *PrometheusAdapter {
 	exporter, _ := prometheus.New()
 	provider := metric.NewMeterProvider(metric.WithReader(exporter))
-	meter := provider.Meter(meterName, api.WithInstrumentationVersion(meterVersion))
+	meter := provider.Meter(METER_NAME, api.WithInstrumentationVersion(METER_VERSION))
 	counter, _ := meter.Int64Counter("proxy_requests_total",
 		api.WithDescription("Total number of proxy requests"))
 	histogram, _ := meter.Float64Histogram("request_duration_seconds",
