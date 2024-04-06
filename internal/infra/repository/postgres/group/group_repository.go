@@ -44,5 +44,5 @@ func (r *GroupRepository) InsertGroup(data GroupModel) (string, *util.Validation
 			ClientError: []string{"Internal Server Error"},
 		}
 	}
-	return group.ID, nil
+	return *group.ID, nil
 }
