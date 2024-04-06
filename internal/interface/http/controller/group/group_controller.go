@@ -17,11 +17,11 @@ type Controller struct {
 	insertGroupCommand igroup_command.IInsertGroupCommand
 	logger             ilogger.ILogger
 	requestID          helpers.IRequestID
-	prometheus         imetric.IPrometheusAdapter
+	prometheus         imetric.IMetricAdapter
 }
 
 func NewGroupController(insertGroupCommand igroup_command.IInsertGroupCommand,
-	prometheus imetric.IPrometheusAdapter,
+	prometheus imetric.IMetricAdapter,
 	logger ilogger.ILogger,
 	requestID helpers.IRequestID) *Controller {
 	return &Controller{
