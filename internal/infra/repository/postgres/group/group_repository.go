@@ -35,7 +35,7 @@ func (r *GroupRepository) InsertGroup(data GroupModel) (string, *util.Validation
 		data.CreatedAt,
 		data.UpdatedAt)
 	defer rows.Close()
-	group, err := pgx.CollectOneRow[GroupModel](rows, pgx.RowToStructByPos[GroupModel])
+	group, err := pgx.CollectOneRow[GroupModel](rows, pgx.RowToStructByName[GroupModel])
 	if errors.As(err, &r.PgError) {
 		return "", &util.ValidationError{
 			Code:        fmt.Sprintf("PIDB-%s", r.Code),
