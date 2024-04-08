@@ -20,7 +20,7 @@ func Start(conf *configs.Conf, pool *postgres.Postgres, log *logger.Logger) *htt
 		Handler: mux,
 	}
 	go func() {
-		proxy.ProxyDependency(mux, pool, log, conf)
+		proxy.ProxyDependency(mux, pool, log)
 		log.Info(fmt.Sprintf("Start server on port %s", conf.ServerPort))
 		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Error(fmt.Sprintf("Error starting server: %s", err.Error()))
