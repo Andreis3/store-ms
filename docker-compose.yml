@@ -1,0 +1,28 @@
+name: store
+
+services:
+  store-ms:
+    container_name: store-ms
+    build:
+      target: builder
+      context: .
+    ports:
+      - "8080:8080"
+    depends_on:
+        - postgres-store
+    env_file:
+      - .env
+    entrypoint: ["/go/bin/server"]
+
+  postgres-store:
+      container_name: postgres-store
+      image: postgres:16.2
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: store_db
+      ports:
+        - "5432:5432"
+      volumes:
+        - ./docs/sql/store_db.sql:/docker-entrypoint-initdb.d/init.sql
+      command: postgres -c 'max_connections=1000'

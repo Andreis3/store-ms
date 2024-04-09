@@ -1,28 +1,36 @@
 package router
 
 import (
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/healthcheck"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/metric"
 	"net/http"
 
 	"github.com/andreis3/stores-ms/internal/infra/router/interfaces"
-	stores "github.com/andreis3/stores-ms/internal/interface/http/stores/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores/interfaces"
 )
 
 type Router struct {
-	router         *http.ServeMux
-	registerRouter interfaces.IRegisterRouter
-	storesRouter   stores.IStoresRouter
+	serverMux      *http.ServeMux
+	registerRouter irouter.IRegisterRouter
+	storesRouter   istores_controller.IStoresRouter
+	groupRouter    igroup_controller.IGroupRouter
 }
 
-func NewRouter(server *http.ServeMux,
-	registerRouter interfaces.IRegisterRouter,
-	storesRouter stores.IStoresRouter) *Router {
+func NewRouter(serverMux *http.ServeMux,
+	registerRouter irouter.IRegisterRouter,
+	storesRouter istores_controller.IStoresRouter,
+	groupRouter igroup_controller.IGroupRouter) *Router {
 	return &Router{
-		router:         server,
+		serverMux:      serverMux,
 		registerRouter: registerRouter,
 		storesRouter:   storesRouter,
+		groupRouter:    groupRouter,
 	}
 }
-
 func (r *Router) ApiRoutes() {
-	r.registerRouter.Register(r.router, r.storesRouter.StoresRoutes())
+	r.registerRouter.Register(r.serverMux, r.storesRouter.StoresRoutes())
+	r.registerRouter.Register(r.serverMux, r.groupRouter.GroupRoutes())
+	r.registerRouter.Register(r.serverMux, healthcheck_controller.NewHealthCheckRouter().HealthCheckRoutes())
+	r.registerRouter.Register(r.serverMux, metric_controller.NewMetricRouter().MetricRoutes())
 }
