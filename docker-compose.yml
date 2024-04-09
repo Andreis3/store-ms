@@ -10,10 +10,18 @@ services:
       - "8080:8080"
     depends_on:
         - postgres-store
-    env_file:
-      - .env
     environment:
-      DB_HOST: postgres-store
+      DB_DRIVER: "postgres"
+      DB_HOST: "postgres-store"
+      DB_PORT: "5432"
+      DB_USER: "root"
+      DB_PASSWORD: "root"
+      DB_NAME: "store_db"
+      MAX_CONNECTIONS: "50"
+      MIN_CONNECTIONS: "5"
+      MAX_CONN_LIFETIME: "100"
+      MAX_CONN_IDLE_TIME: "1"
+      SERVER_PORT: "8080"
     entrypoint: ["/go/bin/store-ms"]
 
   postgres-store:
