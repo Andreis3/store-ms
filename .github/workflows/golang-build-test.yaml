@@ -33,8 +33,11 @@ jobs:
       - name: Test Unit Cover
         run: make unit-tests-cover
 
-      - name: Test Integration prepare environment
-        run: make docker-up
+      - name: Set up environment
+        run: docker compose -f docker-compose.yml up -d
+
+      - name: Wait for docker to finish building
+        run: sleep 30
 
       - name: Test Integration
         run: make integration-test
