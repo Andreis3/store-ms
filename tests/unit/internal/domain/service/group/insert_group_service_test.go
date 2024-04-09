@@ -4,13 +4,14 @@
 package group_service_test
 
 import (
-	"github.com/andreis3/stores-ms/internal/util"
 	"net/http"
+
+	"github.com/andreis3/stores-ms/internal/util"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/andreis3/stores-ms/internal/domain/service/group_service"
+	"github.com/andreis3/stores-ms/internal/domain/service/group"
 	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
 )
 

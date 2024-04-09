@@ -1,11 +1,12 @@
 package make_controller
 
 import (
-	"github.com/andreis3/stores-ms/internal/infra/common/metrics/prometheus"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"github.com/andreis3/stores-ms/internal/infra/common/metrics/prometheus"
+
 	"github.com/andreis3/stores-ms/internal/app/command/group"
-	"github.com/andreis3/stores-ms/internal/domain/service/group_service"
+	"github.com/andreis3/stores-ms/internal/domain/service/group"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
 	"github.com/andreis3/stores-ms/internal/infra/uow"
 	"github.com/andreis3/stores-ms/internal/interface/http/controller/group"
