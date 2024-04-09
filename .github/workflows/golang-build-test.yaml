@@ -32,3 +32,9 @@ jobs:
 
       - name: Test Unit Cover
         run: make unit-tests-cover
+
+      - name: Test Integration prepare environment
+        run: make docker-up
+
+      - name: Test Integration
+        run: make integration-tests
