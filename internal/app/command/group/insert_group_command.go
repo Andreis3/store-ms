@@ -18,5 +18,8 @@ func NewInsertGroupCommand(service igroup_service.IInsertGroupService) *InsertGr
 
 func (c *InsertGroupCommand) Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	group, err := c.GroupService.InsertGroup(data)
+	if err != nil {
+		return group_dto.GroupOutputDTO{}, err
+	}
 	return group, err
 }
