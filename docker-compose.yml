@@ -14,7 +14,7 @@ services:
       - .env
     environment:
       DB_HOST: postgres-store
-    entrypoint: ["/go/bin/store"]
+    entrypoint: ["/go/bin/store-ms"]
 
   postgres-store:
       container_name: postgres-store

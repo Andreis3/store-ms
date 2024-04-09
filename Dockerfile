@@ -36,4 +36,4 @@ COPY --from=time-zone /zoneinfo.zip /
 
 EXPOSE 8080
 
-ENTRYPOINT ["/go/bin/store"]
+ENTRYPOINT ["/go/bin/store-ms"]
