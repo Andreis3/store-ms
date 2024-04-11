@@ -75,7 +75,7 @@ var _ = Describe("INTEGRATION :: TEST :: CREATE :: NEW :: GROUP", func() {
 				AfterEach(func() {
 					TruncateTable(ConnectionPostgres())
 				})
-				It("Should return status 500", func() {
+				It("Should return status 400", func() {
 					body, _ := json.Marshal(map[string]interface{}{
 						"name":   "test 1",
 						"code":   "test 1",
@@ -106,10 +106,10 @@ var _ = Describe("INTEGRATION :: TEST :: CREATE :: NEW :: GROUP", func() {
 
 					Expect(err).To(BeNil())
 
-					Expect(res.StatusCode).To(Equal(http.StatusInternalServerError))
+					Expect(res.StatusCode).To(Equal(http.StatusBadRequest))
 					Expect(response["request_id"]).NotTo(BeNil())
-					Expect(response["status_code"].(float64)).To(Equal(float64(http.StatusInternalServerError)))
-					Expect(response["error_message"].([]any)).To(ContainElement("Internal Server Error"))
+					Expect(response["status_code"].(float64)).To(Equal(float64(http.StatusBadRequest)))
+					Expect(response["error_message"].([]any)).To(ContainElement("Group already exists"))
 				})
 			})
 		})

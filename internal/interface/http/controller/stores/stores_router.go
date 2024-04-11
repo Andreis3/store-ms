@@ -6,7 +6,6 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 
 	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores/middleware"
 )
 
 type Router struct {
@@ -25,20 +24,6 @@ func (r *Router) StoresRoutes() util.RouterType {
 			Path:        "/api/v1/stores",
 			Controller:  r.controller.CreateStores,
 			Description: "Create Stores",
-			Type:        util.HANDLER_FUNC,
-		},
-		{
-			Method:      http.MethodPut,
-			Path:        "/api/v1/stores",
-			Controller:  stores_middleware.ValidatePath(r.controller.UpdateStores),
-			Description: "Update Stores",
-			Type:        util.HANDLER_FUNC,
-		},
-		{
-			Method:      http.MethodGet,
-			Path:        "/api/v1/stores/{id}",
-			Controller:  r.controller.ListStoresByID,
-			Description: "List Stores by id",
 			Type:        util.HANDLER_FUNC,
 		},
 	}
