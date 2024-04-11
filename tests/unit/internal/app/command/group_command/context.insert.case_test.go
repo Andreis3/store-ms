@@ -14,7 +14,7 @@ func ContextInsertSuccess() *group_service_mock.InsertGroupServiceMock {
 		InsertGroupFunc: func(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
 			return group_dto.GroupOutputDTO{
 				ID:        "1",
-				GroupName: "Group 1",
+				Name:      "Group 1",
 				Code:      "G1",
 				Status:    "active",
 				CreatedAt: "2021-01-01T00:00:00Z",

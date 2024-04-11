@@ -34,7 +34,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 				notification := group.Validate()
 
 				Expect(notification.ReturnNotification()).To(HaveLen(1))
-				Expect(notification.ReturnNotification()[0]).To(Equal("group_name: is required"))
+				Expect(notification.ReturnNotification()[0]).To(Equal("name: is required"))
 			})
 
 			It("Should return a notification when code is empty", func() {
@@ -64,7 +64,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 				notification := group.Validate()
 
 				Expect(notification.ReturnNotification()).To(HaveLen(3))
-				Expect(notification.ReturnNotification()[0]).To(Equal("group_name: is required"))
+				Expect(notification.ReturnNotification()[0]).To(Equal("name: is required"))
 				Expect(notification.ReturnNotification()[1]).To(Equal("code: is required"))
 				Expect(notification.ReturnNotification()[2]).To(Equal("status: is required"))
 			})

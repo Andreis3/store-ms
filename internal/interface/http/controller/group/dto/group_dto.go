@@ -6,13 +6,13 @@ import (
 )
 
 type GroupInputDTO struct {
-	GroupName string `json:"group_name"`
-	Code      string `json:"code"`
-	Status    string `json:"status"`
+	Name   string `json:"name"`
+	Code   string `json:"code"`
+	Status string `json:"status"`
 }
 type GroupOutputDTO struct {
 	ID        string `json:"id"`
-	GroupName string `json:"group_name"`
+	Name      string `json:"name"`
 	Code      string `json:"code"`
 	Status    string `json:"status"`
 	CreatedAt string `json:"created_at"`
@@ -23,6 +23,6 @@ func (g *GroupInputDTO) MapperInputDtoToEntity() *entity_group.Group {
 	status := valueobject.Status{
 		Status: g.Status,
 	}
-	group := entity_group.NewGroup(g.GroupName, g.Code, &status)
+	group := entity_group.NewGroup(g.Name, g.Code, &status)
 	return group
 }

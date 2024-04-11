@@ -22,16 +22,16 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupServiceUowDependency := ContextInsertSuccess()
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
-					GroupName: "Group 1",
-					Code:      "G1",
-					Status:    "active",
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: "active",
 				}
 
 				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
 
 				Expect(err).To(BeNil())
 				Expect(groupOutputDTO).ToNot(BeNil())
-				Expect(groupOutputDTO.GroupName).To(Equal(groupInputDTO.GroupName))
+				Expect(groupOutputDTO.Name).To(Equal(groupInputDTO.Name))
 				Expect(groupOutputDTO.Code).To(Equal(groupInputDTO.Code))
 				Expect(groupOutputDTO.Status).To(Equal(groupInputDTO.Status))
 				Expect(groupOutputDTO.ID).NotTo(BeEmpty())
@@ -43,9 +43,9 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupServiceUowDependency := ContextInsertReturnErrorGroupRepositoryInsertGroup()
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
-					GroupName: "Group 1",
-					Code:      "G1",
-					Status:    "active",
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: "active",
 				}
 
 				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
@@ -65,9 +65,9 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupServiceUowDependency := ContextInsertReturnErrorWhenCommitCommandUow()
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
-					GroupName: "Group 1",
-					Code:      "G1",
-					Status:    "active",
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: "active",
 				}
 
 				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
@@ -87,17 +87,17 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupServiceUowDependency := ContextInsertSuccess()
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
-					GroupName: "",
-					Code:      "G1",
-					Status:    "active",
+					Name:   "",
+					Code:   "G1",
+					Status: "active",
 				}
 
 				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
 				expectedError := &util.ValidationError{
 					Code:        "VBR-0001",
 					Status:      http.StatusBadRequest,
-					ClientError: []string{"group_name: is required"},
-					LogError:    []string{"group_name: is required"},
+					ClientError: []string{"name: is required"},
+					LogError:    []string{"name: is required"},
 				}
 
 				Expect(err).ToNot(BeNil())

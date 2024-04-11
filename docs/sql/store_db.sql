@@ -6,7 +6,7 @@ CREATE TYPE status AS ENUM ('active', 'inactive');
 
 CREATE TABLE IF NOT EXISTS "groups" (
     "id" UUID PRIMARY KEY NOT NULL,
-    "group_name" VARCHAR(255) NOT NULL,
+    "name" VARCHAR(255) NOT NULL,
     "code" VARCHAR(100) NOT NULL,
     "status" status NOT NULL,
     "created_at" TIMESTAMP NOT NULL,
@@ -17,13 +17,13 @@ CREATE TABLE IF NOT EXISTS "groups" (
 ------------------------------------------------------------------
 --- Level 1 -> Group
 ------------------------------------------------------------------
-ALTER TABLE "groups" ADD UNIQUE (group_name, code);
+ALTER TABLE "groups" ADD UNIQUE (name, code);
 
 ------------------------------------------------------------------
 -- INDEX
 ------------------------------------------------------------------
 
-CREATE INDEX IF NOT EXISTS "idx_groups_group_name" ON "groups" (group_name, code);
+CREATE INDEX IF NOT EXISTS "idx_groups_group_name" ON "groups" (name, code);
 
 --
 --

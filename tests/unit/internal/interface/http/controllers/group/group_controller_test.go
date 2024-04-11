@@ -265,7 +265,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 					ExecuteFunc: func(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
 						return group_dto.GroupOutputDTO{
 							ID:        "123",
-							GroupName: "test 1",
+							Name:      "test 1",
 							Code:      "23",
 							Status:    "active",
 							CreatedAt: "23/09/2021 10:00:00",
@@ -286,7 +286,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 
 				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
-    						"group_name":"teste 1",
+    						"name":"teste 1",
 							"code": "23",
     						"status":"active"
 						  }`
@@ -300,7 +300,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 						"created_at": "23/09/2021 10:00:00",
 						"updated_at": "23/09/2021 10:00:00",
 						"id":         "123",
-						"group_name": "test 1",
+						"name":       "test 1",
 						"code":       "23",
 						"status":     "active",
 					},
@@ -319,14 +319,14 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.StatusCode).To(Equal(expected.StatusCode))
 				Expect(groupCommandMock.FuncParamsInput).To(Equal([]any{group_dto.GroupInputDTO{
-					GroupName: "teste 1",
-					Code:      "23",
-					Status:    "active",
+					Name:   "teste 1",
+					Code:   "23",
+					Status: "active",
 				}}))
 				Expect(groupCommandMock.FuncParamsOutput).To(Equal([]any{
 					group_dto.GroupOutputDTO{
 						ID:        "123",
-						GroupName: "test 1",
+						Name:      "test 1",
 						Code:      "23",
 						Status:    "active",
 						CreatedAt: "23/09/2021 10:00:00",

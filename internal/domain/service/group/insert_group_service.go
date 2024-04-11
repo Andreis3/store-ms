@@ -53,7 +53,7 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 		ID:        *groupModel.ID,
 		Status:    *groupModel.Status,
 		Code:      *groupModel.Code,
-		GroupName: *groupModel.GroupName,
+		Name:      *groupModel.Name,
 		CreatedAt: util.FormatDateString(*groupModel.CreatedAt),
 		UpdatedAt: util.FormatDateString(*groupModel.UpdatedAt),
 	}, nil

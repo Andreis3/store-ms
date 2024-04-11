@@ -20,16 +20,16 @@ var _ = Describe("APP :: COMMAND :: GROUP :: INSERT_GROUP_COMMAND", func() {
 				command := group_command.NewInsertGroupCommand(insertGroupService)
 
 				groupInputDTO := group_dto.GroupInputDTO{
-					GroupName: "Group 1",
-					Code:      "G1",
-					Status:    "active",
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: "active",
 				}
 
 				groupOutputDTO, err := command.Execute(groupInputDTO)
 
 				Expect(err).To(BeNil())
 				Expect(groupOutputDTO).ToNot(BeNil())
-				Expect(groupOutputDTO.GroupName).To(Equal(groupInputDTO.GroupName))
+				Expect(groupOutputDTO.Name).To(Equal(groupInputDTO.Name))
 				Expect(groupOutputDTO.Code).To(Equal(groupInputDTO.Code))
 				Expect(groupOutputDTO.Status).To(Equal(groupInputDTO.Status))
 				Expect(groupOutputDTO.ID).NotTo(BeEmpty())
@@ -42,9 +42,9 @@ var _ = Describe("APP :: COMMAND :: GROUP :: INSERT_GROUP_COMMAND", func() {
 				command := group_command.NewInsertGroupCommand(insertGroupService)
 
 				groupInputDTO := group_dto.GroupInputDTO{
-					GroupName: "Group 1",
-					Code:      "G1",
-					Status:    "active",
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: "active",
 				}
 
 				groupOutputDTO, err := command.Execute(groupInputDTO)
