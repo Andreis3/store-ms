@@ -6,7 +6,8 @@ import (
 )
 
 type GroupRepositoryMock struct {
-	InsertGroupFunc func(group repo_group.GroupModel) (string, *util.ValidationError)
+	InsertGroupFunc                 func(group repo_group.GroupModel) (string, *util.ValidationError)
+	SelectOneGroupByNameAndCodeFunc func(name, code string) (*repo_group.GroupModel, *util.ValidationError)
 }
 
 func NewGroupRepositoryMock() *GroupRepositoryMock {
@@ -15,4 +16,7 @@ func NewGroupRepositoryMock() *GroupRepositoryMock {
 
 func (g *GroupRepositoryMock) InsertGroup(group repo_group.GroupModel) (string, *util.ValidationError) {
 	return g.InsertGroupFunc(group)
+}
+func (g *GroupRepositoryMock) SelectOneGroupByNameAndCode(name, code string) (*repo_group.GroupModel, *util.ValidationError) {
+	return g.SelectOneGroupByNameAndCodeFunc(name, code)
 }

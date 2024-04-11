@@ -104,6 +104,50 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(groupOutputDTO).To(BeZero())
 				Expect(err).To(Equal(expectedError))
 			})
+
+			It("Should return an error when the select group by name and code return an error", func() {
+				groupServiceUowDependency := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode()
+				service := group_service.NewInsertGroupService(groupServiceUowDependency)
+				groupInputDTO := group_dto.GroupInputDTO{
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: "active",
+				}
+
+				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				expectedError := &util.ValidationError{
+					Code:        "PIDB-235",
+					Status:      http.StatusInternalServerError,
+					LogError:    []string{"Select group error"},
+					ClientError: []string{"Internal Server Error"},
+				}
+
+				Expect(err).ToNot(BeNil())
+				Expect(groupOutputDTO).To(BeZero())
+				Expect(err).To(Equal(expectedError))
+			})
+
+			It("Should return an error when the group already exists", func() {
+				groupServiceUowDependency := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup()
+				service := group_service.NewInsertGroupService(groupServiceUowDependency)
+				groupInputDTO := group_dto.GroupInputDTO{
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: "active",
+				}
+
+				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				expectedError := &util.ValidationError{
+					Code:        "VBR-0002",
+					Status:      http.StatusBadRequest,
+					ClientError: []string{"Group already exists"},
+					LogError:    []string{"Group already exists"},
+				}
+
+				Expect(err).ToNot(BeNil())
+				Expect(groupOutputDTO).To(BeZero())
+				Expect(err).To(Equal(expectedError))
+			})
 		})
 	})
 })

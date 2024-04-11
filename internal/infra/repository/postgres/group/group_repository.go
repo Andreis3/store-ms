@@ -46,3 +46,18 @@ func (r *GroupRepository) InsertGroup(data GroupModel) (string, *util.Validation
 	}
 	return *group.ID, nil
 }
+func (r *GroupRepository) SelectOneGroupByNameAndCode(groupName, code string) (*GroupModel, *util.ValidationError) {
+	query := `SELECT * FROM groups WHERE name = $1 AND code = $2`
+	rows, _ := r.postgres.Query(context.Background(), query, groupName, code)
+	defer rows.Close()
+	group, err := pgx.CollectOneRow[GroupModel](rows, pgx.RowToStructByName[GroupModel])
+	if errors.As(err, &r.PgError) {
+		return nil, &util.ValidationError{
+			Code:        fmt.Sprintf("PIDB-%s", r.Code),
+			Status:      http.StatusInternalServerError,
+			LogError:    []string{fmt.Sprintf("%s, %s", r.Message, r.Detail)},
+			ClientError: []string{"Internal Server Error"},
+		}
+	}
+	return &group, nil
+}

@@ -40,7 +40,19 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 	}
 	err := s.uow.Do(s.ctx, func(tx iuow.IUnitOfWork) *util.ValidationError {
 		groupModel = repo_group.MapperGroupModel(*groupEntity)
-		_, err := s.repoGroup.InsertGroup(*groupModel)
+		res, err := s.repoGroup.SelectOneGroupByNameAndCode(*groupModel.Name, *groupModel.Code)
+		if err != nil {
+			return err
+		}
+		if res.ID != nil {
+			return &util.ValidationError{
+				Code:        "VBR-0002",
+				LogError:    []string{"Group already exists"},
+				ClientError: []string{"Group already exists"},
+				Status:      http.StatusBadRequest,
+			}
+		}
+		_, err = s.repoGroup.InsertGroup(*groupModel)
 		if err != nil {
 			return err
 		}
