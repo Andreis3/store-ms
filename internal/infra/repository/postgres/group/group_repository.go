@@ -14,20 +14,18 @@ import (
 )
 
 type GroupRepository struct {
-	postgres ipostgres.IPostgres
+	DB ipostgres.IInstructionDB
 	*pgconn.PgError
 }
 
-func NewGroupRepository(pool ipostgres.IPostgres) *GroupRepository {
-	return &GroupRepository{
-		postgres: pool,
-	}
+func NewGroupRepository() *GroupRepository {
+	return &GroupRepository{}
 }
 
 func (r *GroupRepository) InsertGroup(data GroupModel) (string, *util.ValidationError) {
 	query := `INSERT INTO groups (id, group_name, code, status, created_at, updated_at) 
 				VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
-	rows, _ := r.postgres.Query(context.Background(), query,
+	rows, _ := r.DB.Query(context.Background(), query,
 		data.ID,
 		data.GroupName,
 		data.Code,

@@ -1,32 +1,25 @@
 package group_service
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
-	irepo_group "github.com/andreis3/stores-ms/internal/infra/repository/postgres/group/interfaces"
-	iuow "github.com/andreis3/stores-ms/internal/infra/uow/interfaces"
+	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group/interfaces"
+	"github.com/andreis3/stores-ms/internal/infra/uow/interfaces"
 	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type InsertGroupService struct {
-	uow       iuow.IUnitOfWork
-	repoGroup irepo_group.IGroupRepository
-	ctx       context.Context
+	uow iuow.IUnitOfWork
 }
 
 func NewInsertGroupService(uow iuow.IUnitOfWork) *InsertGroupService {
-	ctx := context.Background()
-	repoGroup := uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
 	return &InsertGroupService{
-		uow:       uow,
-		ctx:       ctx,
-		repoGroup: repoGroup,
+		uow: uow,
 	}
 }
-func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
+func (igs *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	var groupModel *repo_group.GroupModel
 	groupEntity := data.MapperInputDtoToEntity()
 	validate := groupEntity.Validate()
@@ -38,9 +31,10 @@ func (s *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dt
 			Status:      http.StatusBadRequest,
 		}
 	}
-	err := s.uow.Do(s.ctx, func(tx iuow.IUnitOfWork) *util.ValidationError {
+	err := igs.uow.Do(func(tx iuow.IUnitOfWork) *util.ValidationError {
+		repoGroup := igs.uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
 		groupModel = repo_group.MapperGroupModel(*groupEntity)
-		_, err := s.repoGroup.InsertGroup(*groupModel)
+		_, err := repoGroup.InsertGroup(*groupModel)
 		if err != nil {
 			return err
 		}
