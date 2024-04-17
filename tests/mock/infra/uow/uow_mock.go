@@ -1,8 +1,6 @@
 package uow_mock
 
 import (
-	"context"
-
 	"github.com/andreis3/stores-ms/internal/infra/uow/interfaces"
 	"github.com/andreis3/stores-ms/internal/util"
 )
@@ -12,7 +10,7 @@ type UnitOfWorkMock struct {
 	RepositoryMocks      map[string]iuow.RepositoryFactory
 	RegisterFunc         func(name string, callback iuow.RepositoryFactory)
 	GetRepositoryFunc    func(name string) any
-	DoFunc               func(ctx context.Context, callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError
+	DoFunc               func(callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError
 	RollbackFunc         func() *util.ValidationError
 	CommitOrRollbackFunc func() *util.ValidationError
 }
@@ -28,9 +26,9 @@ func (u *UnitOfWorkMock) GetRepository(name string) any {
 	return repo
 }
 
-func (u *UnitOfWorkMock) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
+func (u *UnitOfWorkMock) Do(callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
 	callback(u)
-	return u.DoFunc(ctx, callback)
+	return u.DoFunc(callback)
 }
 
 func (u *UnitOfWorkMock) Rollback() *util.ValidationError {

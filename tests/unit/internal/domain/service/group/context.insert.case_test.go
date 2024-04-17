@@ -4,13 +4,13 @@
 package group_service_test
 
 import (
-	"context"
+	"net/http"
+
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/internal/infra/uow/interfaces"
 	"github.com/andreis3/stores-ms/internal/util"
 	"github.com/andreis3/stores-ms/tests/mock/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/tests/mock/infra/uow"
-	"net/http"
 )
 
 func ContextInsertSuccess() *uow_mock.UnitOfWorkMock {
@@ -31,7 +31,7 @@ func ContextInsertSuccess() *uow_mock.UnitOfWorkMock {
 		},
 	}
 	unitOfWork = &uow_mock.UnitOfWorkMock{
-		DoFunc: func(ctx context.Context, callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
+		DoFunc: func(callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
 			return nil
 		},
 		RegisterFunc: func(name string, callback iuow.RepositoryFactory) {
@@ -72,7 +72,7 @@ func ContextInsertReturnErrorGroupRepositoryInsertGroup() *uow_mock.UnitOfWorkMo
 		},
 	}
 	unitOfWork = &uow_mock.UnitOfWorkMock{
-		DoFunc: func(ctx context.Context, callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
+		DoFunc: func(callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
 			return &util.ValidationError{
 				Code:        "PIDB-235",
 				Status:      http.StatusInternalServerError,
@@ -113,7 +113,7 @@ func ContextInsertReturnErrorWhenCommitCommandUow() *uow_mock.UnitOfWorkMock {
 		},
 	}
 	unitOfWork = &uow_mock.UnitOfWorkMock{
-		DoFunc: func(ctx context.Context, callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
+		DoFunc: func(callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
 			return &util.ValidationError{
 				Code:        "PIDB-235",
 				Status:      http.StatusInternalServerError,
@@ -159,7 +159,7 @@ func ContextInsertReturnErrorWhenRoolbackCommandUow() *uow_mock.UnitOfWorkMock {
 		},
 	}
 	unitOfWork = &uow_mock.UnitOfWorkMock{
-		DoFunc: func(ctx context.Context, callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
+		DoFunc: func(callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
 			return &util.ValidationError{
 				Code:        "PIDB-235",
 				Status:      http.StatusInternalServerError,
