@@ -34,7 +34,19 @@ func (igs *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_
 	err := igs.uow.Do(func(tx iuow.IUnitOfWork) *util.ValidationError {
 		repoGroup := igs.uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
 		groupModel = repo_group.MapperGroupModel(*groupEntity)
-		_, err := repoGroup.InsertGroup(*groupModel)
+		res, err := repoGroup.SelectOneGroupByNameAndCode(*groupModel.Name, *groupModel.Code)
+		if err != nil {
+			return err
+		}
+		if res.ID != nil {
+			return &util.ValidationError{
+				Code:        "VBR-0002",
+				LogError:    []string{"Group already exists"},
+				ClientError: []string{"Group already exists"},
+				Status:      http.StatusBadRequest,
+			}
+		}
+		_, err = repoGroup.InsertGroup(*groupModel)
 		if err != nil {
 			return err
 		}
@@ -47,7 +59,7 @@ func (igs *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_
 		ID:        *groupModel.ID,
 		Status:    *groupModel.Status,
 		Code:      *groupModel.Code,
-		GroupName: *groupModel.GroupName,
+		Name:      *groupModel.Name,
 		CreatedAt: util.FormatDateString(*groupModel.CreatedAt),
 		UpdatedAt: util.FormatDateString(*groupModel.UpdatedAt),
 	}, nil

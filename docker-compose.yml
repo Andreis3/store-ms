@@ -11,17 +11,17 @@ services:
     depends_on:
         - postgres-store
     environment:
-      DB_DRIVER: "postgres"
-      DB_HOST: "postgres-store"
-      DB_PORT: "5432"
-      DB_USER: "root"
-      DB_PASSWORD: "root"
-      DB_NAME: "store_db"
-      MAX_CONNECTIONS: "50"
-      MIN_CONNECTIONS: "5"
-      MAX_CONN_LIFETIME: "100"
-      MAX_CONN_IDLE_TIME: "1"
-      SERVER_PORT: "8080"
+      DB_DRIVER: postgres
+      DB_HOST: postgres-store
+      DB_PORT: 5432
+      DB_USER: root
+      DB_PASSWORD: root
+      DB_NAME: store_db
+      MAX_CONNECTIONS: 50
+      MIN_CONNECTIONS: 5
+      MAX_CONN_LIFETIME: 100
+      MAX_CONN_IDLE_TIME: 1
+      SERVER_PORT: 8080
     entrypoint: ["/go/bin/store-ms"]
 
   postgres-store:

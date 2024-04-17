@@ -37,9 +37,9 @@ var _ = Describe("INTEGRATION :: TEST :: CREATE :: NEW :: GROUP", func() {
 				})
 				It("Should return status 201", func() {
 					body, _ := json.Marshal(map[string]interface{}{
-						"group_name": "test 1",
-						"code":       "test 1",
-						"status":     "active",
+						"name":   "test 1",
+						"code":   "test 1",
+						"status": "active",
 					})
 					payload := bytes.NewBuffer(body)
 
@@ -57,7 +57,7 @@ var _ = Describe("INTEGRATION :: TEST :: CREATE :: NEW :: GROUP", func() {
 					Expect(res.StatusCode).To(Equal(http.StatusCreated))
 					Expect(response["request_id"]).NotTo(BeNil())
 					Expect(response["status_code"].(float64)).To(Equal(float64(http.StatusCreated)))
-					Expect(response["data"].(map[string]any)["group_name"]).To(Equal("test 1"))
+					Expect(response["data"].(map[string]any)["name"]).To(Equal("test 1"))
 					Expect(response["data"].(map[string]any)["code"]).To(Equal("test 1"))
 					Expect(response["data"].(map[string]any)["status"]).To(Equal("active"))
 					Expect(response["data"].(map[string]any)["id"]).NotTo(BeNil())
@@ -77,14 +77,14 @@ var _ = Describe("INTEGRATION :: TEST :: CREATE :: NEW :: GROUP", func() {
 				})
 				It("Should return status 500", func() {
 					body, _ := json.Marshal(map[string]interface{}{
-						"group_name": "test 1",
-						"code":       "test 1",
-						"status":     "active",
+						"name":   "test 1",
+						"code":   "test 1",
+						"status": "active",
 					})
 					body2, _ := json.Marshal(map[string]interface{}{
-						"group_name": "test 1",
-						"code":       "test 1",
-						"status":     "active",
+						"name":   "test 1",
+						"code":   "test 1",
+						"status": "active",
 					})
 					payload := bytes.NewBuffer(body)
 					payload2 := bytes.NewBuffer(body2)

@@ -23,11 +23,11 @@ func NewGroupRepository() *GroupRepository {
 }
 
 func (r *GroupRepository) InsertGroup(data GroupModel) (string, *util.ValidationError) {
-	query := `INSERT INTO groups (id, group_name, code, status, created_at, updated_at) 
+	query := `INSERT INTO groups (id, name, code, status, created_at, updated_at) 
 				VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
 	rows, _ := r.DB.Query(context.Background(), query,
 		data.ID,
-		data.GroupName,
+		data.Name,
 		data.Code,
 		data.Status,
 		data.CreatedAt,
@@ -43,4 +43,19 @@ func (r *GroupRepository) InsertGroup(data GroupModel) (string, *util.Validation
 		}
 	}
 	return *group.ID, nil
+}
+func (r *GroupRepository) SelectOneGroupByNameAndCode(groupName, code string) (*GroupModel, *util.ValidationError) {
+	query := `SELECT * FROM groups WHERE name = $1 AND code = $2`
+	rows, _ := r.DB.Query(context.Background(), query, groupName, code)
+	defer rows.Close()
+	group, err := pgx.CollectOneRow[GroupModel](rows, pgx.RowToStructByName[GroupModel])
+	if errors.As(err, &r.PgError) {
+		return nil, &util.ValidationError{
+			Code:        fmt.Sprintf("PIDB-%s", r.Code),
+			Status:      http.StatusInternalServerError,
+			LogError:    []string{fmt.Sprintf("%s, %s", r.Message, r.Detail)},
+			ClientError: []string{"Internal Server Error"},
+		}
+	}
+	return &group, nil
 }

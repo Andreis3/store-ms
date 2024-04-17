@@ -7,4 +7,5 @@ import (
 
 type IGroupRepository interface {
 	InsertGroup(group repo_group.GroupModel) (string, *util.ValidationError)
+	SelectOneGroupByNameAndCode(name, code string) (*repo_group.GroupModel, *util.ValidationError)
 }

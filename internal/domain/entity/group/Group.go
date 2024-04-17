@@ -7,24 +7,24 @@ import (
 )
 
 type Group struct {
-	ID        string
-	GroupName string
-	Code      string
-	Status    valueobject.Status
+	ID     string
+	Name   string
+	Code   string
+	Status valueobject.Status
 	notification.NotificationError
 }
 
-func NewGroup(groupName, code string, status *valueobject.Status) *Group {
+func NewGroup(name, code string, status *valueobject.Status) *Group {
 	return &Group{
-		ID:        base.NewID(),
-		GroupName: groupName,
-		Code:      code,
-		Status:    *status,
+		ID:     base.NewID(),
+		Name:   name,
+		Code:   code,
+		Status: *status,
 	}
 }
 func (g *Group) Validate() *notification.NotificationError {
-	if g.GroupName == "" {
-		g.AddNotification(`group_name: is required`)
+	if g.Name == "" {
+		g.AddNotification(`name: is required`)
 	}
 	if g.Code == "" {
 		g.AddNotification(`code: is required`)
