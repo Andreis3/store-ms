@@ -150,7 +150,7 @@ func ContextInsertReturnErrorWhenCommitCommandUow() *uow_mock.UnitOfWorkMock {
 	uow := uow_mock.NewProxyUnitOfWorkMock(unitOfWork, mapRegister)
 	return uow
 }
-func ContextInsertReturnErrorWhenRoolbackCommandUow() *uow_mock.UnitOfWorkMock {
+func ContextInsertReturnErrorWhenRollbackCommandUow() *uow_mock.UnitOfWorkMock {
 	var unitOfWork *uow_mock.UnitOfWorkMock
 	var mapRegister []uow_mock.RegisterRepository
 	var groupRepositoryMock *repo_group_mock.GroupRepositoryMock
