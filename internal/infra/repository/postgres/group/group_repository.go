@@ -14,20 +14,18 @@ import (
 )
 
 type GroupRepository struct {
-	postgres ipostgres.IPostgres
+	DB ipostgres.IInstructionDB
 	*pgconn.PgError
 }
 
-func NewGroupRepository(pool ipostgres.IPostgres) *GroupRepository {
-	return &GroupRepository{
-		postgres: pool,
-	}
+func NewGroupRepository() *GroupRepository {
+	return &GroupRepository{}
 }
 
 func (r *GroupRepository) InsertGroup(data GroupModel) (string, *util.ValidationError) {
 	query := `INSERT INTO groups (id, name, code, status, created_at, updated_at) 
 				VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
-	rows, _ := r.postgres.Query(context.Background(), query,
+	rows, _ := r.DB.Query(context.Background(), query,
 		data.ID,
 		data.Name,
 		data.Code,
@@ -48,7 +46,7 @@ func (r *GroupRepository) InsertGroup(data GroupModel) (string, *util.Validation
 }
 func (r *GroupRepository) SelectOneGroupByNameAndCode(groupName, code string) (*GroupModel, *util.ValidationError) {
 	query := `SELECT * FROM groups WHERE name = $1 AND code = $2`
-	rows, _ := r.postgres.Query(context.Background(), query, groupName, code)
+	rows, _ := r.DB.Query(context.Background(), query, groupName, code)
 	defer rows.Close()
 	group, err := pgx.CollectOneRow[GroupModel](rows, pgx.RowToStructByName[GroupModel])
 	if errors.As(err, &r.PgError) {

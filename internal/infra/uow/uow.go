@@ -31,7 +31,8 @@ func (u *UnitOfWork) GetRepository(name string) any {
 	repo := u.Repositories[name](u.TX)
 	return repo
 }
-func (u *UnitOfWork) Do(ctx context.Context, callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
+func (u *UnitOfWork) Do(callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
+	ctx := context.Background()
 	if u.TX != nil {
 		return &util.ValidationError{
 			Code:        "PDB-0001",
@@ -71,7 +72,8 @@ func (u *UnitOfWork) Rollback() *util.ValidationError {
 			Status:      http.StatusInternalServerError,
 		}
 	}
-	err := u.TX.Rollback(context.Background())
+	ctx := context.Background()
+	err := u.TX.Rollback(ctx)
 	if err != nil {
 		return &util.ValidationError{
 			Code:        "PDB-0002",
@@ -84,10 +86,11 @@ func (u *UnitOfWork) Rollback() *util.ValidationError {
 	return nil
 }
 func (u *UnitOfWork) CommitOrRollback() *util.ValidationError {
+	ctx := context.Background()
 	if u.TX == nil {
 		return nil
 	}
-	if err := u.TX.Commit(context.Background()); err != nil {
+	if err := u.TX.Commit(ctx); err != nil {
 		if errRB := u.Rollback(); errRB != nil {
 			return errRB
 		}
