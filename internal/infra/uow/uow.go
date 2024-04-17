@@ -28,6 +28,14 @@ func (u *UnitOfWork) Register(name string, callback iuow.RepositoryFactory) {
 }
 
 func (u *UnitOfWork) GetRepository(name string) any {
+	ctx := context.Background()
+	if u.TX == nil {
+		tx, err := u.DB.Begin(ctx)
+		if err != nil {
+			return nil
+		}
+		u.TX = tx
+	}
 	repo := u.Repositories[name](u.TX)
 	return repo
 }
