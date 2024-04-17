@@ -26,7 +26,6 @@ func NewUnitOfWork(db *pgxpool.Pool) *UnitOfWork {
 func (u *UnitOfWork) Register(name string, callback iuow.RepositoryFactory) {
 	u.Repositories[name] = callback
 }
-
 func (u *UnitOfWork) GetRepository(name string) any {
 	ctx := context.Background()
 	if u.TX == nil {
