@@ -39,21 +39,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 				requestIDMock = new(helpers_mock.RequestIDMock)
 			})
 			It("Should return a error when of method insertGroupCommand.Execute is call", func() {
-				data := group_dto.GroupInputDTO{
-					Name:   "teste 1",
-					Code:   "23",
-					Status: "active",
-				}
-				groupCommandMock.On(group_command_mock.Execute, data).Return(group_dto.GroupOutputDTO{}, &util.ValidationError{
-					Code:        "VBR-400",
-					Status:      http.StatusBadRequest,
-					ClientError: []string{"error test"},
-					LogError:    []string{"error test"},
-				})
-				requestIDMock.On(helpers_mock.Generate).Return("123")
-				loggerMock.On(logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "VBR-400", "ERROR_MESSAGE", "error test"}))
-				prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), "/groups", http.StatusBadRequest)
-				prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), "/groups", http.StatusBadRequest, float64(0))
+				ReturnErroWhenInsertGroupCommandOfExecuteIsCalled(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
 							"name":"teste 1",
@@ -62,18 +48,14 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 						  }`
 				request, err := http.NewRequest("POST", "/group", strings.NewReader(body))
 				writer := httptest.NewRecorder()
-
 				expected := helpers.TypeResponseError{
 					RequestID:    "123",
 					CodeError:    "VBR-400",
 					StatusCode:   http.StatusBadRequest,
 					ErrorMessage: []interface{}{"error test"},
 				}
-
 				result := helpers.TypeResponseError{}
-
 				groupController.CreateGroup(writer, request)
-
 				json.Unmarshal(writer.Body.Bytes(), &result)
 
 				Expect(err).To(BeNil())
