@@ -1,9 +1,16 @@
 package helpers_mock
 
+import "github.com/stretchr/testify/mock"
+
+const (
+	Generate = "Generate"
+)
+
 type RequestIDMock struct {
-	GenerateFunc func() string
+	mock.Mock
 }
 
 func (r *RequestIDMock) Generate() string {
-	return r.GenerateFunc()
+	args := r.Called()
+	return args.String(0)
 }
