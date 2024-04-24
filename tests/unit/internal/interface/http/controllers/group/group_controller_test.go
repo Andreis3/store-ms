@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"strings"
-	"testing"
 
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/metric/prometheus"
 
@@ -24,15 +23,6 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/logger"
 	"github.com/andreis3/stores-ms/tests/mock/interface/http/helpers"
 )
-
-func Test_GroupControllerSuite(t *testing.T) {
-	suiteConfig, reporterConfig := GinkgoConfiguration()
-	suiteConfig.SkipStrings = []string{"NEVER-RUN", "SKIP"}
-	reporterConfig.FullTrace = true
-	reporterConfig.Succinct = true
-	RegisterFailHandler(Fail)
-	RunSpecs(t, "Group Controller Test Suite ", suiteConfig, reporterConfig)
-}
 
 var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER", func() {
 	Describe("#CreateGroup", func() {
