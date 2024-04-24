@@ -54,7 +54,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 					Code:   "23",
 					Status: "active",
 				}
-				groupCommandMock.On("Execute", data).Return(group_dto.GroupOutputDTO{}, &util.ValidationError{
+				groupCommandMock.On(group_command_mock.Execute, data).Return(group_dto.GroupOutputDTO{}, &util.ValidationError{
 					Code:        "VBR-400",
 					Status:      http.StatusBadRequest,
 					ClientError: []string{"error test"},
@@ -97,7 +97,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 			})
 
 			It("Should return a error when of method DecoderBodyRequest is call with poorly formatted payload", func() {
-				groupCommandMock.On("Execute", group_dto.GroupInputDTO{}).Return(group_dto.GroupOutputDTO{}, &util.ValidationError{})
+				groupCommandMock.On(group_command_mock.Execute, group_dto.GroupInputDTO{}).Return(group_dto.GroupOutputDTO{}, &util.ValidationError{})
 				requestIDMock.On(helpers_mock.Generate).Return("123")
 				loggerMock.On(logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "DJ-402", "ERROR_MESSAGE", "unexpected EOF"}))
 				prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), "/groups", http.StatusBadRequest)
@@ -131,7 +131,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 			})
 
 			It("Should return a error when of method DecoderBodyRequest is call with invalid json syntax", func() {
-				groupCommandMock.On("Execute", group_dto.GroupInputDTO{}).Return(group_dto.GroupOutputDTO{}, &util.ValidationError{})
+				groupCommandMock.On(group_command_mock.Execute, group_dto.GroupInputDTO{}).Return(group_dto.GroupOutputDTO{}, &util.ValidationError{})
 				requestIDMock.On(helpers_mock.Generate).Return("123")
 				loggerMock.On(logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "DJ-400", "ERROR_MESSAGE", "invalid character '}' looking for beginning of object key string"}))
 				prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), "/groups", http.StatusBadRequest)
@@ -170,7 +170,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 			})
 
 			It("Should return a error when of method DecoderBodyRequest is call with invalid json field type", func() {
-				groupCommandMock.On("Execute", group_dto.GroupInputDTO{}).Return(group_dto.GroupOutputDTO{}, &util.ValidationError{})
+				groupCommandMock.On(group_command_mock.Execute, group_dto.GroupInputDTO{}).Return(group_dto.GroupOutputDTO{}, &util.ValidationError{})
 				requestIDMock.On(helpers_mock.Generate).Return("123")
 				loggerMock.On(logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "DJ-401", "ERROR_MESSAGE", "json: cannot unmarshal number into Go struct field GroupInputDTO.code of type string"}))
 				prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), "/groups", http.StatusBadRequest)
