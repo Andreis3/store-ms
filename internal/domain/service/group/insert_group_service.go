@@ -31,8 +31,8 @@ func (igs *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_
 			Status:      http.StatusBadRequest,
 		}
 	}
-	err := igs.uow.Do(func(tx iuow.IUnitOfWork) *util.ValidationError {
-		repoGroup := igs.uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
+	err := igs.uow.Do(func(uow iuow.IUnitOfWork) *util.ValidationError {
+		repoGroup := uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
 		groupModel = repo_group.MapperGroupModel(*groupEntity)
 		res, err := repoGroup.SelectOneGroupByNameAndCode(*groupModel.Name, *groupModel.Code)
 		if err != nil {

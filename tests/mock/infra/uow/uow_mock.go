@@ -7,11 +7,20 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
+const (
+	RegisterRepository = "RegisterRepository"
+	GetRepository      = "GetRepository"
+	Do                 = "Do"
+	Rollback           = "Rollback"
+	CommitOrRollback   = "CommitOrRollback"
+)
+
 type UnitOfWorkMock struct {
 	mock.Mock
 }
 
 func (u *UnitOfWorkMock) Register(name string, callback iuow.RepositoryFactory) {
+	callback(u)
 	u.Called(name, callback)
 }
 

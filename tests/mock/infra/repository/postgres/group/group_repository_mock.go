@@ -7,6 +7,11 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
+const (
+	InsertGroup                 = "InsertGroup"
+	SelectOneGroupByNameAndCode = "SelectOneGroupByNameAndCode"
+)
+
 type GroupRepositoryMock struct {
 	mock.Mock
 }

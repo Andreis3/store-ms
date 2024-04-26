@@ -6,7 +6,10 @@ package group_service_test
 import (
 	"net/http"
 
+	"github.com/stretchr/testify/mock"
+
 	"github.com/andreis3/stores-ms/internal/util"
+	"github.com/andreis3/stores-ms/tests/mock/infra/repository/postgres/group"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -19,7 +22,8 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 	Describe("#InsertGroup", func() {
 		Context("When I call the method InsertGroup", func() {
 			It("Should insert a new group not return errors", func() {
-				groupServiceUowDependency := ContextInsertSuccess()
+				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
+				groupServiceUowDependency := ContextInsertSuccess(groupRepositoryMock)
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
 					Name:   "Group 1",
@@ -37,10 +41,21 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(groupOutputDTO.ID).NotTo(BeEmpty())
 				Expect(groupOutputDTO.CreatedAt).NotTo(BeEmpty())
 				Expect(groupOutputDTO.UpdatedAt).NotTo(BeEmpty())
+				Expect(groupRepositoryMock.ExpectedCalls).To(HaveLen(2))
+				Expect(groupRepositoryMock.AssertCalled(GinkgoT(), "SelectOneGroupByNameAndCode", groupInputDTO.Name, groupInputDTO.Code)).To(BeTrue())
+				Expect(groupRepositoryMock.AssertNumberOfCalls(GinkgoT(), "SelectOneGroupByNameAndCode", 1)).To(BeTrue())
+				Expect(groupRepositoryMock.AssertNumberOfCalls(GinkgoT(), "InsertGroup", 1)).To(BeTrue())
+				Expect(groupRepositoryMock.AssertExpectations(GinkgoT())).To(Equal(true))
+				Expect(groupServiceUowDependency.ExpectedCalls).To(HaveLen(2))
+				Expect(groupServiceUowDependency.AssertCalled(GinkgoT(), "Do", mock.AnythingOfType("func(iuow.IUnitOfWork) *util.ValidationError"))).To(BeTrue())
+				Expect(groupServiceUowDependency.AssertNumberOfCalls(GinkgoT(), "Do", 1)).To(BeTrue())
+				Expect(groupServiceUowDependency.AssertCalled(GinkgoT(), "GetRepository", util.GROUP_REPOSITORY_KEY)).To(BeTrue())
+				Expect(groupServiceUowDependency.AssertNumberOfCalls(GinkgoT(), "GetRepository", 1)).To(BeTrue())
 			})
 
 			It("Should return an error when the method InsertGroup of the repository is call", func() {
-				groupServiceUowDependency := ContextInsertReturnErrorGroupRepositoryInsertGroup()
+				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
+				groupServiceUowDependency := ContextInsertReturnErrorGroupRepositoryInsertGroup(groupRepositoryMock)
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
 					Name:   "Group 1",
@@ -62,7 +77,8 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 			})
 
 			It("Should return an error when the method CommitOrRollback of the UOW is call", func() {
-				groupServiceUowDependency := ContextInsertReturnErrorWhenCommitCommandUow()
+				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
+				groupServiceUowDependency := ContextInsertReturnErrorWhenCommitCommandUow(groupRepositoryMock)
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
 					Name:   "Group 1",
@@ -84,7 +100,8 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 			})
 
 			It("Should return an error when the payload input is invalid", func() {
-				groupServiceUowDependency := ContextInsertSuccess()
+				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
+				groupServiceUowDependency := ContextInsertSuccess(groupRepositoryMock)
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
 					Name:   "",
@@ -106,7 +123,8 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 			})
 
 			It("Should return an error when the select group by name and code return an error", func() {
-				groupServiceUowDependency := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode()
+				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
+				groupServiceUowDependency := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode(groupRepositoryMock)
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
 					Name:   "Group 1",
@@ -128,7 +146,8 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 			})
 
 			It("Should return an error when the group already exists", func() {
-				groupServiceUowDependency := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup()
+				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
+				groupServiceUowDependency := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup(groupRepositoryMock)
 				service := group_service.NewInsertGroupService(groupServiceUowDependency)
 				groupInputDTO := group_dto.GroupInputDTO{
 					Name:   "Group 1",
