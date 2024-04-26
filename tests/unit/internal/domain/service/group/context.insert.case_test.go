@@ -21,7 +21,7 @@ func ContextInsertSuccess(groupRepositoryMock *repo_group_mock.GroupRepositoryMo
 	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, (*util.ValidationError)(nil))
 	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("1", &util.ValidationError{})
 
-	unitOfWork.On(uow_mock.Do, mock.AnythingOfType("func(iuow.IUnitOfWork) *util.ValidationError")).Return((*util.ValidationError)(nil)).Run(func(args mock.Arguments) {
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return((*util.ValidationError)(nil)).Run(func(args mock.Arguments) {
 		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
 		callback(unitOfWork)
 	}).Once()
@@ -41,7 +41,7 @@ func ContextInsertReturnErrorGroupRepositoryInsertGroup(groupRepositoryMock *rep
 	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, &util.ValidationError{})
 	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("", err)
 
-	unitOfWork.On(uow_mock.Do, mock.AnythingOfType("func(iuow.IUnitOfWork) *util.ValidationError")).Return(err).Run(func(args mock.Arguments) {
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
 		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
 		callback(unitOfWork)
 	}).Once()
@@ -62,7 +62,7 @@ func ContextInsertReturnErrorWhenCommitCommandUow(groupRepositoryMock *repo_grou
 	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, &util.ValidationError{})
 	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("1", nil)
 
-	unitOfWork.On(uow_mock.Do, mock.AnythingOfType("func(iuow.IUnitOfWork) *util.ValidationError")).Return(err).Run(func(args mock.Arguments) {
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
 		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
 		callback(unitOfWork)
 	}).Once()
@@ -89,7 +89,7 @@ func ContextInsertReturnErrorWhenRollbackCommandUow(groupRepositoryMock *repo_gr
 	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, nil)
 	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("1", nil)
 
-	unitOfWork.On(uow_mock.Do, mock.AnythingOfType("func(iuow.IUnitOfWork) *util.ValidationError")).Return(err).Run(func(args mock.Arguments) {
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
 		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
 		callback(unitOfWork)
 	}).Once()
@@ -121,7 +121,7 @@ func ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode(groupRepositoryMock
 	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, err)
 	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("", &util.ValidationError{})
 
-	unitOfWork.On(uow_mock.Do, mock.AnythingOfType("func(iuow.IUnitOfWork) *util.ValidationError")).Return(err).Run(func(args mock.Arguments) {
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
 		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
 		callback(unitOfWork)
 	}).Once()
@@ -150,7 +150,7 @@ func ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup(groupRep
 
 	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(model, &util.ValidationError{})
 	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("", &util.ValidationError{})
-	unitOfWork.On(uow_mock.Do, mock.AnythingOfType("func(iuow.IUnitOfWork) *util.ValidationError")).Return(err).Run(func(args mock.Arguments) {
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
 		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
 		callback(unitOfWork)
 

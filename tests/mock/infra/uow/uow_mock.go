@@ -13,6 +13,7 @@ const (
 	Do                 = "Do"
 	Rollback           = "Rollback"
 	CommitOrRollback   = "CommitOrRollback"
+	DoParamFunc        = "func(iuow.IUnitOfWork) *util.ValidationError"
 )
 
 type UnitOfWorkMock struct {
@@ -20,13 +21,12 @@ type UnitOfWorkMock struct {
 }
 
 func (u *UnitOfWorkMock) Register(name string, callback iuow.RepositoryFactory) {
-	callback(u)
 	u.Called(name, callback)
 }
 
 func (u *UnitOfWorkMock) GetRepository(name string) any {
 	args := u.Called(name)
-	return args.Get(0)
+	return args.Get(0).(any)
 }
 
 func (u *UnitOfWorkMock) Do(callback func(uow iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
