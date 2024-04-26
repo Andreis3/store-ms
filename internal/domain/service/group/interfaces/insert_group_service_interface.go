@@ -1,10 +1,11 @@
 package igroup_service
 
 import (
+	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type IInsertGroupService interface {
-	InsertGroup(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError)
+	InsertGroup(data entity_group.Group) (group_dto.GroupOutputDTO, *util.ValidationError)
 }

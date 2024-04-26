@@ -25,7 +25,9 @@ func ContextInsertSuccess() *group_service_mock.InsertGroupServiceMock {
 		UpdatedAt: "2021-01-01T00:00:00Z",
 	}
 
-	groupServiceMock.On(group_service_mock.InsertGroup, groupInputDTO).Return(groupOutputDTO, (*util.ValidationError)(nil))
+	group := groupInputDTO.MapperInputDtoToEntity()
+
+	groupServiceMock.On(group_service_mock.InsertGroup, *group).Return(groupOutputDTO, (*util.ValidationError)(nil))
 	return groupServiceMock
 }
 
@@ -37,6 +39,8 @@ func ContextInsertReturnErrorGroupServiceInsertGroup() *group_service_mock.Inser
 		Code:   "G1",
 		Status: "active",
 	}
+
+	gourp := groupInputDTO.MapperInputDtoToEntity()
 	groupOutputDTO := group_dto.GroupOutputDTO{}
 	err := &util.ValidationError{
 		Code:        "PIDB-235",
@@ -45,6 +49,6 @@ func ContextInsertReturnErrorGroupServiceInsertGroup() *group_service_mock.Inser
 		LogError:    []string{"Insert group error"},
 	}
 
-	groupServiceMock.On(group_service_mock.InsertGroup, groupInputDTO).Return(groupOutputDTO, err)
+	groupServiceMock.On(group_service_mock.InsertGroup, *gourp).Return(groupOutputDTO, err)
 	return groupServiceMock
 }

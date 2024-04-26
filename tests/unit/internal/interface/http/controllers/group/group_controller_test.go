@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/metric/prometheus"
+	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -20,7 +21,6 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 	"github.com/andreis3/stores-ms/tests/mock/app/command/group"
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/logger"
-	"github.com/andreis3/stores-ms/tests/mock/interface/http/helpers"
 )
 
 var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER", func() {
@@ -28,14 +28,14 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 		groupCommandMock := new(group_command_mock.InsertGroupCommandMock)
 		prometheusMock := new(metric_prometheus_mock.PrometheusAdapterMock)
 		loggerMock := new(logger_mock.LoggerMock)
-		requestIDMock := new(helpers_mock.RequestIDMock)
+		requestIDMock := new(uuid_mock.UUIDMock)
 		groupController := new(group_controller.Controller)
 		Context("When I call the method CreateGroup", func() {
 			BeforeEach(func() {
 				groupCommandMock = new(group_command_mock.InsertGroupCommandMock)
 				prometheusMock = new(metric_prometheus_mock.PrometheusAdapterMock)
 				loggerMock = new(logger_mock.LoggerMock)
-				requestIDMock = new(helpers_mock.RequestIDMock)
+				requestIDMock = new(uuid_mock.UUIDMock)
 			})
 			It("Should return a error when of method insertGroupCommand.Execute is call", func() {
 				ReturnErroWhenInsertGroupCommandOfExecuteIsCalled(groupCommandMock, prometheusMock, loggerMock, requestIDMock)

@@ -3,6 +3,8 @@ package group_service
 import (
 	"net/http"
 
+	"github.com/andreis3/stores-ms/internal/domain/entity/group"
+	"github.com/andreis3/stores-ms/internal/infra/common/uuid"
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/uow/interfaces"
@@ -11,18 +13,20 @@ import (
 )
 
 type InsertGroupService struct {
-	uow iuow.IUnitOfWork
+	uow  iuow.IUnitOfWork
+	uuid uuid.IUUID
 }
 
-func NewInsertGroupService(uow iuow.IUnitOfWork) *InsertGroupService {
+func NewInsertGroupService(uow iuow.IUnitOfWork, uuid uuid.IUUID) *InsertGroupService {
 	return &InsertGroupService{
-		uow: uow,
+		uow:  uow,
+		uuid: uuid,
 	}
 }
-func (igs *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
-	var groupModel *repo_group.GroupModel
-	groupEntity := data.MapperInputDtoToEntity()
-	validate := groupEntity.Validate()
+func (igs *InsertGroupService) InsertGroup(data entity_group.Group) (group_dto.GroupOutputDTO, *util.ValidationError) {
+	groupModel := new(repo_group.GroupModel)
+	data.ID = igs.uuid.Generate()
+	validate := data.Validate()
 	if validate.HasNotification() {
 		return group_dto.GroupOutputDTO{}, &util.ValidationError{
 			Code:        "VBR-0001",
@@ -33,8 +37,7 @@ func (igs *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_
 	}
 	err := igs.uow.Do(func(uow iuow.IUnitOfWork) *util.ValidationError {
 		repoGroup := uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
-		groupModel = repo_group.MapperGroupModel(*groupEntity)
-		res, err := repoGroup.SelectOneGroupByNameAndCode(*groupModel.Name, *groupModel.Code)
+		res, err := repoGroup.SelectOneGroupByNameAndCode(data.Name, data.Code)
 		if err != nil {
 			return err
 		}
@@ -46,7 +49,7 @@ func (igs *InsertGroupService) InsertGroup(data group_dto.GroupInputDTO) (group_
 				Status:      http.StatusBadRequest,
 			}
 		}
-		_, err = repoGroup.InsertGroup(*groupModel)
+		groupModel, err = repoGroup.InsertGroup(data)
 		if err != nil {
 			return err
 		}

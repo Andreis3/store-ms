@@ -6,6 +6,7 @@ import (
 )
 
 type Seller struct {
+	ID         string
 	SellerName string
 	Code       string
 	StoreKey   string
@@ -19,6 +20,7 @@ type Config struct {
 
 func NewSeller(sellerName, code string, status *valueobject.Status, config bool) *Seller {
 	return &Seller{
+		ID:         "",
 		SellerName: sellerName,
 		Code:       code,
 		Status:     *status,

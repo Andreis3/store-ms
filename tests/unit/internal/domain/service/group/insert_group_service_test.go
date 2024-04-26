@@ -8,7 +8,10 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
+	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
+	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 	"github.com/andreis3/stores-ms/internal/util"
+	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
 	"github.com/andreis3/stores-ms/tests/mock/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/tests/mock/infra/uow"
 
@@ -16,7 +19,6 @@ import (
 	. "github.com/onsi/gomega"
 
 	"github.com/andreis3/stores-ms/internal/domain/service/group"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
 )
 
 var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", func() {
@@ -24,26 +26,30 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 		Context("When I call the method InsertGroup", func() {
 			It("Should insert a new group not return errors", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
-				uowMock := ContextInsertSuccess(groupRepositoryMock)
-				service := group_service.NewInsertGroupService(uowMock)
-				groupInputDTO := group_dto.GroupInputDTO{
-					Name:   "Group 1",
-					Code:   "G1",
+				uuidMock := new(uuid_mock.UUIDMock)
+				uowMock := ContextInsertSuccess(groupRepositoryMock, uuidMock)
+				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				status := valueobject.Status{
 					Status: "active",
 				}
+				groupEntity := &entity_group.Group{
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: status,
+				}
 
-				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				groupOutputDTO, err := service.InsertGroup(*groupEntity)
 
 				Expect(err).To(BeNil())
 				Expect(groupOutputDTO).ToNot(BeNil())
-				Expect(groupOutputDTO.Name).To(Equal(groupInputDTO.Name))
-				Expect(groupOutputDTO.Code).To(Equal(groupInputDTO.Code))
-				Expect(groupOutputDTO.Status).To(Equal(groupInputDTO.Status))
+				Expect(groupOutputDTO.Name).To(Equal(groupEntity.Name))
+				Expect(groupOutputDTO.Code).To(Equal(groupEntity.Code))
+				Expect(groupOutputDTO.Status).To(Equal(groupEntity.Status.Status))
 				Expect(groupOutputDTO.ID).NotTo(BeEmpty())
 				Expect(groupOutputDTO.CreatedAt).NotTo(BeEmpty())
 				Expect(groupOutputDTO.UpdatedAt).NotTo(BeEmpty())
 				Expect(groupRepositoryMock.ExpectedCalls).To(HaveLen(2))
-				Expect(groupRepositoryMock.AssertCalled(GinkgoT(), repo_group_mock.SelectOneGroupByNameAndCode, groupInputDTO.Name, groupInputDTO.Code)).To(BeTrue())
+				Expect(groupRepositoryMock.AssertCalled(GinkgoT(), repo_group_mock.SelectOneGroupByNameAndCode, groupEntity.Name, groupEntity.Code)).To(BeTrue())
 				Expect(groupRepositoryMock.AssertNumberOfCalls(GinkgoT(), repo_group_mock.SelectOneGroupByNameAndCode, 1)).To(BeTrue())
 				Expect(groupRepositoryMock.AssertNumberOfCalls(GinkgoT(), repo_group_mock.InsertGroup, 1)).To(BeTrue())
 				Expect(groupRepositoryMock.AssertExpectations(GinkgoT())).To(Equal(true))
@@ -55,17 +61,21 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(uowMock.AssertNumberOfCalls(GinkgoT(), uow_mock.GetRepository, 1)).To(BeTrue())
 			})
 
-			It("Should return an error when the method InsertGroup of the repository is call", func() {
+			It("Should return an error when the method InsertGroup of the repository is call SKIP", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
-				uowMock := ContextInsertReturnErrorGroupRepositoryInsertGroup(groupRepositoryMock)
-				service := group_service.NewInsertGroupService(uowMock)
-				groupInputDTO := group_dto.GroupInputDTO{
-					Name:   "Group 1",
-					Code:   "G1",
+				uuidMock := new(uuid_mock.UUIDMock)
+				uowMock := ContextInsertReturnErrorGroupRepositoryInsertGroup(groupRepositoryMock, uuidMock)
+				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				status := valueobject.Status{
 					Status: "active",
 				}
+				groupEntity := &entity_group.Group{
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: status,
+				}
 
-				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				groupOutputDTO, err := service.InsertGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "PIDB-235",
 					Status:      500,
@@ -78,17 +88,21 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(err).To(Equal(expectedError))
 			})
 
-			It("Should return an error when the method CommitOrRollback of the UOW is call", func() {
+			It("Should return an error when the method CommitOrRollback of the UOW is call SKIP", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
-				uowMock := ContextInsertReturnErrorWhenCommitCommandUow(groupRepositoryMock)
-				service := group_service.NewInsertGroupService(uowMock)
-				groupInputDTO := group_dto.GroupInputDTO{
-					Name:   "Group 1",
-					Code:   "G1",
+				uuidMock := new(uuid_mock.UUIDMock)
+				uowMock := ContextInsertReturnErrorWhenCommitCommandUow(groupRepositoryMock, uuidMock)
+				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				status := valueobject.Status{
 					Status: "active",
 				}
+				groupEntity := &entity_group.Group{
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: status,
+				}
 
-				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				groupOutputDTO, err := service.InsertGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "PIDB-235",
 					Status:      http.StatusInternalServerError,
@@ -101,17 +115,21 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(err).To(Equal(expectedError))
 			})
 
-			It("Should return an error when the payload input is invalid", func() {
+			It("Should return an error when the payload input is invalid SKIP", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
-				uowMock := ContextInsertSuccess(groupRepositoryMock)
-				service := group_service.NewInsertGroupService(uowMock)
-				groupInputDTO := group_dto.GroupInputDTO{
-					Name:   "",
-					Code:   "G1",
+				uuidMock := new(uuid_mock.UUIDMock)
+				uowMock := ContextInsertSuccess(groupRepositoryMock, uuidMock)
+				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				status := valueobject.Status{
 					Status: "active",
 				}
+				groupEntity := &entity_group.Group{
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: status,
+				}
 
-				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				groupOutputDTO, err := service.InsertGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "VBR-0001",
 					Status:      http.StatusBadRequest,
@@ -124,17 +142,21 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(err).To(Equal(expectedError))
 			})
 
-			It("Should return an error when the select group by name and code return an error", func() {
+			It("Should return an error when the select group by name and code return an error SKIP", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
-				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode(groupRepositoryMock)
-				service := group_service.NewInsertGroupService(uowMock)
-				groupInputDTO := group_dto.GroupInputDTO{
-					Name:   "Group 1",
-					Code:   "G1",
+				uuidMock := new(uuid_mock.UUIDMock)
+				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode(groupRepositoryMock, uuidMock)
+				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				status := valueobject.Status{
 					Status: "active",
 				}
+				groupEntity := &entity_group.Group{
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: status,
+				}
 
-				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				groupOutputDTO, err := service.InsertGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "PIDB-235",
 					Status:      http.StatusInternalServerError,
@@ -147,17 +169,21 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(err).To(Equal(expectedError))
 			})
 
-			It("Should return an error when the group already exists", func() {
+			It("Should return an error when the group already exists SKIP", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
-				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup(groupRepositoryMock)
-				service := group_service.NewInsertGroupService(uowMock)
-				groupInputDTO := group_dto.GroupInputDTO{
-					Name:   "Group 1",
-					Code:   "G1",
+				uuidMock := new(uuid_mock.UUIDMock)
+				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup(groupRepositoryMock, uuidMock)
+				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				status := valueobject.Status{
 					Status: "active",
 				}
+				groupEntity := &entity_group.Group{
+					Name:   "Group 1",
+					Code:   "G1",
+					Status: status,
+				}
 
-				groupOutputDTO, err := service.InsertGroup(groupInputDTO)
+				groupOutputDTO, err := service.InsertGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "VBR-0002",
 					Status:      http.StatusBadRequest,

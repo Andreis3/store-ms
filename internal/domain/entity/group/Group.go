@@ -1,7 +1,6 @@
 package entity_group
 
 import (
-	"github.com/andreis3/stores-ms/internal/domain/entity/base"
 	"github.com/andreis3/stores-ms/internal/domain/error/notification"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 )
@@ -16,7 +15,7 @@ type Group struct {
 
 func NewGroup(name, code string, status *valueobject.Status) *Group {
 	return &Group{
-		ID:     base.NewID(),
+		ID:     "",
 		Name:   name,
 		Code:   code,
 		Status: *status,

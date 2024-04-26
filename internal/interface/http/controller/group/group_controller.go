@@ -2,10 +2,12 @@ package group_controller
 
 import (
 	"context"
-	imetric "github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
 	"net/http"
 	"strings"
 	"time"
+
+	imetric "github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
+	"github.com/andreis3/stores-ms/internal/infra/common/uuid"
 
 	"github.com/andreis3/stores-ms/internal/app/command/group/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
@@ -16,14 +18,14 @@ import (
 type Controller struct {
 	insertGroupCommand igroup_command.IInsertGroupCommand
 	logger             ilogger.ILogger
-	requestID          helpers.IRequestID
+	requestID          uuid.IUUID
 	prometheus         imetric.IMetricAdapter
 }
 
 func NewGroupController(insertGroupCommand igroup_command.IInsertGroupCommand,
 	prometheus imetric.IMetricAdapter,
 	logger ilogger.ILogger,
-	requestID helpers.IRequestID) *Controller {
+	requestID uuid.IUUID) *Controller {
 	return &Controller{
 		insertGroupCommand: insertGroupCommand,
 		logger:             logger,

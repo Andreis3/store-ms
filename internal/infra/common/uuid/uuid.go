@@ -1,14 +1,14 @@
-package helpers
+package uuid
 
 import "github.com/google/uuid"
 
-type IRequestID interface {
+type IUUID interface {
 	Generate() string
 }
 
 type RequestID struct{}
 
-func NewRequestID() *RequestID {
+func NewUUID() *RequestID {
 	return &RequestID{}
 }
 

@@ -1,4 +1,4 @@
-package helpers_mock
+package uuid_mock
 
 import "github.com/stretchr/testify/mock"
 
@@ -6,11 +6,11 @@ const (
 	Generate = "Generate"
 )
 
-type RequestIDMock struct {
+type UUIDMock struct {
 	mock.Mock
 }
 
-func (r *RequestIDMock) Generate() string {
+func (r *UUIDMock) Generate() string {
 	args := r.Called()
 	return args.String(0)
 }
