@@ -42,9 +42,11 @@ func (r *GroupRepository) InsertGroup(data entity_group.Group) (*GroupModel, *ut
 		model.UpdatedAt)
 	defer rows.Close()
 	group, err := pgx.CollectOneRow[GroupModel](rows, pgx.RowToStructByName[GroupModel])
+	//ERROR: duplicate key value violates unique constraint "groups_name_code_key" (SQLSTATE 23505)
 	if errors.As(err, &r.PgError) {
 		return &GroupModel{}, &util.ValidationError{
 			Code:        fmt.Sprintf("PIDB-%s", r.Code),
+			Origin:      "GroupRepository.InsertGroup",
 			Status:      http.StatusInternalServerError,
 			LogError:    []string{fmt.Sprintf("%s, %s", r.Message, r.Detail)},
 			ClientError: []string{"Internal Server Error"},
@@ -64,6 +66,7 @@ func (r *GroupRepository) SelectOneGroupByNameAndCode(groupName, code string) (*
 	if errors.As(err, &r.PgError) {
 		return nil, &util.ValidationError{
 			Code:        fmt.Sprintf("PIDB-%s", r.Code),
+			Origin:      "GroupRepository.SelectOneGroupByNameAndCode",
 			Status:      http.StatusInternalServerError,
 			LogError:    []string{fmt.Sprintf("%s, %s", r.Message, r.Detail)},
 			ClientError: []string{"Internal Server Error"},

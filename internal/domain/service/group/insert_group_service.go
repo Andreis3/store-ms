@@ -30,6 +30,7 @@ func (igs *InsertGroupService) InsertGroup(data entity_group.Group) (group_dto.G
 	if validate.HasNotification() {
 		return group_dto.GroupOutputDTO{}, &util.ValidationError{
 			Code:        "VBR-0001",
+			Origin:      "InsertGroupService.InsertGroup",
 			LogError:    validate.ReturnNotification(),
 			ClientError: validate.ReturnNotification(),
 			Status:      http.StatusBadRequest,
@@ -44,6 +45,7 @@ func (igs *InsertGroupService) InsertGroup(data entity_group.Group) (group_dto.G
 		if res.ID != nil {
 			return &util.ValidationError{
 				Code:        "VBR-0002",
+				Origin:      "InsertGroupService.InsertGroup",
 				LogError:    []string{"Group already exists"},
 				ClientError: []string{"Group already exists"},
 				Status:      http.StatusBadRequest,
