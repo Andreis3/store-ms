@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -11,19 +12,24 @@ import (
 
 	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
 	ipostgres "github.com/andreis3/stores-ms/internal/infra/adapters/database/postgres/interfaces"
+	imetric "github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type GroupRepository struct {
 	DB ipostgres.IInstructionDB
 	*pgconn.PgError
+	metrics imetric.IMetricAdapter
 }
 
-func NewGroupRepository() *GroupRepository {
-	return &GroupRepository{}
+func NewGroupRepository(metrics imetric.IMetricAdapter) *GroupRepository {
+	return &GroupRepository{
+		metrics: metrics,
+	}
 }
 
 func (r *GroupRepository) InsertGroup(data entity_group.Group) (*GroupModel, *util.ValidationError) {
+	start := time.Now()
 	model := MapperGroupModel(data)
 	query := `INSERT INTO groups (id, name, code, status, created_at, updated_at) 
 				VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`
@@ -44,9 +50,13 @@ func (r *GroupRepository) InsertGroup(data entity_group.Group) (*GroupModel, *ut
 			ClientError: []string{"Internal Server Error"},
 		}
 	}
+	end := time.Now()
+	duration := float64(end.Sub(start).Milliseconds())
+	r.metrics.HistogramInstructionTableDuration(context.Background(), "postgres", "groups", "insert", duration)
 	return &group, nil
 }
 func (r *GroupRepository) SelectOneGroupByNameAndCode(groupName, code string) (*GroupModel, *util.ValidationError) {
+	start := time.Now()
 	query := `SELECT * FROM groups WHERE name = $1 AND code = $2`
 	rows, _ := r.DB.Query(context.Background(), query, groupName, code)
 	defer rows.Close()
@@ -59,5 +69,8 @@ func (r *GroupRepository) SelectOneGroupByNameAndCode(groupName, code string) (*
 			ClientError: []string{"Internal Server Error"},
 		}
 	}
+	end := time.Now()
+	duration := float64(end.Sub(start).Milliseconds())
+	r.metrics.HistogramInstructionTableDuration(context.Background(), "postgres", "groups", "select", duration)
 	return &group, nil
 }

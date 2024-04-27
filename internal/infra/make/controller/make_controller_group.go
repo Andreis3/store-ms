@@ -15,12 +15,12 @@ import (
 )
 
 func MakeControllerGroup(pool *pgxpool.Pool) igroup_controller.IGroupController {
-	uow := uow.NewProxyUnitOfWork(pool)
+	prometheus := metric_prometheus.NewPrometheusAdapter()
+	uow := uow.NewProxyUnitOfWork(pool, prometheus)
 	logger := logger.NewLogger()
 	uuid := uuid.NewUUID()
 	groupService := group_service.NewInsertGroupService(uow, uuid)
 	groupCommand := group_command.NewInsertGroupCommand(groupService)
-	prometheus := metric_prometheus.NewPrometheusAdapter()
 	groupController := group_controller.NewGroupController(groupCommand, prometheus, logger, uuid)
 	return groupController
 }
