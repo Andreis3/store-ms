@@ -61,7 +61,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(uowMock.AssertNumberOfCalls(GinkgoT(), uow_mock.GetRepository, 1)).To(BeTrue())
 			})
 
-			It("Should return an error when the method InsertGroup of the repository is call SKIP", func() {
+			It("Should return an error when the method InsertGroup of the repository is call", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorGroupRepositoryInsertGroup(groupRepositoryMock, uuidMock)
@@ -88,7 +88,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(err).To(Equal(expectedError))
 			})
 
-			It("Should return an error when the method CommitOrRollback of the UOW is call SKIP", func() {
+			It("Should return an error when the method CommitOrRollback of the UOW is call", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorWhenCommitCommandUow(groupRepositoryMock, uuidMock)
@@ -115,7 +115,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(err).To(Equal(expectedError))
 			})
 
-			It("Should return an error when the payload input is invalid SKIP", func() {
+			It("Should return an error when the payload input is invalid", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertSuccess(groupRepositoryMock, uuidMock)
@@ -124,7 +124,6 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 					Status: "active",
 				}
 				groupEntity := &entity_group.Group{
-					Name:   "Group 1",
 					Code:   "G1",
 					Status: status,
 				}
@@ -142,7 +141,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(err).To(Equal(expectedError))
 			})
 
-			It("Should return an error when the select group by name and code return an error SKIP", func() {
+			It("Should return an error when the select group by name and code return an error", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode(groupRepositoryMock, uuidMock)
@@ -169,7 +168,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(err).To(Equal(expectedError))
 			})
 
-			It("Should return an error when the group already exists SKIP", func() {
+			It("Should return an error when the group already exists", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup(groupRepositoryMock, uuidMock)
