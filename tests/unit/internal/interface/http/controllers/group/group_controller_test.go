@@ -45,7 +45,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 							"code": "23",
 							"status":"active"
 						  }`
-				request, err := http.NewRequest("POST", "/group", strings.NewReader(body))
+				request, err := http.NewRequest("POST", helpers.CREATE_GROUP_V1, strings.NewReader(body))
 				writer := httptest.NewRecorder()
 				expected := helpers.TypeResponseError{
 					RequestID:    "123",
@@ -63,7 +63,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 				Expect(result).To(Equal(expected))
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.StatusCode).To(Equal(expected.StatusCode))
-				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "VBR-400", "ERROR_MESSAGE", "error test"}))).To(BeTrue())
+				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "VBR-400", "ORIGIN", "InsertGroupCommand", "ERROR_MESSAGE", "error test"}))).To(BeTrue())
 				Expect(loggerMock.ExpectedCalls).To(HaveLen(1))
 			})
 
@@ -75,7 +75,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 							"code": "23",
 							"status":"active"
 						  `
-				request, err := http.NewRequest("POST", "/group", strings.NewReader(body))
+				request, err := http.NewRequest("POST", helpers.CREATE_GROUP_V1, strings.NewReader(body))
 				writer := httptest.NewRecorder()
 				expected := helpers.TypeResponseError{
 					RequestID:    "123",
@@ -93,7 +93,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 				Expect(result).To(Equal(expected))
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.StatusCode).To(Equal(expected.StatusCode))
-				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "DJ-402", "ERROR_MESSAGE", "unexpected EOF"}))).To(BeTrue())
+				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "DJ-402", "ORIGIN", "DecoderBodyRequest", "ERROR_MESSAGE", "unexpected EOF"}))).To(BeTrue())
 				Expect(loggerMock.ExpectedCalls).To(HaveLen(1))
 			})
 
@@ -105,7 +105,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 							"code": "23",
 							"status":"active",
 						  }`
-				request, err := http.NewRequest("POST", "/group", strings.NewReader(body))
+				request, err := http.NewRequest("POST", helpers.CREATE_GROUP_V1, strings.NewReader(body))
 				writer := httptest.NewRecorder()
 
 				expected := helpers.TypeResponseError{
@@ -127,7 +127,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 				Expect(result).To(Equal(expected))
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.StatusCode).To(Equal(expected.StatusCode))
-				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "DJ-400", "ERROR_MESSAGE", "invalid character '}' looking for beginning of object key string"}))).To(BeTrue())
+				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "DJ-400", "ORIGIN", "DecoderBodyRequest", "ERROR_MESSAGE", "invalid character '}' looking for beginning of object key string"}))).To(BeTrue())
 				Expect(loggerMock.ExpectedCalls).To(HaveLen(1))
 			})
 
@@ -139,7 +139,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 							"code": 23,
 							"status":"active"
 						  }`
-				request, err := http.NewRequest("POST", "/group", strings.NewReader(body))
+				request, err := http.NewRequest("POST", helpers.CREATE_GROUP_V1, strings.NewReader(body))
 				writer := httptest.NewRecorder()
 
 				expected := helpers.TypeResponseError{
@@ -161,7 +161,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 				Expect(result).To(Equal(expected))
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.StatusCode).To(Equal(expected.StatusCode))
-				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "DJ-401", "ERROR_MESSAGE", "json: cannot unmarshal number into Go struct field GroupInputDTO.code of type string"}))).To(BeTrue())
+				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Create Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "DJ-401", "ORIGIN", "DecoderBodyRequest", "ERROR_MESSAGE", "json: cannot unmarshal number into Go struct field GroupInputDTO.code of type string"}))).To(BeTrue())
 				Expect(loggerMock.ExpectedCalls).To(HaveLen(1))
 			})
 
@@ -178,7 +178,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 							"code": "23",
     						"status":"active"
 						  }`
-				request, err := http.NewRequest("POST", "/group", strings.NewReader(body))
+				request, err := http.NewRequest("POST", helpers.CREATE_GROUP_V1, strings.NewReader(body))
 				writer := httptest.NewRecorder()
 
 				expected := helpers.TypeResponseSuccess{

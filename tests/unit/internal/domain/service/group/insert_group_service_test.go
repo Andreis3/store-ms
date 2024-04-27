@@ -131,6 +131,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupOutputDTO, err := service.InsertGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "VBR-0001",
+					Origin:      "InsertGroupService.InsertGroup",
 					Status:      http.StatusBadRequest,
 					ClientError: []string{"name: is required"},
 					LogError:    []string{"name: is required"},
