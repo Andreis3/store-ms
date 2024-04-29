@@ -1,9 +1,11 @@
-package metric_controller
+package metric_router
 
 import (
-	"github.com/andreis3/stores-ms/internal/util"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"net/http"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
+	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type Router struct {
