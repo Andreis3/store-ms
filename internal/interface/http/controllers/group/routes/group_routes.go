@@ -1,4 +1,4 @@
-package group_router
+package group_routes
 
 import (
 	"net/http"
@@ -9,17 +9,17 @@ import (
 	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/interfaces"
 )
 
-type GroupRouter struct {
+type GroupRoutes struct {
 	createGroupController igroup_controller.ICreateGroupController
 }
 
-func NewGroupRouter(createGroupController igroup_controller.ICreateGroupController) *GroupRouter {
-	return &GroupRouter{
+func NewGroupRoutes(createGroupController igroup_controller.ICreateGroupController) *GroupRoutes {
+	return &GroupRoutes{
 		createGroupController: createGroupController,
 	}
 }
 
-func (r *GroupRouter) GroupRoutes() util.RouterType {
+func (r *GroupRoutes) GroupRoutes() util.RouterType {
 	return util.RouterType{
 		{
 			Method:      http.MethodPost,
