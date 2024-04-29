@@ -8,13 +8,13 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-type Router struct {
+type MetricsRoutes struct {
 }
 
-func NewMetricRouter() *Router {
-	return &Router{}
+func NewMetricRouter() *MetricsRoutes {
+	return &MetricsRoutes{}
 }
-func (r *Router) MetricRoutes() util.RouterType {
+func (r *MetricsRoutes) MetricRoutes() util.RouterType {
 	return util.RouterType{
 		{
 			Method:      http.MethodGet,

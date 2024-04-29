@@ -1,4 +1,4 @@
-package healthcheck_router
+package healthcheck_routes
 
 import (
 	"net/http"
@@ -7,12 +7,12 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-type Router struct{}
+type HealthCheckRouter struct{}
 
-func NewHealthCheckRouter() *Router {
-	return &Router{}
+func NewHealthCheckRoutes() *HealthCheckRouter {
+	return &HealthCheckRouter{}
 }
-func (r *Router) HealthCheckRoutes() util.RouterType {
+func (r *HealthCheckRouter) HealthCheckRoutes() util.RouterType {
 	return util.RouterType{
 		{
 			Method:      http.MethodGet,

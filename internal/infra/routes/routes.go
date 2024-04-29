@@ -5,8 +5,8 @@ import (
 
 	"github.com/andreis3/stores-ms/internal/infra/routes/interfaces"
 	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/healthcheck/router"
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/metric/router"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/healthcheck/routes"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/metric/routes"
 	"github.com/andreis3/stores-ms/internal/interface/http/controllers/stores/interfaces"
 )
 
@@ -31,6 +31,6 @@ func NewRoutes(serverMux *http.ServeMux,
 func (r *Routes) RegisterRoutes() {
 	r.registerRouter.Register(r.serverMux, r.storesRouter.StoresRoutes())
 	r.registerRouter.Register(r.serverMux, r.groupRouter.GroupRoutes())
-	r.registerRouter.Register(r.serverMux, healthcheck_router.NewHealthCheckRouter().HealthCheckRoutes())
+	r.registerRouter.Register(r.serverMux, healthcheck_routes.NewHealthCheckRoutes().HealthCheckRoutes())
 	r.registerRouter.Register(r.serverMux, metric_router.NewMetricRouter().MetricRoutes())
 }
