@@ -9,7 +9,7 @@ import (
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
 	"github.com/andreis3/stores-ms/internal/infra/make/controller"
 	"github.com/andreis3/stores-ms/internal/infra/router"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group"
+	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/group_router"
 	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores"
 )
 
@@ -18,6 +18,6 @@ func ProxyDependency(mux *http.ServeMux, postgres idatabase.IDatabase, logger *l
 	storesController := stores_controller.NewStoresController()
 	groupController := make_controller.MakeCreateGroupController(postgres.InstanceDB().(*pgxpool.Pool))
 	storesRouter := stores_controller.NewStoresRouter(storesController)
-	groupRouter := group_controller.NewGroupRouter(groupController)
+	groupRouter := group_router.NewGroupRouter(groupController)
 	router.NewRouter(mux, registerRouter, storesRouter, groupRouter).ApiRoutes()
 }
