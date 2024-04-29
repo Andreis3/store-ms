@@ -21,6 +21,6 @@ func MakeControllerGroup(pool *pgxpool.Pool) igroup_controller.IGroupController 
 	uuid := uuid.NewUUID()
 	groupService := group_service.NewInsertGroupService(uow, uuid)
 	groupCommand := group_command.NewInsertGroupCommand(groupService)
-	groupController := group_controller.NewGroupController(groupCommand, prometheus, logger, uuid)
+	groupController := group_controller.NewCreateGroupController(groupCommand, prometheus, logger, uuid)
 	return groupController
 }

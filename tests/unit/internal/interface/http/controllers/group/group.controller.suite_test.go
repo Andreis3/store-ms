@@ -13,5 +13,5 @@ func Test_GroupControllerSuite(t *testing.T) {
 	reporterConfig.FullTrace = true
 	reporterConfig.Succinct = true
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Group Controller Test Suite ", suiteConfig, reporterConfig)
+	RunSpecs(t, "Group Controllers Tests Suite ", suiteConfig, reporterConfig)
 }

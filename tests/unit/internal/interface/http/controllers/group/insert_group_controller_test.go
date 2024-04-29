@@ -23,23 +23,23 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/logger"
 )
 
-var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER", func() {
+var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: INSERT_GROUP_CONTROLLER", func() {
 	Describe("#CreateGroup", func() {
-		groupCommandMock := new(group_command_mock.InsertGroupCommandMock)
+		insertGroupCommandMock := new(group_command_mock.InsertGroupCommandMock)
 		prometheusMock := new(metric_prometheus_mock.PrometheusAdapterMock)
 		loggerMock := new(logger_mock.LoggerMock)
 		requestIDMock := new(uuid_mock.UUIDMock)
-		groupController := new(group_controller.Controller)
+		groupController := new(group_controller.CreateGroupController)
 		Context("When I call the method CreateGroup", func() {
 			BeforeEach(func() {
-				groupCommandMock = new(group_command_mock.InsertGroupCommandMock)
+				insertGroupCommandMock = new(group_command_mock.InsertGroupCommandMock)
 				prometheusMock = new(metric_prometheus_mock.PrometheusAdapterMock)
 				loggerMock = new(logger_mock.LoggerMock)
 				requestIDMock = new(uuid_mock.UUIDMock)
 			})
 			It("Should return a error when of method insertGroupCommand.Execute is call", func() {
-				ReturnErroWhenInsertGroupCommandOfExecuteIsCalled(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
-				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				ReturnErroWhenInsertGroupCommandOfExecuteIsCalled(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewCreateGroupController(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
 							"name":"teste 1",
 							"code": "23",
@@ -68,8 +68,8 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 			})
 
 			It("Should return a error when of method DecoderBodyRequest is call with poorly formatted payload", func() {
-				ReturnErroDecoderBodyRequestPoorlyFormattedPayload(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
-				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				ReturnErroDecoderBodyRequestPoorlyFormattedPayload(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewCreateGroupController(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
 							"group_name":"teste 1",
 							"code": "23",
@@ -98,8 +98,8 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 			})
 
 			It("Should return a error when of method DecoderBodyRequest is call with invalid json syntax", func() {
-				ReturnErroWhenDecoderBodyRequestInvalidJsonSyntax(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
-				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				ReturnErroWhenDecoderBodyRequestInvalidJsonSyntax(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewCreateGroupController(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
 							"group_name":"teste 1",
 							"code": "23",
@@ -132,8 +132,8 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 			})
 
 			It("Should return a error when of method DecoderBodyRequest is call with invalid json field type", func() {
-				ReturnErroWhenDecoderBodyRequestInvalidJsonFieldType(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
-				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				ReturnErroWhenDecoderBodyRequestInvalidJsonFieldType(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewCreateGroupController(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
 							"group_name":"teste 1",
 							"code": 23,
@@ -166,13 +166,13 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 			})
 
 			It("Should create a new group without errors", func() {
-				ReturnSuccessWhenInsertGroupCommandOfExecuteIsCalled(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				ReturnSuccessWhenInsertGroupCommandOfExecuteIsCalled(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				data := group_dto.GroupInputDTO{
 					Name:   "teste 1",
 					Code:   "23",
 					Status: "active",
 				}
-				groupController = group_controller.NewGroupController(groupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewCreateGroupController(insertGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				body := `{
     						"name":"teste 1",
 							"code": "23",
@@ -206,8 +206,8 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GROUP_CONTROLLER"
 				Expect(result).To(Equal(expected))
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.StatusCode).To(Equal(expected.StatusCode))
-				Expect(groupCommandMock.AssertCalled(GinkgoT(), group_command_mock.Execute, data)).To(BeTrue())
-				Expect(groupCommandMock.MethodCalled(group_command_mock.Execute, data)).To(ContainElements(group_dto.GroupOutputDTO{
+				Expect(insertGroupCommandMock.AssertCalled(GinkgoT(), group_command_mock.Execute, data)).To(BeTrue())
+				Expect(insertGroupCommandMock.MethodCalled(group_command_mock.Execute, data)).To(ContainElements(group_dto.GroupOutputDTO{
 					ID:        "123",
 					Name:      "test 1",
 					Code:      "23",

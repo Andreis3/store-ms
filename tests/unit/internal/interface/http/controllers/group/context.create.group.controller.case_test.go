@@ -13,6 +13,7 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
 )
 
+// TODO: Create tests for the CreateGroup method
 func ReturnErroWhenInsertGroupCommandOfExecuteIsCalled(
 	groupCommandMock *group_command_mock.InsertGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,

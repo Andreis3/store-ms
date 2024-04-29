@@ -10,12 +10,12 @@ import (
 )
 
 type Router struct {
-	controller igroup_controller.IGroupController
+	createGroupController igroup_controller.ICreateGroupController
 }
 
-func NewGroupRouter(controller igroup_controller.IGroupController) *Router {
+func NewGroupRouter(createGroupController igroup_controller.ICreateGroupController) *Router {
 	return &Router{
-		controller: controller,
+		createGroupController: createGroupController,
 	}
 }
 
@@ -24,7 +24,7 @@ func (r *Router) GroupRoutes() util.RouterType {
 		{
 			Method:      http.MethodPost,
 			Path:        helpers.CREATE_GROUP_V1,
-			Controller:  r.controller.CreateGroup,
+			Controller:  r.createGroupController.CreateGroup,
 			Description: "Create Group",
 			Type:        util.HANDLER_FUNC,
 		},
