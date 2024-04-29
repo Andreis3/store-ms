@@ -14,7 +14,7 @@ import (
 	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/interfaces"
 )
 
-func MakeControllerGroup(pool *pgxpool.Pool) igroup_controller.IGroupController {
+func MakeCreateGroupController(pool *pgxpool.Pool) igroup_controller.ICreateGroupController {
 	prometheus := metric_prometheus.NewPrometheusAdapter()
 	uow := uow.NewProxyUnitOfWork(pool, prometheus)
 	logger := logger.NewLogger()
