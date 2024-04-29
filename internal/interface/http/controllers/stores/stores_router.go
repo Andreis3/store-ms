@@ -5,7 +5,7 @@ import (
 
 	"github.com/andreis3/stores-ms/internal/util"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/stores/interfaces"
 )
 
 type Router struct {

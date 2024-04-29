@@ -6,7 +6,7 @@ import (
 	"github.com/andreis3/stores-ms/internal/interface/http/helpers"
 	"github.com/andreis3/stores-ms/internal/util"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/interfaces"
 )
 
 type GroupRouter struct {

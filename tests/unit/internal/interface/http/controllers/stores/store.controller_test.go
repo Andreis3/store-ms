@@ -11,7 +11,7 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/stores"
 )
 
 func Test_StoresControllerSuite(t *testing.T) {

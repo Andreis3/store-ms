@@ -15,8 +15,8 @@ import (
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/interface/http/helpers"
 	"github.com/andreis3/stores-ms/internal/util"
 	"github.com/andreis3/stores-ms/tests/mock/app/command/group"

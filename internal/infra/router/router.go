@@ -1,13 +1,14 @@
 package router
 
 import (
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/healthcheck"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/metric"
 	"net/http"
 
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/healthcheck"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/metric"
+
 	"github.com/andreis3/stores-ms/internal/infra/router/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/stores/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/stores/interfaces"
 )
 
 type Router struct {

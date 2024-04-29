@@ -10,8 +10,8 @@ import (
 	"github.com/andreis3/stores-ms/internal/domain/service/group"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
 	"github.com/andreis3/stores-ms/internal/infra/uow"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/interfaces"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/interfaces"
 )
 
 func MakeCreateGroupController(pool *pgxpool.Pool) igroup_controller.ICreateGroupController {

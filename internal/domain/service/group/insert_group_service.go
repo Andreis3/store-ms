@@ -8,7 +8,7 @@ import (
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/uow/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 

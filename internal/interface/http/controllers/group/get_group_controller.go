@@ -11,7 +11,7 @@ import (
 
 	"github.com/andreis3/stores-ms/internal/app/command/group/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/interface/http/helpers"
 )
 

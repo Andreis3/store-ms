@@ -3,7 +3,7 @@ package group_command_mock
 import (
 	"github.com/stretchr/testify/mock"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
