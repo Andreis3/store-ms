@@ -17,8 +17,8 @@ func NewStoresRouter(controller istores_controller.IStoreController) *Router {
 		controller: controller,
 	}
 }
-func (r *Router) StoresRoutes() util.RouterType {
-	return util.RouterType{
+func (r *Router) StoresRoutes() util.RouteType {
+	return util.RouteType{
 		{
 			Method:      http.MethodPost,
 			Path:        "/api/v1/stores",

@@ -2,8 +2,8 @@ package util
 
 import "net/http"
 
-type RouterType []RouterFields
-type RouterFields struct {
+type RouteType []RouteFields
+type RouteFields struct {
 	Method      string
 	Path        string
 	Controller  any

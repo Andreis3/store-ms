@@ -12,8 +12,8 @@ type HealthCheckRouter struct{}
 func NewHealthCheckRoutes() *HealthCheckRouter {
 	return &HealthCheckRouter{}
 }
-func (r *HealthCheckRouter) HealthCheckRoutes() util.RouterType {
-	return util.RouterType{
+func (r *HealthCheckRouter) HealthCheckRoutes() util.RouteType {
+	return util.RouteType{
 		{
 			Method:      http.MethodGet,
 			Path:        "/healthcheck",

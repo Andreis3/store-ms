@@ -14,8 +14,8 @@ type MetricsRoutes struct {
 func NewMetricRouter() *MetricsRoutes {
 	return &MetricsRoutes{}
 }
-func (r *MetricsRoutes) MetricRoutes() util.RouterType {
-	return util.RouterType{
+func (r *MetricsRoutes) MetricRoutes() util.RouteType {
+	return util.RouteType{
 		{
 			Method:      http.MethodGet,
 			Path:        "/metrics",

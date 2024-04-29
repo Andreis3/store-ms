@@ -21,8 +21,8 @@ func NewGroupRoutes(createGroupController igroup_controller.ICreateGroupControll
 	}
 }
 
-func (r *GroupRoutes) GroupRoutes() util.RouterType {
-	return util.RouterType{
+func (r *GroupRoutes) GroupRoutes() util.RouteType {
+	return util.RouteType{
 		{
 			Method:      http.MethodPost,
 			Path:        helpers.CREATE_GROUP_V1,

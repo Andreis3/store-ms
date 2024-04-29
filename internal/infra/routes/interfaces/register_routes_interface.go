@@ -7,5 +7,5 @@ import (
 )
 
 type IRegisterRoutes interface {
-	Register(app *chi.Mux, router util.RouterType)
+	Register(app *chi.Mux, router util.RouteType)
 }

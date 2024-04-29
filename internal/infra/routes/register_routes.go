@@ -19,7 +19,7 @@ func NewRegisterRoutes(logger ilogger.ILogger) *RegisterRoutes {
 		logger: logger,
 	}
 }
-func (r *RegisterRoutes) Register(serverMux *chi.Mux, router util.RouterType) {
+func (r *RegisterRoutes) Register(serverMux *chi.Mux, router util.RouteType) {
 	message, info := "[RegisterRoutes] ", "MAPPED_ROUTER"
 	for _, route := range router {
 		switch route.Type {
