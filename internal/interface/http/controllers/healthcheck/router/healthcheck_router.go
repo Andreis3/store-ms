@@ -1,8 +1,10 @@
-package healthcheck_controller
+package healthcheck_router
 
 import (
-	"github.com/andreis3/stores-ms/internal/util"
 	"net/http"
+
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/healthcheck/controller"
+	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type Router struct{}
@@ -15,7 +17,7 @@ func (r *Router) HealthCheckRoutes() util.RouterType {
 		{
 			Method:      http.MethodGet,
 			Path:        "/healthcheck",
-			Controller:  HealthCheck,
+			Controller:  healthcheck_controller.HealthCheck,
 			Description: "Health Check",
 			Type:        util.HANDLER_FUNC,
 		},

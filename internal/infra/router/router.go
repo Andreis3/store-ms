@@ -3,7 +3,7 @@ package router
 import (
 	"net/http"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/healthcheck"
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/healthcheck/router"
 	"github.com/andreis3/stores-ms/internal/interface/http/controllers/metric"
 
 	"github.com/andreis3/stores-ms/internal/infra/router/interfaces"
@@ -32,6 +32,6 @@ func NewRouter(serverMux *http.ServeMux,
 func (r *Router) ApiRoutes() {
 	r.registerRouter.Register(r.serverMux, r.storesRouter.StoresRoutes())
 	r.registerRouter.Register(r.serverMux, r.groupRouter.GroupRoutes())
-	r.registerRouter.Register(r.serverMux, healthcheck_controller.NewHealthCheckRouter().HealthCheckRoutes())
+	r.registerRouter.Register(r.serverMux, healthcheck_router.NewHealthCheckRouter().HealthCheckRoutes())
 	r.registerRouter.Register(r.serverMux, metric_controller.NewMetricRouter().MetricRoutes())
 }
