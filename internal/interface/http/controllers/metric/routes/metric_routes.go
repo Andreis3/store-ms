@@ -22,6 +22,7 @@ func (r *MetricsRoutes) MetricRoutes() util.RouterType {
 			Controller:  promhttp.Handler(),
 			Description: "Metrics Prometheus",
 			Type:        util.HANDLER,
+			Middlewares: []func(http.Handler) http.Handler{},
 		},
 	}
 }

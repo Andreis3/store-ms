@@ -1,5 +1,7 @@
 package util
 
+import "net/http"
+
 type RouterType []RouterFields
 type RouterFields struct {
 	Method      string
@@ -7,4 +9,5 @@ type RouterFields struct {
 	Controller  any
 	Description string
 	Type        string
+	Middlewares []func(http.Handler) http.Handler
 }

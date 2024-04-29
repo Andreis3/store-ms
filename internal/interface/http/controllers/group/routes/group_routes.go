@@ -1,6 +1,8 @@
 package group_routes
 
 import (
+	group_middleware "github.com/andreis3/stores-ms/internal/interface/http/controllers/group/middleware"
+	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
 
 	"github.com/andreis3/stores-ms/internal/interface/http/helpers"
@@ -27,6 +29,10 @@ func (r *GroupRoutes) GroupRoutes() util.RouterType {
 			Controller:  r.createGroupController.CreateGroup,
 			Description: "Create Group",
 			Type:        util.HANDLER_FUNC,
+			Middlewares: []func(http.Handler) http.Handler{
+				group_middleware.ValidatePath,
+				middleware.Logger,
+			},
 		},
 	}
 }

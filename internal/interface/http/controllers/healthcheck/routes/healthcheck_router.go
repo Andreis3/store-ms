@@ -20,6 +20,7 @@ func (r *HealthCheckRouter) HealthCheckRoutes() util.RouterType {
 			Controller:  healthcheck_controller.HealthCheck,
 			Description: "Health Check",
 			Type:        util.HANDLER_FUNC,
+			Middlewares: []func(http.Handler) http.Handler{},
 		},
 	}
 }
