@@ -1,23 +1,24 @@
-package router
+package routes
 
 import (
 	"fmt"
-	ilogger "github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
-	"github.com/andreis3/stores-ms/internal/util"
 	"net/http"
+
+	"github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
+	"github.com/andreis3/stores-ms/internal/util"
 )
 
-type RegisterRouter struct {
+type RegisterRoutes struct {
 	logger ilogger.ILogger
 }
 
-func NewRegisterRouter(logger ilogger.ILogger) *RegisterRouter {
-	return &RegisterRouter{
+func NewRegisterRoutes(logger ilogger.ILogger) *RegisterRoutes {
+	return &RegisterRoutes{
 		logger: logger,
 	}
 }
-func (r *RegisterRouter) Register(serverMux *http.ServeMux, router util.RouterType) {
-	message, info := "[RegisterRouter] ", "MAPPED_ROUTER"
+func (r *RegisterRoutes) Register(serverMux *http.ServeMux, router util.RouterType) {
+	message, info := "[RegisterRoutes] ", "MAPPED_ROUTER"
 	for _, route := range router {
 		switch route.Type {
 		case util.HANDLER:
