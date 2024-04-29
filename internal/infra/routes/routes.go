@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"net/http"
+	"github.com/go-chi/chi/v5"
 
 	"github.com/andreis3/stores-ms/internal/infra/routes/interfaces"
 	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/interfaces"
@@ -11,13 +11,13 @@ import (
 )
 
 type Routes struct {
-	serverMux      *http.ServeMux
+	serverMux      *chi.Mux
 	registerRouter iroutes.IRegisterRoutes
 	storesRouter   istores_controller.IStoresRouter
 	groupRouter    igroup_controller.IGroupRouter
 }
 
-func NewRoutes(serverMux *http.ServeMux,
+func NewRoutes(serverMux *chi.Mux,
 	registerRouter iroutes.IRegisterRoutes,
 	storesRouter istores_controller.IStoresRouter,
 	groupRouter igroup_controller.IGroupRouter) *Routes {

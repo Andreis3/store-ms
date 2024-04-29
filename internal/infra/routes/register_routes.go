@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
+
 	"github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
 	"github.com/andreis3/stores-ms/internal/util"
 )
@@ -17,7 +19,7 @@ func NewRegisterRoutes(logger ilogger.ILogger) *RegisterRoutes {
 		logger: logger,
 	}
 }
-func (r *RegisterRoutes) Register(serverMux *http.ServeMux, router util.RouterType) {
+func (r *RegisterRoutes) Register(serverMux *chi.Mux, router util.RouterType) {
 	message, info := "[RegisterRoutes] ", "MAPPED_ROUTER"
 	for _, route := range router {
 		switch route.Type {

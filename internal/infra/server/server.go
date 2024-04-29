@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/go-chi/chi/v5"
+
 	"github.com/andreis3/stores-ms/internal/infra/adapters/database/postgres"
 	"github.com/andreis3/stores-ms/internal/infra/common/configs"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
@@ -14,7 +16,7 @@ import (
 )
 
 func Start(conf *configs.Conf, pool *postgres.Postgres, log *logger.Logger) *http.Server {
-	mux := http.NewServeMux()
+	mux := chi.NewRouter()
 	server := &http.Server{
 		Addr:    fmt.Sprintf("0.0.0.0:%s", conf.ServerPort),
 		Handler: mux,
