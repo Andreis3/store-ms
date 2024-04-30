@@ -52,7 +52,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GET_GROUP_CONTROL
 
 				result := helpers.TypeResponseError{}
 
-				groupController.GetGroup(writer, request)
+				groupController.SearchGroup(writer, request)
 
 				json.Unmarshal(writer.Body.Bytes(), &result)
 
@@ -83,7 +83,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GET_GROUP_CONTROL
 
 				result := helpers.TypeResponseError{}
 
-				groupController.GetGroup(writer, request)
+				groupController.SearchGroup(writer, request)
 
 				json.Unmarshal(writer.Body.Bytes(), &result)
 
@@ -114,7 +114,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GET_GROUP_CONTROL
 
 				result := helpers.TypeResponseError{}
 
-				groupController.GetGroup(writer, request)
+				groupController.SearchGroup(writer, request)
 
 				json.Unmarshal(writer.Body.Bytes(), &result)
 
@@ -151,7 +151,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GET_GROUP_CONTROL
 
 				result := helpers.TypeResponseSuccess{}
 
-				groupController.GetGroup(writer, request)
+				groupController.SearchGroup(writer, request)
 
 				json.Unmarshal(writer.Body.Bytes(), &result)
 

@@ -16,14 +16,14 @@ import (
 )
 
 type GetGroupController struct {
-	selectGroupCommand igroup_command.ISelectGroupCommand
+	selectGroupCommand igroup_command.ISearchGroupCommand
 	logger             ilogger.ILogger
 	requestID          uuid.IUUID
 	prometheus         imetric.IMetricAdapter
 }
 
 func NewGetGroupController(
-	selectGroupCommand igroup_command.ISelectGroupCommand,
+	selectGroupCommand igroup_command.ISearchGroupCommand,
 	prometheus imetric.IMetricAdapter,
 	logger ilogger.ILogger,
 	requestID uuid.IUUID) *GetGroupController {
@@ -35,7 +35,7 @@ func NewGetGroupController(
 	}
 }
 
-func (ggc *GetGroupController) GetGroup(w http.ResponseWriter, r *http.Request) {
+func (ggc *GetGroupController) SearchGroup(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	requestID := ggc.requestID.Generate()
 	err := helpers.PathRouterValidate(r, helpers.ID)

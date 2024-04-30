@@ -13,7 +13,7 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
 )
 
-// TODO: Create tests for the GetGroup method
+// TODO: Create tests for the SearchGroup method
 func ReturnErroWhenIDInRouterPathIsNotFormatUUID(
 	groupCommandMock *group_command_mock.SelectGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
