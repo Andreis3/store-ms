@@ -1,9 +1,11 @@
 package group_routes
 
 import (
-	group_middleware "github.com/andreis3/stores-ms/internal/interface/http/controllers/group/middleware"
-	"github.com/go-chi/chi/v5/middleware"
 	"net/http"
+
+	"github.com/go-chi/chi/v5/middleware"
+
+	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/middleware"
 
 	"github.com/andreis3/stores-ms/internal/interface/http/helpers"
 	"github.com/andreis3/stores-ms/internal/util"
