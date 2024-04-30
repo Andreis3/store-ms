@@ -40,4 +40,4 @@ jobs:
         run: sleep 5
 
       - name: Test Integration
-        run: make integration-test
+        run: make integration-tests
