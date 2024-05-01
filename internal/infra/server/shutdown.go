@@ -14,7 +14,7 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-func GracefulShutdown(server *http.Server, pool *postgres.Postgres, log *logger.Logger) {
+func gracefulShutdown(server *http.Server, pool *postgres.Postgres, log *logger.Logger) {
 	shutdownSignal := make(chan os.Signal, 1)
 	signal.Notify(shutdownSignal, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
 	<-shutdownSignal

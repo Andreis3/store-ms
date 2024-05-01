@@ -15,12 +15,13 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-func Start(conf *configs.Conf, pool *postgres.Postgres, log *logger.Logger) *http.Server {
+func Start(conf *configs.Conf, log *logger.Logger) {
 	mux := chi.NewRouter()
 	server := &http.Server{
 		Addr:    fmt.Sprintf("0.0.0.0:%s", conf.ServerPort),
 		Handler: mux,
 	}
+	pool := postgres.NewPostgresDB(*conf)
 	go func() {
 		proxy.ProxyDependency(mux, pool, log)
 		log.Info(fmt.Sprintf("Start server on port %s", conf.ServerPort))
@@ -29,5 +30,5 @@ func Start(conf *configs.Conf, pool *postgres.Postgres, log *logger.Logger) *htt
 			os.Exit(util.EXIT_FAILURE)
 		}
 	}()
-	return server
+	gracefulShutdown(server, pool, log)
 }
