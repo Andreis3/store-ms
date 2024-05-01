@@ -4,10 +4,10 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"github.com/andreis3/stores-ms/internal/infra/routes/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/healthcheck/routes"
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/metric/routes"
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/stores/interfaces"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/interfaces"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/healthcheck/routes"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/metric/routes"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/stores/interfaces"
 )
 
 type Routes struct {

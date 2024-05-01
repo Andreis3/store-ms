@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/dto"
-	"github.com/andreis3/stores-ms/internal/interface/http/helpers"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/helpers"
 	"github.com/andreis3/stores-ms/internal/util"
 	"github.com/andreis3/stores-ms/tests/mock/app/command/group"
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/logger"

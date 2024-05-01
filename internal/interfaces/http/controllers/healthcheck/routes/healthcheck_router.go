@@ -3,7 +3,7 @@ package healthcheck_routes
 import (
 	"net/http"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/healthcheck/controller"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/healthcheck/controller"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 

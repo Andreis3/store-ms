@@ -2,7 +2,7 @@ package group_command
 
 import (
 	"github.com/andreis3/stores-ms/internal/domain/service/group/interfaces"
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/dto"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 

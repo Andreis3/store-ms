@@ -5,12 +5,12 @@ import (
 
 	"github.com/go-chi/chi/v5/middleware"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/middleware"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/middleware"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/helpers"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/helpers"
 	"github.com/andreis3/stores-ms/internal/util"
 
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/interfaces"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/interfaces"
 )
 
 type GroupRoutes struct {

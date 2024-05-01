@@ -2,7 +2,7 @@ package igroup_service
 
 import (
 	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
-	"github.com/andreis3/stores-ms/internal/interface/http/controllers/group/dto"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
