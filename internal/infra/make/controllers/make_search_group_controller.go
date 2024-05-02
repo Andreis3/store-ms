@@ -17,8 +17,8 @@ func MakeSearchGroupController(pool *pgxpool.Pool) igroup_controller.ISearchGrou
 	unitOfWork := uow.NewProxyUnitOfWork(pool, prometheus)
 	log := logger.NewLogger()
 	searchGroupService := group_service.NewSearchGroupService(unitOfWork)
-	uuid := uuid.NewUUID()
+	requestID := uuid.NewUUID()
 	searchGroupCommand := group_command.NewSearchGroupCommand(searchGroupService)
-	searchGroupController := group_controller.NewSearchGroupController(searchGroupCommand, prometheus, log, uuid)
+	searchGroupController := group_controller.NewSearchGroupController(searchGroupCommand, prometheus, log, requestID)
 	return searchGroupController
 }
