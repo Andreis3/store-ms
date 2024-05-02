@@ -22,7 +22,7 @@ import (
 )
 
 var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CONTROLLER", func() {
-	Describe("#SearchGroup", func() {
+	Describe("#SearchOneGroup", func() {
 		selectGroupCommandMock := new(group_command_mock.SearchGroupCommandMock)
 		prometheusMock := new(metric_prometheus_mock.PrometheusAdapterMock)
 		loggerMock := new(logger_mock.LoggerMock)
@@ -38,7 +38,7 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 			It("Should return a error when of path paramnters is not format uuid", func() {
 				ReturnErroWhenIDInRouterPathIsNotFormatUUID(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				groupController = group_controller.NewSearchGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
-				request, err := http.NewRequest("GET", helpers.GET_GROUP_V1, nil)
+				request, err := http.NewRequest("GET", helpers.SEARCH_GROUP_V1, nil)
 				request.SetPathValue("id", "123")
 				writer := httptest.NewRecorder()
 
@@ -52,7 +52,7 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 
 				result := helpers.TypeResponseError{}
 
-				groupController.SearchGroup(writer, request)
+				groupController.SearchOneGroup(writer, request)
 
 				json.Unmarshal(writer.Body.Bytes(), &result)
 
@@ -83,7 +83,7 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 
 				result := helpers.TypeResponseError{}
 
-				groupController.SearchGroup(writer, request)
+				groupController.SearchOneGroup(writer, request)
 
 				json.Unmarshal(writer.Body.Bytes(), &result)
 
@@ -114,7 +114,7 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 
 				result := helpers.TypeResponseError{}
 
-				groupController.SearchGroup(writer, request)
+				groupController.SearchOneGroup(writer, request)
 
 				json.Unmarshal(writer.Body.Bytes(), &result)
 
@@ -151,7 +151,7 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 
 				result := helpers.TypeResponseSuccess{}
 
-				groupController.SearchGroup(writer, request)
+				groupController.SearchOneGroup(writer, request)
 
 				json.Unmarshal(writer.Body.Bytes(), &result)
 

@@ -6,5 +6,5 @@ import (
 )
 
 type ISearchGroupService interface {
-	SearchGroup(id string) (group_dto.GroupOutputDTO, *util.ValidationError)
+	SearchOneGroup(id string) (group_dto.GroupOutputDTO, *util.ValidationError)
 }

@@ -25,3 +25,8 @@ func (g *GroupRepositoryMock) SelectOneGroupByNameAndCode(name, code string) (*r
 	args := g.Called(name, code)
 	return args.Get(0).(*repo_group.GroupModel), args.Get(1).(*util.ValidationError)
 }
+
+func (g *GroupRepositoryMock) SelectOneGroupByID(id string) (*repo_group.GroupModel, *util.ValidationError) {
+	args := g.Called(id)
+	return args.Get(0).(*repo_group.GroupModel), args.Get(1).(*util.ValidationError)
+}

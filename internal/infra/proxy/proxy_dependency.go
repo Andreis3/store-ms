@@ -15,8 +15,9 @@ import (
 func ProxyDependency(mux *chi.Mux, postgres idatabase.IDatabase, logger *logger.Logger) {
 	registerRouter := routes.NewRegisterRoutes(logger)
 	storesController := stores_controller.NewStoresController()
-	groupController := make_controller.MakeCreateGroupController(postgres.InstanceDB().(*pgxpool.Pool))
+	createGroupController := make_controller.MakeCreateGroupController(postgres.InstanceDB().(*pgxpool.Pool))
+	searchGroupController := make_controller.MakeSearchGroupController(postgres.InstanceDB().(*pgxpool.Pool))
 	storesRouter := stores_controller.NewStoresRouter(storesController)
-	groupRouter := group_routes.NewGroupRoutes(groupController)
+	groupRouter := group_routes.NewGroupRoutes(createGroupController, searchGroupController)
 	routes.NewRoutes(mux, registerRouter, storesRouter, groupRouter).RegisterRoutes()
 }

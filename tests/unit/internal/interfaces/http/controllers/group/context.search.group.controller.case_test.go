@@ -13,7 +13,7 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
 )
 
-// TODO: Create tests for the SearchGroup method
+// TODO: Create tests for the SearchOneGroup method
 func ReturnErroWhenIDInRouterPathIsNotFormatUUID(
 	groupCommandMock *group_command_mock.SearchGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
@@ -21,9 +21,9 @@ func ReturnErroWhenIDInRouterPathIsNotFormatUUID(
 	uuidMock *uuid_mock.UUIDMock) {
 	groupCommandMock.On(group_command_mock.Execute, "123").Return(group_dto.GroupOutputDTO{}, &util.ValidationError{})
 	uuidMock.On(uuid_mock.Generate).Return("123")
-	loggerMock.On(logger_mock.Error, "Get Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "PR-001", "ORIGIN", "PathRouterValidate", "ERROR_MESSAGE", "invalid path parameter id"}))
-	prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), helpers.GET_GROUP_V1, http.StatusBadRequest)
-	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.GET_GROUP_V1, http.StatusBadRequest, float64(0))
+	loggerMock.On(logger_mock.Error, "Get Group Error", []any{"REQUEST_ID", "123", "CODE_ERROR", "PR-001", "ORIGIN", "PathRouterValidate", "ERROR_MESSAGE", "invalid path parameter id"})
+	prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusBadRequest)
+	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusBadRequest, float64(0))
 }
 
 func ReturnErroWhenGroupNotFound(
@@ -40,8 +40,8 @@ func ReturnErroWhenGroupNotFound(
 	})
 	uuidMock.On(uuid_mock.Generate).Return("123")
 	loggerMock.On(logger_mock.Error, "Select One Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "PR-002", "ORIGIN", "GetGroupService.SelectGroup", "ERROR_MESSAGE", "group not found"}))
-	prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), helpers.GET_GROUP_V1, http.StatusNotFound)
-	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.GET_GROUP_V1, http.StatusNotFound, float64(0))
+	prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusNotFound)
+	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusNotFound, float64(0))
 }
 
 func ReturnErroWhenCallSelectGroup(
@@ -58,8 +58,8 @@ func ReturnErroWhenCallSelectGroup(
 	})
 	uuidMock.On(uuid_mock.Generate).Return("123")
 	loggerMock.On(logger_mock.Error, "Select One Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "PR-003", "ORIGIN", "GetGroupService.SelectGroup", "ERROR_MESSAGE", "internal server error"}))
-	prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), helpers.GET_GROUP_V1, http.StatusInternalServerError)
-	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.GET_GROUP_V1, http.StatusInternalServerError, float64(0))
+	prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusInternalServerError)
+	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusInternalServerError, float64(0))
 }
 
 func ReturnSuccessWhenCallSelectGroup(
@@ -76,6 +76,6 @@ func ReturnSuccessWhenCallSelectGroup(
 		UpdatedAt: "2021-09-01T00:00:00Z",
 	}, (*util.ValidationError)(nil))
 	uuidMock.On(uuid_mock.Generate).Return("123")
-	prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), helpers.GET_GROUP_V1, http.StatusOK)
-	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.GET_GROUP_V1, http.StatusOK, float64(0))
+	prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusOK)
+	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusOK, float64(0))
 }

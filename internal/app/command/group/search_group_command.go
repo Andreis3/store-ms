@@ -17,7 +17,7 @@ func NewSearchGroupCommand(service igroup_service.ISearchGroupService) *SearchGr
 }
 
 func (c *SearchGroupCommand) Execute(id string) (group_dto.GroupOutputDTO, *util.ValidationError) {
-	output, err := c.GroupService.SearchGroup(id)
+	output, err := c.GroupService.SearchOneGroup(id)
 	if err != nil {
 		return group_dto.GroupOutputDTO{}, err
 	}

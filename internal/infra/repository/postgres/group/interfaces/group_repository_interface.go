@@ -9,4 +9,5 @@ import (
 type IGroupRepository interface {
 	InsertGroup(data entity_group.Group) (*repo_group.GroupModel, *util.ValidationError)
 	SelectOneGroupByNameAndCode(name, code string) (*repo_group.GroupModel, *util.ValidationError)
+	SelectOneGroupByID(id string) (*repo_group.GroupModel, *util.ValidationError)
 }

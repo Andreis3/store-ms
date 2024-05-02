@@ -15,11 +15,15 @@ import (
 
 type GroupRoutes struct {
 	createGroupController igroup_controller.ICreateGroupController
+	searchGroupController igroup_controller.ISearchGroupController
 }
 
-func NewGroupRoutes(createGroupController igroup_controller.ICreateGroupController) *GroupRoutes {
+func NewGroupRoutes(
+	createGroupController igroup_controller.ICreateGroupController,
+	searchGroupController igroup_controller.ISearchGroupController) *GroupRoutes {
 	return &GroupRoutes{
 		createGroupController: createGroupController,
+		searchGroupController: searchGroupController,
 	}
 }
 
@@ -30,6 +34,17 @@ func (r *GroupRoutes) GroupRoutes() util.RouteType {
 			Path:        helpers.CREATE_GROUP_V1,
 			Controller:  r.createGroupController.CreateGroup,
 			Description: "Create Group",
+			Type:        util.HANDLER_FUNC,
+			Middlewares: []func(http.Handler) http.Handler{
+				group_middleware.ValidatePath,
+				middleware.Logger,
+			},
+		},
+		{
+			Method:      http.MethodGet,
+			Path:        helpers.SEARCH_GROUP_V1,
+			Controller:  r.searchGroupController.SearchOneGroup,
+			Description: "Search Group",
 			Type:        util.HANDLER_FUNC,
 			Middlewares: []func(http.Handler) http.Handler{
 				group_middleware.ValidatePath,

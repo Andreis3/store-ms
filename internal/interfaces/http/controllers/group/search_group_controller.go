@@ -18,8 +18,8 @@ import (
 type SearchGroupController struct {
 	selectGroupCommand igroup_command.ISearchGroupCommand
 	logger             ilogger.ILogger
-	requestID          uuid.IUUID
 	prometheus         imetric.IMetricAdapter
+	requestID          uuid.IUUID
 }
 
 func NewSearchGroupController(
@@ -30,12 +30,12 @@ func NewSearchGroupController(
 	return &SearchGroupController{
 		selectGroupCommand: selectGroupCommand,
 		logger:             logger,
-		requestID:          requestID,
 		prometheus:         prometheus,
+		requestID:          requestID,
 	}
 }
 
-func (ggc *SearchGroupController) SearchGroup(w http.ResponseWriter, r *http.Request) {
+func (ggc *SearchGroupController) SearchOneGroup(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	requestID := ggc.requestID.Generate()
 	err := helpers.PathRouterValidate(r, helpers.ID)
@@ -45,10 +45,10 @@ func (ggc *SearchGroupController) SearchGroup(w http.ResponseWriter, r *http.Req
 			"CODE_ERROR", err.Code,
 			"ORIGIN", err.Origin,
 			"ERROR_MESSAGE", strings.Join(err.LogError, ", "))
-		ggc.prometheus.CounterRequestHttpStatusCode(context.Background(), helpers.GET_GROUP_V1, err.Status)
+		ggc.prometheus.CounterRequestHttpStatusCode(context.Background(), helpers.SEARCH_GROUP_V1, err.Status)
 		end := time.Now()
 		duration := end.Sub(start).Milliseconds()
-		ggc.prometheus.HistogramRequestDuration(context.Background(), helpers.GET_GROUP_V1, err.Status, float64(duration))
+		ggc.prometheus.HistogramRequestDuration(context.Background(), helpers.SEARCH_GROUP_V1, err.Status, float64(duration))
 		helpers.ResponseError[[]string](w, err.Status, requestID, err.Code, err.ClientError)
 		return
 	}
@@ -60,16 +60,16 @@ func (ggc *SearchGroupController) SearchGroup(w http.ResponseWriter, r *http.Req
 			"CODE_ERROR", err.Code,
 			"ORIGIN", err.Origin,
 			"ERROR_MESSAGE", strings.Join(err.LogError, ", "))
-		ggc.prometheus.CounterRequestHttpStatusCode(context.Background(), helpers.GET_GROUP_V1, err.Status)
+		ggc.prometheus.CounterRequestHttpStatusCode(context.Background(), helpers.SEARCH_GROUP_V1, err.Status)
 		end := time.Now()
 		duration := end.Sub(start).Milliseconds()
-		ggc.prometheus.HistogramRequestDuration(context.Background(), helpers.GET_GROUP_V1, err.Status, float64(duration))
+		ggc.prometheus.HistogramRequestDuration(context.Background(), helpers.SEARCH_GROUP_V1, err.Status, float64(duration))
 		helpers.ResponseError[[]string](w, err.Status, requestID, err.Code, err.ClientError)
 		return
 	}
-	ggc.prometheus.CounterRequestHttpStatusCode(context.Background(), helpers.GET_GROUP_V1, http.StatusOK)
+	ggc.prometheus.CounterRequestHttpStatusCode(context.Background(), helpers.SEARCH_GROUP_V1, http.StatusOK)
 	end := time.Now()
 	duration := end.Sub(start).Milliseconds()
-	ggc.prometheus.HistogramRequestDuration(context.Background(), helpers.GET_GROUP_V1, http.StatusOK, float64(duration))
+	ggc.prometheus.HistogramRequestDuration(context.Background(), helpers.SEARCH_GROUP_V1, http.StatusOK, float64(duration))
 	helpers.ResponseSuccess[group_dto.GroupOutputDTO](w, requestID, http.StatusOK, group)
 }

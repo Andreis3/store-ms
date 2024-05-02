@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 
@@ -16,6 +17,7 @@ import (
 )
 
 func Start(conf *configs.Conf, log *logger.Logger) {
+	start := time.Now()
 	mux := chi.NewRouter()
 	server := &http.Server{
 		Addr:    fmt.Sprintf("0.0.0.0:%s", conf.ServerPort),
@@ -25,6 +27,9 @@ func Start(conf *configs.Conf, log *logger.Logger) {
 	go func() {
 		proxy.ProxyDependency(mux, pool, log)
 		log.Info(fmt.Sprintf("Start server on port %s", conf.ServerPort))
+		end := time.Now()
+		microseconds := end.Sub(start).Microseconds()
+		log.Info(fmt.Sprintf("Server started in %d microseconds", microseconds))
 		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Error(fmt.Sprintf("Error starting server: %s", err.Error()))
 			os.Exit(util.EXIT_FAILURE)

@@ -27,7 +27,6 @@ func NewGroupRepository(metrics imetric.IMetricAdapter) *GroupRepository {
 		metrics: metrics,
 	}
 }
-
 func (r *GroupRepository) InsertGroup(data entity_group.Group) (*GroupModel, *util.ValidationError) {
 	start := time.Now()
 	model := MapperGroupModel(data)
@@ -67,6 +66,26 @@ func (r *GroupRepository) SelectOneGroupByNameAndCode(groupName, code string) (*
 		return nil, &util.ValidationError{
 			Code:        fmt.Sprintf("PIDB-%s", r.Code),
 			Origin:      "GroupRepository.SelectOneGroupByNameAndCode",
+			Status:      http.StatusInternalServerError,
+			LogError:    []string{fmt.Sprintf("%s, %s", r.Message, r.Detail)},
+			ClientError: []string{"Internal Server Error"},
+		}
+	}
+	end := time.Now()
+	duration := float64(end.Sub(start).Milliseconds())
+	r.metrics.HistogramInstructionTableDuration(context.Background(), "postgres", "groups", "select", duration)
+	return &group, nil
+}
+func (r *GroupRepository) SelectOneGroupByID(id string) (*GroupModel, *util.ValidationError) {
+	start := time.Now()
+	query := `SELECT * FROM groups WHERE id = $1`
+	rows, _ := r.DB.Query(context.Background(), query, id)
+	defer rows.Close()
+	group, err := pgx.CollectOneRow[GroupModel](rows, pgx.RowToStructByName[GroupModel])
+	if errors.As(err, &r.PgError) {
+		return nil, &util.ValidationError{
+			Code:        fmt.Sprintf("PIDB-%s", r.Code),
+			Origin:      "GroupRepository.SelectOneGroupByID",
 			Status:      http.StatusInternalServerError,
 			LogError:    []string{fmt.Sprintf("%s, %s", r.Message, r.Detail)},
 			ClientError: []string{"Internal Server Error"},
