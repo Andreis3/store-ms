@@ -21,8 +21,8 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/logger"
 )
 
-var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GET_GROUP_CONTROLLER", func() {
-	Describe("#SelectGroup", func() {
+var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CONTROLLER", func() {
+	Describe("#SearchGroup", func() {
 		selectGroupCommandMock := new(group_command_mock.SearchGroupCommandMock)
 		prometheusMock := new(metric_prometheus_mock.PrometheusAdapterMock)
 		loggerMock := new(logger_mock.LoggerMock)

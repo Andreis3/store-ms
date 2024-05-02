@@ -23,7 +23,7 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/logger"
 )
 
-var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: INSERT_GROUP_CONTROLLER", func() {
+var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: CREATE_GROUP_CONTROLLER", func() {
 	Describe("#CreateGroup", func() {
 		insertGroupCommandMock := new(group_command_mock.InsertGroupCommandMock)
 		prometheusMock := new(metric_prometheus_mock.PrometheusAdapterMock)
