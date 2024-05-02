@@ -13,8 +13,7 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
 )
 
-// TODO: Create tests for the SearchOneGroup method
-func ReturnErroWhenIDInRouterPathIsNotFormatUUID(
+func ReturnErrorWhenIDInRouterPathIsNotFormatUUID(
 	groupCommandMock *group_command_mock.SearchGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
 	loggerMock *logger_mock.LoggerMock,
@@ -26,7 +25,7 @@ func ReturnErroWhenIDInRouterPathIsNotFormatUUID(
 	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusBadRequest, float64(0))
 }
 
-func ReturnErroWhenGroupNotFound(
+func ReturnErrorWhenGroupNotFound(
 	groupCommandMock *group_command_mock.SearchGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
 	loggerMock *logger_mock.LoggerMock,
@@ -39,12 +38,12 @@ func ReturnErroWhenGroupNotFound(
 		Status:      http.StatusNotFound,
 	})
 	uuidMock.On(uuid_mock.Generate).Return("123")
-	loggerMock.On(logger_mock.Error, "Select One Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "PR-002", "ORIGIN", "GetGroupService.SelectGroup", "ERROR_MESSAGE", "group not found"}))
+	loggerMock.On(logger_mock.Error, "Select One Group Error", []any{"REQUEST_ID", "123", "CODE_ERROR", "PR-002", "ORIGIN", "GetGroupService.SelectGroup", "ERROR_MESSAGE", "group not found"})
 	prometheusMock.On(metric_prometheus_mock.CounterRequestHttpStatusCode, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusNotFound)
 	prometheusMock.On(metric_prometheus_mock.HistogramRequestDuration, context.Background(), helpers.SEARCH_GROUP_V1, http.StatusNotFound, float64(0))
 }
 
-func ReturnErroWhenCallSelectGroup(
+func ReturnErrorWhenCallSelectGroup(
 	groupCommandMock *group_command_mock.SearchGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
 	loggerMock *logger_mock.LoggerMock,
@@ -65,7 +64,6 @@ func ReturnErroWhenCallSelectGroup(
 func ReturnSuccessWhenCallSelectGroup(
 	groupCommandMock *group_command_mock.SearchGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
-	loggerMock *logger_mock.LoggerMock,
 	uuidMock *uuid_mock.UUIDMock) {
 	groupCommandMock.On(group_command_mock.Execute, "7eef288f-dc7d-43b7-98a3-b5aacc717b8b").Return(group_dto.GroupOutputDTO{
 		ID:        "7eef288f-dc7d-43b7-98a3-b5aacc717b8b",

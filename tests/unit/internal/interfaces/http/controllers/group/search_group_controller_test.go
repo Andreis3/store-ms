@@ -36,7 +36,7 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 				requestIDMock = new(uuid_mock.UUIDMock)
 			})
 			It("Should return a error when of path paramnters is not format uuid", func() {
-				ReturnErroWhenIDInRouterPathIsNotFormatUUID(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				ReturnErrorWhenIDInRouterPathIsNotFormatUUID(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				groupController = group_controller.NewSearchGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				request, err := http.NewRequest("GET", helpers.SEARCH_GROUP_V1, nil)
 				request.SetPathValue("id", "123")
@@ -62,11 +62,11 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 				Expect(result).To(Equal(expected))
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.StatusCode).To(Equal(expected.StatusCode))
-				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Get Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "PR-001", "ORIGIN", "PathRouterValidate", "ERROR_MESSAGE", "invalid path parameter id"}))).To(BeTrue())
+				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Get Group Error", []any{"REQUEST_ID", "123", "CODE_ERROR", "PR-001", "ORIGIN", "PathRouterValidate", "ERROR_MESSAGE", "invalid path parameter id"})).To(BeTrue())
 				Expect(loggerMock.ExpectedCalls).To(HaveLen(1))
 			})
 			It("Should return a error when group not found", func() {
-				ReturnErroWhenGroupNotFound(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				ReturnErrorWhenGroupNotFound(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				groupController = group_controller.NewSearchGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 
 				request, err := http.NewRequest("GET", fmt.Sprintf("/api/v1/groups/%s", "7eef288f-dc7d-43b7-98a3-b5aacc717b8b"), nil)
@@ -93,11 +93,11 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 				Expect(result).To(Equal(expected))
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.StatusCode).To(Equal(expected.StatusCode))
-				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Select One Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "PR-002", "ORIGIN", "GetGroupService.SelectGroup", "ERROR_MESSAGE", "group not found"}))).To(BeTrue())
+				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Select One Group Error", []any{"REQUEST_ID", "123", "CODE_ERROR", "PR-002", "ORIGIN", "GetGroupService.SelectGroup", "ERROR_MESSAGE", "group not found"})).To(BeTrue())
 				Expect(loggerMock.ExpectedCalls).To(HaveLen(1))
 			})
 			It("Should return any error when call the method SelectGroup", func() {
-				ReturnErroWhenCallSelectGroup(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				ReturnErrorWhenCallSelectGroup(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				groupController = group_controller.NewSearchGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 
 				request, err := http.NewRequest("GET", fmt.Sprintf("/api/v1/groups/%s", "7eef288f-dc7d-43b7-98a3-b5aacc717b8b"), nil)
@@ -124,11 +124,11 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 				Expect(result).To(Equal(expected))
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.StatusCode).To(Equal(expected.StatusCode))
-				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Select One Group Error", ([]any{"REQUEST_ID", "123", "CODE_ERROR", "PR-003", "ORIGIN", "GetGroupService.SelectGroup", "ERROR_MESSAGE", "internal server error"}))).To(BeTrue())
+				Expect(loggerMock.AssertCalled(GinkgoT(), logger_mock.Error, "Select One Group Error", []any{"REQUEST_ID", "123", "CODE_ERROR", "PR-003", "ORIGIN", "GetGroupService.SelectGroup", "ERROR_MESSAGE", "internal server error"})).To(BeTrue())
 				Expect(loggerMock.ExpectedCalls).To(HaveLen(1))
 			})
 			It("Should return success when call the method SelectGroup", func() {
-				ReturnSuccessWhenCallSelectGroup(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				ReturnSuccessWhenCallSelectGroup(selectGroupCommandMock, prometheusMock, requestIDMock)
 				groupController = group_controller.NewSearchGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 
 				request, err := http.NewRequest("GET", fmt.Sprintf("/api/v1/groups/%s", "7eef288f-dc7d-43b7-98a3-b5aacc717b8b"), nil)
