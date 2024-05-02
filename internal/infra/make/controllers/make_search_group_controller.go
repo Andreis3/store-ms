@@ -14,11 +14,11 @@ import (
 
 func MakeSearchGroupController(pool *pgxpool.Pool) igroup_controller.ISearchGroupController {
 	prometheus := metric_prometheus.NewPrometheusAdapter()
-	uow := uow.NewProxyUnitOfWork(pool, prometheus)
-	logger := logger.NewLogger()
-	searchGroupService := group_service.NewSearchGroupService(uow)
+	unitOfWork := uow.NewProxyUnitOfWork(pool, prometheus)
+	log := logger.NewLogger()
+	searchGroupService := group_service.NewSearchGroupService(unitOfWork)
 	uuid := uuid.NewUUID()
 	searchGroupCommand := group_command.NewSearchGroupCommand(searchGroupService)
-	searchGroupController := group_controller.NewSearchGroupController(searchGroupCommand, prometheus, logger, uuid)
+	searchGroupController := group_controller.NewSearchGroupController(searchGroupCommand, prometheus, log, uuid)
 	return searchGroupController
 }
