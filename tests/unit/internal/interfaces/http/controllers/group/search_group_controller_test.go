@@ -161,8 +161,6 @@ var _ = Describe("INTERFACES :: HTTP :: CONTROLLERS :: GROUP :: SEARCH_GROUP_CON
 				Expect(result).To(Equal(expected))
 				Expect(result.RequestID).To(BeAssignableToTypeOf(expected.RequestID))
 				Expect(result.Data).To(BeAssignableToTypeOf(expected.Data))
-				//Expect(result.Name).To(Equal(expected.Name))
-				//Expect(result.Code).To(Equal(expected.Code))
 				Expect(loggerMock.ExpectedCalls).To(HaveLen(0))
 			})
 		})
