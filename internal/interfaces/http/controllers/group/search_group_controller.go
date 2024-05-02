@@ -15,19 +15,19 @@ import (
 	"github.com/andreis3/stores-ms/internal/interfaces/http/helpers"
 )
 
-type GetGroupController struct {
+type SearchGroupController struct {
 	selectGroupCommand igroup_command.ISearchGroupCommand
 	logger             ilogger.ILogger
 	requestID          uuid.IUUID
 	prometheus         imetric.IMetricAdapter
 }
 
-func NewGetGroupController(
+func NewSearchGroupController(
 	selectGroupCommand igroup_command.ISearchGroupCommand,
 	prometheus imetric.IMetricAdapter,
 	logger ilogger.ILogger,
-	requestID uuid.IUUID) *GetGroupController {
-	return &GetGroupController{
+	requestID uuid.IUUID) *SearchGroupController {
+	return &SearchGroupController{
 		selectGroupCommand: selectGroupCommand,
 		logger:             logger,
 		requestID:          requestID,
@@ -35,7 +35,7 @@ func NewGetGroupController(
 	}
 }
 
-func (ggc *GetGroupController) SearchGroup(w http.ResponseWriter, r *http.Request) {
+func (ggc *SearchGroupController) SearchGroup(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
 	requestID := ggc.requestID.Generate()
 	err := helpers.PathRouterValidate(r, helpers.ID)

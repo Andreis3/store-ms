@@ -15,7 +15,7 @@ import (
 
 // TODO: Create tests for the SearchGroup method
 func ReturnErroWhenIDInRouterPathIsNotFormatUUID(
-	groupCommandMock *group_command_mock.SelectGroupCommandMock,
+	groupCommandMock *group_command_mock.SearchGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
 	loggerMock *logger_mock.LoggerMock,
 	uuidMock *uuid_mock.UUIDMock) {
@@ -27,7 +27,7 @@ func ReturnErroWhenIDInRouterPathIsNotFormatUUID(
 }
 
 func ReturnErroWhenGroupNotFound(
-	groupCommandMock *group_command_mock.SelectGroupCommandMock,
+	groupCommandMock *group_command_mock.SearchGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
 	loggerMock *logger_mock.LoggerMock,
 	uuidMock *uuid_mock.UUIDMock) {
@@ -45,7 +45,7 @@ func ReturnErroWhenGroupNotFound(
 }
 
 func ReturnErroWhenCallSelectGroup(
-	groupCommandMock *group_command_mock.SelectGroupCommandMock,
+	groupCommandMock *group_command_mock.SearchGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
 	loggerMock *logger_mock.LoggerMock,
 	uuidMock *uuid_mock.UUIDMock) {
@@ -63,7 +63,7 @@ func ReturnErroWhenCallSelectGroup(
 }
 
 func ReturnSuccessWhenCallSelectGroup(
-	groupCommandMock *group_command_mock.SelectGroupCommandMock,
+	groupCommandMock *group_command_mock.SearchGroupCommandMock,
 	prometheusMock *metric_prometheus_mock.PrometheusAdapterMock,
 	loggerMock *logger_mock.LoggerMock,
 	uuidMock *uuid_mock.UUIDMock) {

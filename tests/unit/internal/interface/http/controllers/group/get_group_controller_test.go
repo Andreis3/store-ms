@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/controller"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group"
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/metric/prometheus"
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
 
@@ -23,21 +23,21 @@ import (
 
 var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GET_GROUP_CONTROLLER", func() {
 	Describe("#SelectGroup", func() {
-		selectGroupCommandMock := new(group_command_mock.SelectGroupCommandMock)
+		selectGroupCommandMock := new(group_command_mock.SearchGroupCommandMock)
 		prometheusMock := new(metric_prometheus_mock.PrometheusAdapterMock)
 		loggerMock := new(logger_mock.LoggerMock)
 		requestIDMock := new(uuid_mock.UUIDMock)
-		groupController := new(group_controller.GetGroupController)
+		groupController := new(group_controller.SearchGroupController)
 		Context("When I call the method SelectGroup", func() {
 			BeforeEach(func() {
-				selectGroupCommandMock = new(group_command_mock.SelectGroupCommandMock)
+				selectGroupCommandMock = new(group_command_mock.SearchGroupCommandMock)
 				prometheusMock = new(metric_prometheus_mock.PrometheusAdapterMock)
 				loggerMock = new(logger_mock.LoggerMock)
 				requestIDMock = new(uuid_mock.UUIDMock)
 			})
 			It("Should return a error when of path paramnters is not format uuid", func() {
 				ReturnErroWhenIDInRouterPathIsNotFormatUUID(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
-				groupController = group_controller.NewGetGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewSearchGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 				request, err := http.NewRequest("GET", helpers.GET_GROUP_V1, nil)
 				request.SetPathValue("id", "123")
 				writer := httptest.NewRecorder()
@@ -67,7 +67,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GET_GROUP_CONTROL
 			})
 			It("Should return a error when group not found", func() {
 				ReturnErroWhenGroupNotFound(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
-				groupController = group_controller.NewGetGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewSearchGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 
 				request, err := http.NewRequest("GET", fmt.Sprintf("/api/v1/groups/%s", "7eef288f-dc7d-43b7-98a3-b5aacc717b8b"), nil)
 				request.SetPathValue("id", "7eef288f-dc7d-43b7-98a3-b5aacc717b8b")
@@ -98,7 +98,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GET_GROUP_CONTROL
 			})
 			It("Should return any error when call the method SelectGroup", func() {
 				ReturnErroWhenCallSelectGroup(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
-				groupController = group_controller.NewGetGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewSearchGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 
 				request, err := http.NewRequest("GET", fmt.Sprintf("/api/v1/groups/%s", "7eef288f-dc7d-43b7-98a3-b5aacc717b8b"), nil)
 				request.SetPathValue("id", "7eef288f-dc7d-43b7-98a3-b5aacc717b8b")
@@ -129,7 +129,7 @@ var _ = Describe("INTERFACE :: HTTP :: CONTROLLERS :: GROUP :: GET_GROUP_CONTROL
 			})
 			It("Should return success when call the method SelectGroup", func() {
 				ReturnSuccessWhenCallSelectGroup(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
-				groupController = group_controller.NewGetGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
+				groupController = group_controller.NewSearchGroupController(selectGroupCommandMock, prometheusMock, loggerMock, requestIDMock)
 
 				request, err := http.NewRequest("GET", fmt.Sprintf("/api/v1/groups/%s", "7eef288f-dc7d-43b7-98a3-b5aacc717b8b"), nil)
 				request.SetPathValue("id", "7eef288f-dc7d-43b7-98a3-b5aacc717b8b")

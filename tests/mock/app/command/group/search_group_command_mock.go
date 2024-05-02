@@ -7,11 +7,11 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-type SelectGroupCommandMock struct {
+type SearchGroupCommandMock struct {
 	mock.Mock
 }
 
-func (m *SelectGroupCommandMock) Execute(id string) (group_dto.GroupOutputDTO, *util.ValidationError) {
+func (m *SearchGroupCommandMock) Execute(id string) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	ret := m.Called(id)
 
 	var r0 group_dto.GroupOutputDTO

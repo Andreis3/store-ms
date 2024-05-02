@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"strings"
 
-	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/controller"
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group"
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/metric/prometheus"
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
 
