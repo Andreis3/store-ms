@@ -18,8 +18,8 @@ func MakeCreateGroupController(pool *pgxpool.Pool) igroup_controller.ICreateGrou
 	uow := uow.NewProxyUnitOfWork(pool, prometheus)
 	logger := logger.NewLogger()
 	uuid := uuid.NewUUID()
-	groupService := group_service.NewCreateGroupService(uow, uuid)
-	groupCommand := group_command.NewCreateGroupCommand(groupService)
-	groupController := group_controller.NewCreateGroupController(groupCommand, prometheus, logger, uuid)
-	return groupController
+	createGroupService := group_service.NewCreateGroupService(uow, uuid)
+	createGroupCommand := group_command.NewCreateGroupCommand(createGroupService)
+	createGroupController := group_controller.NewCreateGroupController(createGroupCommand, prometheus, logger, uuid)
+	return createGroupController
 }

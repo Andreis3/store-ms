@@ -6,7 +6,7 @@ import (
 
 	"github.com/andreis3/stores-ms/internal/infra/adapters/database/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
-	"github.com/andreis3/stores-ms/internal/infra/make/controller"
+	"github.com/andreis3/stores-ms/internal/infra/make/controllers"
 	"github.com/andreis3/stores-ms/internal/infra/routes"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/routes"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/stores"
