@@ -26,23 +26,25 @@ func (r *RegisterRoutes) Register(serverMux *chi.Mux, router util.RouteType) {
 		case util.HANDLER:
 			switch len(route.Middlewares) > 0 {
 			case true:
-				r.logger.Info(message, info, fmt.Sprintf("%s %s - %s", route.Method, route.Path, route.Description))
-				serverMux.With(route.Middlewares...).Handle(route.Path, route.Controller.(http.Handler))
+				methodAndPath := fmt.Sprintf("%s %s", route.Method, route.Path)
+				r.logger.Info(message, info, fmt.Sprintf("%s - %s", methodAndPath, route.Description))
+				serverMux.With(route.Middlewares...).Handle(methodAndPath, route.Controller.(http.Handler))
 			default:
-				r.logger.Info(message, info, fmt.Sprintf("%s %s - %s", route.Method, route.Path, route.Description))
-				serverMux.Handle(route.Path, route.Controller.(http.Handler))
+				methodAndPath := fmt.Sprintf("%s %s", route.Method, route.Path)
+				r.logger.Info(message, info, fmt.Sprintf("%s - %s", methodAndPath, route.Description))
+				serverMux.Handle(methodAndPath, route.Controller.(http.Handler))
 			}
 
 		case util.HANDLER_FUNC:
 			switch len(route.Middlewares) > 0 {
 			case true:
-				r.logger.Info(message, info, fmt.Sprintf("%s %s - %s", route.Method, route.Path, route.Description))
-				serverMux.With(route.Middlewares...).HandleFunc(
-					route.Path, route.Controller.(func(http.ResponseWriter, *http.Request)))
+				methodAndPath := fmt.Sprintf("%s %s", route.Method, route.Path)
+				r.logger.Info(message, info, fmt.Sprintf("%s - %s", methodAndPath, route.Description))
+				serverMux.With(route.Middlewares...).HandleFunc(methodAndPath, route.Controller.(func(http.ResponseWriter, *http.Request)))
 			default:
+				methodAndPath := fmt.Sprintf("%s %s", route.Method, route.Path)
 				r.logger.Info(message, info, fmt.Sprintf("%s %s - %s", route.Method, route.Path, route.Description))
-				serverMux.HandleFunc(
-					route.Path, route.Controller.(func(http.ResponseWriter, *http.Request)))
+				serverMux.HandleFunc(methodAndPath, route.Controller.(func(http.ResponseWriter, *http.Request)))
 			}
 		}
 	}
