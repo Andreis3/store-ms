@@ -16,19 +16,19 @@ import (
 )
 
 type CreateGroupController struct {
-	insertGroupCommand igroup_command.IInsertGroupCommand
+	createGroupCommand igroup_command.ICreateGroupCommand
 	logger             ilogger.ILogger
 	requestID          uuid.IUUID
 	prometheus         imetric.IMetricAdapter
 }
 
 func NewCreateGroupController(
-	insertGroupCommand igroup_command.IInsertGroupCommand,
+	createGroupCommand igroup_command.ICreateGroupCommand,
 	prometheus imetric.IMetricAdapter,
 	logger ilogger.ILogger,
 	requestID uuid.IUUID) *CreateGroupController {
 	return &CreateGroupController{
-		insertGroupCommand: insertGroupCommand,
+		createGroupCommand: createGroupCommand,
 		logger:             logger,
 		requestID:          requestID,
 		prometheus:         prometheus,
@@ -52,7 +52,7 @@ func (cgc *CreateGroupController) CreateGroup(w http.ResponseWriter, r *http.Req
 		helpers.ResponseError[[]string](w, err.Status, requestID, err.Code, err.ClientError)
 		return
 	}
-	group, errCM := cgc.insertGroupCommand.Execute(*groupInputDTO)
+	group, errCM := cgc.createGroupCommand.Execute(*groupInputDTO)
 	if errCM != nil {
 		cgc.logger.Error("Create Group Error",
 			"REQUEST_ID", requestID,

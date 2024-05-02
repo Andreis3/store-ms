@@ -12,25 +12,25 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-type InsertGroupService struct {
+type CreateGroupService struct {
 	uow  iuow.IUnitOfWork
 	uuid uuid.IUUID
 }
 
-func NewInsertGroupService(uow iuow.IUnitOfWork, uuid uuid.IUUID) *InsertGroupService {
-	return &InsertGroupService{
+func NewCreateGroupService(uow iuow.IUnitOfWork, uuid uuid.IUUID) *CreateGroupService {
+	return &CreateGroupService{
 		uow:  uow,
 		uuid: uuid,
 	}
 }
-func (igs *InsertGroupService) InsertGroup(data entity_group.Group) (group_dto.GroupOutputDTO, *util.ValidationError) {
+func (igs *CreateGroupService) CreateGroup(data entity_group.Group) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	groupModel := new(repo_group.GroupModel)
 	data.ID = igs.uuid.Generate()
 	validate := data.Validate()
 	if validate.HasNotification() {
 		return group_dto.GroupOutputDTO{}, &util.ValidationError{
 			Code:        "VBR-0001",
-			Origin:      "InsertGroupService.InsertGroup",
+			Origin:      "CreateGroupService.CreateGroup",
 			LogError:    validate.ReturnNotification(),
 			ClientError: validate.ReturnNotification(),
 			Status:      http.StatusBadRequest,
@@ -45,7 +45,7 @@ func (igs *InsertGroupService) InsertGroup(data entity_group.Group) (group_dto.G
 		if res.ID != nil {
 			return &util.ValidationError{
 				Code:        "VBR-0002",
-				Origin:      "InsertGroupService.InsertGroup",
+				Origin:      "CreateGroupService.CreateGroup",
 				LogError:    []string{"Group already exists"},
 				ClientError: []string{"Group already exists"},
 				Status:      http.StatusBadRequest,

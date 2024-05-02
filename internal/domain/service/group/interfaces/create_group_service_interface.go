@@ -6,6 +6,6 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-type IInsertGroupService interface {
-	InsertGroup(data entity_group.Group) (group_dto.GroupOutputDTO, *util.ValidationError)
+type ICreateGroupService interface {
+	CreateGroup(data entity_group.Group) (group_dto.GroupOutputDTO, *util.ValidationError)
 }

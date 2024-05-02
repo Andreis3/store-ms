@@ -19,7 +19,7 @@ import (
 func ContextInsertSuccess(groupRepositoryMock *repo_group_mock.GroupRepositoryMock, uuidMock *uuid_mock.UUIDMock) *uow_mock.UnitOfWorkMock {
 	unitOfWork := new(uow_mock.UnitOfWorkMock)
 
-	groupOutputDTO := &repo_group.GroupModel{
+	groupModel := &repo_group.GroupModel{
 		ID:        util.StringToPointer("123"),
 		Name:      util.StringToPointer("Group 1"),
 		Code:      util.StringToPointer("G1"),
@@ -29,7 +29,7 @@ func ContextInsertSuccess(groupRepositoryMock *repo_group_mock.GroupRepositoryMo
 	}
 
 	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, (*util.ValidationError)(nil))
-	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return(groupOutputDTO, &util.ValidationError{})
+	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return(groupModel, (*util.ValidationError)(nil))
 	uuidMock.On(uuid_mock.Generate).Return("123")
 
 	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return((*util.ValidationError)(nil)).Run(func(args mock.Arguments) {

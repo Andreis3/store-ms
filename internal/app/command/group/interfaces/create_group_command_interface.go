@@ -5,6 +5,6 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-type IInsertGroupCommand interface {
+type ICreateGroupCommand interface {
 	Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError)
 }

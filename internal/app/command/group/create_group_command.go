@@ -6,19 +6,19 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-type InsertGroupCommand struct {
-	GroupService igroup_service.IInsertGroupService
+type CreateGroupCommand struct {
+	GroupService igroup_service.ICreateGroupService
 }
 
-func NewInsertGroupCommand(service igroup_service.IInsertGroupService) *InsertGroupCommand {
-	return &InsertGroupCommand{
+func NewCreateGroupCommand(service igroup_service.ICreateGroupService) *CreateGroupCommand {
+	return &CreateGroupCommand{
 		GroupService: service,
 	}
 }
 
-func (c *InsertGroupCommand) Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
+func (c *CreateGroupCommand) Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	group := data.MapperInputDtoToEntity()
-	output, err := c.GroupService.InsertGroup(*group)
+	output, err := c.GroupService.CreateGroup(*group)
 	if err != nil {
 		return group_dto.GroupOutputDTO{}, err
 	}

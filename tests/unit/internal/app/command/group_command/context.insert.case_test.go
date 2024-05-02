@@ -9,8 +9,8 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/domain/service/group_service"
 )
 
-func ContextInsertSuccess() *group_service_mock.InsertGroupServiceMock {
-	groupServiceMock := new(group_service_mock.InsertGroupServiceMock)
+func ContextInsertSuccess() *group_service_mock.CreateGroupServiceMock {
+	groupServiceMock := new(group_service_mock.CreateGroupServiceMock)
 	groupInputDTO := group_dto.GroupInputDTO{
 		Name:   "Group 1",
 		Code:   "G1",
@@ -27,13 +27,13 @@ func ContextInsertSuccess() *group_service_mock.InsertGroupServiceMock {
 
 	group := groupInputDTO.MapperInputDtoToEntity()
 
-	groupServiceMock.On(group_service_mock.InsertGroup, *group).Return(groupOutputDTO, (*util.ValidationError)(nil))
+	groupServiceMock.On(group_service_mock.CreateGroup, *group).Return(groupOutputDTO, (*util.ValidationError)(nil))
 	return groupServiceMock
 }
 
-func ContextInsertReturnErrorGroupServiceInsertGroup() *group_service_mock.InsertGroupServiceMock {
+func ContextInsertReturnErrorGroupServiceInsertGroup() *group_service_mock.CreateGroupServiceMock {
 
-	groupServiceMock := new(group_service_mock.InsertGroupServiceMock)
+	groupServiceMock := new(group_service_mock.CreateGroupServiceMock)
 	groupInputDTO := group_dto.GroupInputDTO{
 		Name:   "Group 1",
 		Code:   "G1",
@@ -49,6 +49,6 @@ func ContextInsertReturnErrorGroupServiceInsertGroup() *group_service_mock.Inser
 		LogError:    []string{"Insert group error"},
 	}
 
-	groupServiceMock.On(group_service_mock.InsertGroup, *gourp).Return(groupOutputDTO, err)
+	groupServiceMock.On(group_service_mock.CreateGroup, *gourp).Return(groupOutputDTO, err)
 	return groupServiceMock
 }

@@ -46,7 +46,7 @@ func (r *GroupRepository) InsertGroup(data entity_group.Group) (*GroupModel, *ut
 	if errors.As(err, &r.PgError) {
 		return &GroupModel{}, &util.ValidationError{
 			Code:        fmt.Sprintf("PIDB-%s", r.Code),
-			Origin:      "GroupRepository.InsertGroup",
+			Origin:      "GroupRepository.CreateGroup",
 			Status:      http.StatusInternalServerError,
 			LogError:    []string{fmt.Sprintf("%s, %s", r.Message, r.Detail)},
 			ClientError: []string{"Internal Server Error"},

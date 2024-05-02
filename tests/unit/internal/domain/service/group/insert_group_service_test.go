@@ -22,13 +22,13 @@ import (
 )
 
 var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", func() {
-	Describe("#InsertGroup", func() {
-		Context("When I call the method InsertGroup", func() {
+	Describe("#CreateGroup", func() {
+		Context("When I call the method CreateGroup", func() {
 			It("Should insert a new group not return errors", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertSuccess(groupRepositoryMock, uuidMock)
-				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				service := group_service.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -38,7 +38,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 					Status: status,
 				}
 
-				groupOutputDTO, err := service.InsertGroup(*groupEntity)
+				groupOutputDTO, err := service.CreateGroup(*groupEntity)
 
 				Expect(err).To(BeNil())
 				Expect(groupOutputDTO).ToNot(BeNil())
@@ -61,11 +61,11 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				Expect(uowMock.AssertNumberOfCalls(GinkgoT(), uow_mock.GetRepository, 1)).To(BeTrue())
 			})
 
-			It("Should return an error when the method InsertGroup of the repository is call", func() {
+			It("Should return an error when the method CreateGroup of the repository is call", func() {
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorGroupRepositoryInsertGroup(groupRepositoryMock, uuidMock)
-				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				service := group_service.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -75,7 +75,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 					Status: status,
 				}
 
-				groupOutputDTO, err := service.InsertGroup(*groupEntity)
+				groupOutputDTO, err := service.CreateGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "PIDB-235",
 					Status:      500,
@@ -92,7 +92,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorWhenCommitCommandUow(groupRepositoryMock, uuidMock)
-				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				service := group_service.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -102,7 +102,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 					Status: status,
 				}
 
-				groupOutputDTO, err := service.InsertGroup(*groupEntity)
+				groupOutputDTO, err := service.CreateGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "PIDB-235",
 					Status:      http.StatusInternalServerError,
@@ -119,7 +119,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertSuccess(groupRepositoryMock, uuidMock)
-				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				service := group_service.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -128,10 +128,10 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 					Status: status,
 				}
 
-				groupOutputDTO, err := service.InsertGroup(*groupEntity)
+				groupOutputDTO, err := service.CreateGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "VBR-0001",
-					Origin:      "InsertGroupService.InsertGroup",
+					Origin:      "CreateGroupService.CreateGroup",
 					Status:      http.StatusBadRequest,
 					ClientError: []string{"name: is required"},
 					LogError:    []string{"name: is required"},
@@ -146,7 +146,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode(groupRepositoryMock, uuidMock)
-				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				service := group_service.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -156,7 +156,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 					Status: status,
 				}
 
-				groupOutputDTO, err := service.InsertGroup(*groupEntity)
+				groupOutputDTO, err := service.CreateGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "PIDB-235",
 					Status:      http.StatusInternalServerError,
@@ -173,7 +173,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup(groupRepositoryMock, uuidMock)
-				service := group_service.NewInsertGroupService(uowMock, uuidMock)
+				service := group_service.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -183,7 +183,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 					Status: status,
 				}
 
-				groupOutputDTO, err := service.InsertGroup(*groupEntity)
+				groupOutputDTO, err := service.CreateGroup(*groupEntity)
 				expectedError := &util.ValidationError{
 					Code:        "VBR-0002",
 					Status:      http.StatusBadRequest,

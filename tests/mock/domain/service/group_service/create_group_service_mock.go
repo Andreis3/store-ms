@@ -9,14 +9,14 @@ import (
 )
 
 const (
-	InsertGroup = "InsertGroup"
+	CreateGroup = "CreateGroup"
 )
 
-type InsertGroupServiceMock struct {
+type CreateGroupServiceMock struct {
 	mock.Mock
 }
 
-func (m *InsertGroupServiceMock) InsertGroup(data entity_group.Group) (group_dto.GroupOutputDTO, *util.ValidationError) {
+func (m *CreateGroupServiceMock) CreateGroup(data entity_group.Group) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	args := m.Called(data)
 	return args.Get(0).(group_dto.GroupOutputDTO), args.Get(1).(*util.ValidationError)
 }
