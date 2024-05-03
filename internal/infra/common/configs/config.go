@@ -27,7 +27,7 @@ func LoadConfig(path string) (*Conf, error) {
 	viper.AutomaticEnv()
 	err := viper.ReadInConfig()
 	if err != nil {
-		config := Conf{
+		cfg = &Conf{
 			DBDriver:        viper.GetString("DB_DRIVER"),
 			DBHost:          viper.GetString("DB_HOST"),
 			DBPort:          viper.GetString("DB_PORT"),
@@ -40,7 +40,6 @@ func LoadConfig(path string) (*Conf, error) {
 			MaxConnLifetime: viper.GetString("MAX_CONN_LIFETIME"),
 			MaxConnIdleTime: viper.GetString("MAX_CONN_IDLE_TIME"),
 		}
-		cfg = &config
 	}
 	err = viper.Unmarshal(&cfg)
 	if err != nil {
