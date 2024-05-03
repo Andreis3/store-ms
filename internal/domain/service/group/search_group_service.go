@@ -24,11 +24,11 @@ func (s *SearchGroupService) SearchOneGroup(id string) (group_dto.GroupOutputDTO
 	err := s.uow.Do(func(uow iuow.IUnitOfWork) *util.ValidationError {
 		var err *util.ValidationError
 		groupRepository := uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
-		res, err := groupRepository.SelectOneGroupByID(id)
+		groupModel, err = groupRepository.SelectOneGroupByID(id)
 		if err != nil {
 			return err
 		}
-		if res.ID == nil {
+		if groupModel.ID == nil {
 			return &util.ValidationError{
 				Code:        "VB-0003",
 				Status:      http.StatusNotFound,
