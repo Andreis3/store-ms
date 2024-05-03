@@ -16,7 +16,7 @@ var _ = Describe("APP :: COMMAND :: GROUP :: CREATE_GROUP_COMMAND", func() {
 	Describe("#Execute", func() {
 		Context("When I call the method CreateGroup of the create_group_service", func() {
 			It("Should insert a new group not return errors", func() {
-				insertGroupService := ContextInsertSuccess()
+				insertGroupService := ContextCreateSuccess()
 				command := group_command.NewCreateGroupCommand(insertGroupService)
 
 				groupInputDTO := group_dto.GroupInputDTO{
@@ -38,7 +38,7 @@ var _ = Describe("APP :: COMMAND :: GROUP :: CREATE_GROUP_COMMAND", func() {
 			})
 
 			It("Should return an error when the method CreateGroup of the create_group_service is call", func() {
-				insertGroupService := ContextInsertReturnErrorGroupServiceInsertGroup()
+				insertGroupService := ContextCreateReturnErrorGroupServiceCreateGroup()
 				command := group_command.NewCreateGroupCommand(insertGroupService)
 
 				groupInputDTO := group_dto.GroupInputDTO{

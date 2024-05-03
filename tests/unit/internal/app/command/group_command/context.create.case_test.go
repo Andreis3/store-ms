@@ -9,7 +9,7 @@ import (
 	"github.com/andreis3/stores-ms/tests/mock/domain/service/group_service"
 )
 
-func ContextInsertSuccess() *group_service_mock.CreateGroupServiceMock {
+func ContextCreateSuccess() *group_service_mock.CreateGroupServiceMock {
 	groupServiceMock := new(group_service_mock.CreateGroupServiceMock)
 	groupInputDTO := group_dto.GroupInputDTO{
 		Name:   "Group 1",
@@ -31,7 +31,7 @@ func ContextInsertSuccess() *group_service_mock.CreateGroupServiceMock {
 	return groupServiceMock
 }
 
-func ContextInsertReturnErrorGroupServiceInsertGroup() *group_service_mock.CreateGroupServiceMock {
+func ContextCreateReturnErrorGroupServiceCreateGroup() *group_service_mock.CreateGroupServiceMock {
 
 	groupServiceMock := new(group_service_mock.CreateGroupServiceMock)
 	groupInputDTO := group_dto.GroupInputDTO{
