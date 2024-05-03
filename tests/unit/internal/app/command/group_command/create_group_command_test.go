@@ -12,9 +12,9 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
-var _ = Describe("APP :: COMMAND :: GROUP :: INSERT_GROUP_COMMAND", func() {
+var _ = Describe("APP :: COMMAND :: GROUP :: CREATE_GROUP_COMMAND", func() {
 	Describe("#Execute", func() {
-		Context("When I call the method CreateGroup of the insert_group_service", func() {
+		Context("When I call the method CreateGroup of the create_group_service", func() {
 			It("Should insert a new group not return errors", func() {
 				insertGroupService := ContextInsertSuccess()
 				command := group_command.NewCreateGroupCommand(insertGroupService)
@@ -37,7 +37,7 @@ var _ = Describe("APP :: COMMAND :: GROUP :: INSERT_GROUP_COMMAND", func() {
 				Expect(groupOutputDTO.UpdatedAt).NotTo(BeEmpty())
 			})
 
-			It("Should return an error when the method CreateGroup of the insert_group_service is call", func() {
+			It("Should return an error when the method CreateGroup of the create_group_service is call", func() {
 				insertGroupService := ContextInsertReturnErrorGroupServiceInsertGroup()
 				command := group_command.NewCreateGroupCommand(insertGroupService)
 
