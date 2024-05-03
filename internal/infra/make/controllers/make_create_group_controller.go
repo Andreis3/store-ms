@@ -6,15 +6,14 @@ import (
 	"github.com/andreis3/stores-ms/internal/app/command/group"
 	"github.com/andreis3/stores-ms/internal/domain/service/group"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
-	"github.com/andreis3/stores-ms/internal/infra/common/metrics/prometheus"
+	"github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
 	"github.com/andreis3/stores-ms/internal/infra/common/uuid"
 	"github.com/andreis3/stores-ms/internal/infra/uow"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/interfaces"
 )
 
-func MakeCreateGroupController(pool *pgxpool.Pool) igroup_controller.ICreateGroupController {
-	prometheus := metric_prometheus.NewPrometheusAdapter()
+func MakeCreateGroupController(pool *pgxpool.Pool, prometheus imetric.IMetricAdapter) igroup_controller.ICreateGroupController {
 	uow := uow.NewProxyUnitOfWork(pool, prometheus)
 	logger := logger.NewLogger()
 	uuid := uuid.NewUUID()
