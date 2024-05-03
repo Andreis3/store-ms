@@ -17,9 +17,9 @@ func ProxyDependency(mux *chi.Mux, postgres idatabase.IDatabase, logger *logger.
 	registerRouter := routes.NewRegisterRoutes(logger)
 	prometheus := metric_prometheus.NewPrometheusAdapter()
 	storesController := stores_controller.NewStoresController()
+	storesRouter := stores_controller.NewStoresRouter(storesController)
 	createGroupController := make_controller.MakeCreateGroupController(postgres.InstanceDB().(*pgxpool.Pool), prometheus)
 	searchGroupController := make_controller.MakeSearchGroupController(postgres.InstanceDB().(*pgxpool.Pool), prometheus)
-	storesRouter := stores_controller.NewStoresRouter(storesController)
 	groupRouter := group_routes.NewGroupRoutes(createGroupController, searchGroupController)
 	routes.NewRoutes(mux, registerRouter, storesRouter, groupRouter).RegisterRoutes()
 }
