@@ -6,6 +6,10 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+const (
+	SearchOneGroup = "SearchOneGroup"
+)
+
 type SearchGroupServiceMock struct {
 	mock.Mock
 }
