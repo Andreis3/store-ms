@@ -11,6 +11,10 @@ import (
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
+const (
+	INTERNAL_SERVER_ERROR = "Internal Server Error"
+)
+
 type UnitOfWork struct {
 	DB           *pgxpool.Pool
 	TX           pgx.Tx
@@ -45,7 +49,7 @@ func (u *UnitOfWork) Do(callback func(uow iuow.IUnitOfWork) *util.ValidationErro
 			Code:        "PDB-0001",
 			Origin:      "UnitOfWork.Do",
 			LogError:    []string{"transaction already exists"},
-			ClientError: []string{"Internal Server Error"},
+			ClientError: []string{INTERNAL_SERVER_ERROR},
 			Status:      http.StatusInternalServerError}
 	}
 	tx, err := u.DB.Begin(ctx)
@@ -54,7 +58,7 @@ func (u *UnitOfWork) Do(callback func(uow iuow.IUnitOfWork) *util.ValidationErro
 			Code:        "PDB-0000",
 			Origin:      "UnitOfWork.Do",
 			LogError:    []string{err.Error()},
-			ClientError: []string{"Internal Server Error"},
+			ClientError: []string{INTERNAL_SERVER_ERROR},
 			Status:      http.StatusInternalServerError}
 	}
 	u.TX = tx
@@ -66,7 +70,7 @@ func (u *UnitOfWork) Do(callback func(uow iuow.IUnitOfWork) *util.ValidationErro
 				Code:        errRb.Code,
 				Origin:      errRb.Origin,
 				LogError:    append(errCB.LogError, errRb.LogError...),
-				ClientError: []string{"Internal Server Error"},
+				ClientError: []string{INTERNAL_SERVER_ERROR},
 				Status:      http.StatusInternalServerError}
 		}
 		return errCB
@@ -79,7 +83,7 @@ func (u *UnitOfWork) Rollback() *util.ValidationError {
 			Code:        "PDB-0003",
 			Origin:      "UnitOfWork.Rollback",
 			LogError:    []string{"transaction not exists"},
-			ClientError: []string{"Internal Server Error"},
+			ClientError: []string{INTERNAL_SERVER_ERROR},
 			Status:      http.StatusInternalServerError,
 		}
 	}
@@ -90,7 +94,7 @@ func (u *UnitOfWork) Rollback() *util.ValidationError {
 			Code:        "PDB-0002",
 			Origin:      "UnitOfWork.Rollback",
 			LogError:    []string{err.Error()},
-			ClientError: []string{"Internal Server Error"},
+			ClientError: []string{INTERNAL_SERVER_ERROR},
 			Status:      http.StatusInternalServerError,
 		}
 	}
@@ -110,7 +114,7 @@ func (u *UnitOfWork) CommitOrRollback() *util.ValidationError {
 			Code:        "PDB-0004",
 			Origin:      "UnitOfWork.CommitOrRollback",
 			LogError:    []string{err.Error()},
-			ClientError: []string{"Internal Server Error"},
+			ClientError: []string{INTERNAL_SERVER_ERROR},
 			Status:      http.StatusInternalServerError}
 	}
 	u.TX = nil
