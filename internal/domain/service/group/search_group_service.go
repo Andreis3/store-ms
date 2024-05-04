@@ -23,7 +23,7 @@ func (s *SearchGroupService) SearchOneGroup(id string) (group_dto.GroupOutputDTO
 	var groupModel = new(repo_group.GroupModel)
 	err := s.uow.Do(func(uow iuow.IUnitOfWork) *util.ValidationError {
 		var err *util.ValidationError
-		groupRepository := uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
+		groupRepository := s.uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
 		groupModel, err = groupRepository.SelectOneGroupByID(id)
 		if err != nil {
 			return err

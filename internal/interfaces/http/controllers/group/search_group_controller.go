@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
@@ -20,6 +21,7 @@ type SearchGroupController struct {
 	logger             ilogger.ILogger
 	prometheus         imetric.IMetricAdapter
 	requestID          uuid.IUUID
+	mutex              sync.Mutex
 }
 
 func NewSearchGroupController(
@@ -53,7 +55,9 @@ func (ggc *SearchGroupController) SearchOneGroup(w http.ResponseWriter, r *http.
 		return
 	}
 	id := r.PathValue("id")
+	ggc.mutex.Lock()
 	group, err := ggc.selectGroupCommand.Execute(id)
+	ggc.mutex.Unlock()
 	if err != nil {
 		ggc.logger.Error("Select One Group Error",
 			"REQUEST_ID", requestID,
