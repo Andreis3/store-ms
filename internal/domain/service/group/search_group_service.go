@@ -11,19 +11,16 @@ import (
 )
 
 type SearchGroupService struct {
-	uow iuow.IUnitOfWork
 }
 
-func NewSearchGroupService(uow iuow.IUnitOfWork) *SearchGroupService {
-	return &SearchGroupService{
-		uow: uow,
-	}
+func NewSearchGroupService() *SearchGroupService {
+	return &SearchGroupService{}
 }
-func (s *SearchGroupService) SearchOneGroup(id string) (group_dto.GroupOutputDTO, *util.ValidationError) {
+func (s *SearchGroupService) SearchOneGroup(id string, unitOfWorker iuow.IUnitOfWork) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	var groupModel = new(repo_group.GroupModel)
-	err := s.uow.Do(func(uow iuow.IUnitOfWork) *util.ValidationError {
+	err := unitOfWorker.Do(func(uow iuow.IUnitOfWork) *util.ValidationError {
 		var err *util.ValidationError
-		groupRepository := s.uow.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
+		groupRepository := unitOfWorker.GetRepository(util.GROUP_REPOSITORY_KEY).(irepo_group.IGroupRepository)
 		groupModel, err = groupRepository.SelectOneGroupByID(id)
 		if err != nil {
 			return err
