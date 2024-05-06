@@ -47,8 +47,8 @@ func (r *GroupRoutes) GroupRoutes() util.RouteType {
 			Description: "Search Group",
 			Type:        util.HANDLER_FUNC,
 			Middlewares: []func(http.Handler) http.Handler{
-				group_middleware.ValidatePath,
-				middleware.Logger,
+				//group_middleware.ValidatePath,
+				//middleware.Logger,
 			},
 		},
 	}
