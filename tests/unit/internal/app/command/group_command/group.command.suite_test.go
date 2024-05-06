@@ -12,11 +12,9 @@ import (
 
 func Test_GroupCommandSuite(t *testing.T) {
 	suiteConfig, reporterConfig := GinkgoConfiguration()
-
 	suiteConfig.SkipStrings = []string{"SKIPPED", "PENDING", "NEVER-RUN", "SKIP"}
 	reporterConfig.FullTrace = true
 	reporterConfig.Succinct = true
-
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Group Command Insert Test Suite ", suiteConfig, reporterConfig)
 }

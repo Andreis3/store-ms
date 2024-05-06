@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/andreis3/stores-ms/internal/infra/adapters/database/postgres"
 	"github.com/andreis3/stores-ms/internal/infra/common/configs"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
 	"github.com/andreis3/stores-ms/internal/infra/server"
@@ -18,6 +17,5 @@ func main() {
 		log.Error(fmt.Sprintf("Error loading config: %s", err.Error()))
 		os.Exit(util.EXIT_FAILURE)
 	}
-	pool := postgres.NewPostgresDB(*conf)
-	server.GracefulShutdown(server.Start(conf, pool, log), pool, log)
+	server.Start(conf, log)
 }

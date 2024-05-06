@@ -1,19 +1,21 @@
 package group_command_mock
 
 import (
-	"github.com/andreis3/stores-ms/internal/interface/http/controller/group/dto"
+	"github.com/stretchr/testify/mock"
+
+	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
+const (
+	Execute = "Execute"
+)
+
 type InsertGroupCommandMock struct {
-	FuncParamsInput  []any
-	FuncParamsOutput []any
-	ExecuteFunc      func(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError)
+	mock.Mock
 }
 
-func (i *InsertGroupCommandMock) Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
-	i.FuncParamsInput = []any{data}
-	returnOne, returnTwo := i.ExecuteFunc(data)
-	i.FuncParamsOutput = []any{returnOne, returnTwo}
-	return returnOne, returnTwo
+func (igc *InsertGroupCommandMock) Execute(data group_dto.GroupInputDTO) (group_dto.GroupOutputDTO, *util.ValidationError) {
+	args := igc.Called(data)
+	return args.Get(0).(group_dto.GroupOutputDTO), args.Get(1).(*util.ValidationError)
 }

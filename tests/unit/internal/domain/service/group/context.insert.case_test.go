@@ -4,191 +4,176 @@
 package group_service_test
 
 import (
-	"context"
+	"net/http"
+
+	"github.com/stretchr/testify/mock"
+
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/internal/infra/uow/interfaces"
 	"github.com/andreis3/stores-ms/internal/util"
+	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
 	"github.com/andreis3/stores-ms/tests/mock/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/tests/mock/infra/uow"
-	"net/http"
 )
 
-func ContextInsertSuccess() *uow_mock.UnitOfWorkMock {
-	var unitOfWork *uow_mock.UnitOfWorkMock
-	var mapRegister []uow_mock.RegisterRepository
-	var groupRepositoryMock *repo_group_mock.GroupRepositoryMock
+func ContextInsertSuccess(groupRepositoryMock *repo_group_mock.GroupRepositoryMock, uuidMock *uuid_mock.UUIDMock) *uow_mock.UnitOfWorkMock {
+	unitOfWork := new(uow_mock.UnitOfWorkMock)
 
-	mapRegister = make([]uow_mock.RegisterRepository, 0)
-	groupRepositoryMock = &repo_group_mock.GroupRepositoryMock{
-		InsertGroupFunc: func(group repo_group.GroupModel) (string, *util.ValidationError) {
-			return "1", nil
-		},
+	groupModel := &repo_group.GroupModel{
+		ID:        util.StringToPointer("123"),
+		Name:      util.StringToPointer("Group 1"),
+		Code:      util.StringToPointer("G1"),
+		Status:    util.StringToPointer("active"),
+		CreatedAt: util.FormatDateStringToPointerTime("2021-01-01T00:00:00Z"),
+		UpdatedAt: util.FormatDateStringToPointerTime("2021-01-01T00:00:00Z"),
 	}
-	mapRegister = []uow_mock.RegisterRepository{
-		{
-			Key:  util.GROUP_REPOSITORY_KEY,
-			Repo: groupRepositoryMock,
-		},
-	}
-	unitOfWork = &uow_mock.UnitOfWorkMock{
-		DoFunc: func(ctx context.Context, callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
-			return nil
-		},
-		RegisterFunc: func(name string, callback iuow.RepositoryFactory) {
-		},
-		GetRepositoryFunc: func(name string) any {
-			return nil
-		},
-		CommitOrRollbackFunc: func() *util.ValidationError {
-			return nil
-		},
-		RollbackFunc: func() *util.ValidationError {
-			return nil
-		},
-	}
-	uow := uow_mock.NewProxyUnitOfWorkMock(unitOfWork, mapRegister)
-	return uow
+
+	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, (*util.ValidationError)(nil))
+	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return(groupModel, (*util.ValidationError)(nil))
+	uuidMock.On(uuid_mock.Generate).Return("123")
+
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return((*util.ValidationError)(nil)).Run(func(args mock.Arguments) {
+		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
+		callback(unitOfWork)
+	}).Once()
+
+	unitOfWork.On(uow_mock.GetRepository, util.GROUP_REPOSITORY_KEY).Return(groupRepositoryMock)
+
+	return unitOfWork
 }
-func ContextInsertReturnErrorGroupRepositoryInsertGroup() *uow_mock.UnitOfWorkMock {
-	var unitOfWork *uow_mock.UnitOfWorkMock
-	var mapRegister []uow_mock.RegisterRepository
-	var groupRepositoryMock *repo_group_mock.GroupRepositoryMock
+func ContextInsertReturnErrorGroupRepositoryInsertGroup(groupRepositoryMock *repo_group_mock.GroupRepositoryMock, uuidMock *uuid_mock.UUIDMock) *uow_mock.UnitOfWorkMock {
+	unitOfWork := new(uow_mock.UnitOfWorkMock)
+	err := &util.ValidationError{
+		Code:        "PIDB-235",
+		Status:      http.StatusInternalServerError,
+		LogError:    []string{"Insert group error"},
+		ClientError: []string{"Internal Server Error"},
+	}
+	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, &util.ValidationError{})
+	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("", err)
+	uuidMock.On(uuid_mock.Generate).Return("123")
 
-	mapRegister = make([]uow_mock.RegisterRepository, 0)
-	groupRepositoryMock = &repo_group_mock.GroupRepositoryMock{
-		InsertGroupFunc: func(group repo_group.GroupModel) (string, *util.ValidationError) {
-			return "", &util.ValidationError{
-				Code:        "PIDB-235",
-				Status:      http.StatusInternalServerError,
-				LogError:    []string{"Insert group error"},
-				ClientError: []string{"Internal Server Error"},
-			}
-		},
-	}
-	mapRegister = []uow_mock.RegisterRepository{
-		{
-			Key:  util.GROUP_REPOSITORY_KEY,
-			Repo: groupRepositoryMock,
-		},
-	}
-	unitOfWork = &uow_mock.UnitOfWorkMock{
-		DoFunc: func(ctx context.Context, callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
-			return &util.ValidationError{
-				Code:        "PIDB-235",
-				Status:      http.StatusInternalServerError,
-				LogError:    []string{"Insert group error"},
-				ClientError: []string{"Internal Server Error"},
-			}
-		},
-		RegisterFunc: func(name string, callback iuow.RepositoryFactory) {
-		},
-		GetRepositoryFunc: func(name string) any {
-			return nil
-		},
-		CommitOrRollbackFunc: func() *util.ValidationError {
-			return nil
-		},
-		RollbackFunc: func() *util.ValidationError {
-			return nil
-		},
-	}
-	uow := uow_mock.NewProxyUnitOfWorkMock(unitOfWork, mapRegister)
-	return uow
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
+		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
+		callback(unitOfWork)
+	}).Once()
+
+	unitOfWork.On(uow_mock.GetRepository, util.GROUP_REPOSITORY_KEY).Return(groupRepositoryMock)
+
+	return unitOfWork
 }
-func ContextInsertReturnErrorWhenCommitCommandUow() *uow_mock.UnitOfWorkMock {
-	var unitOfWork *uow_mock.UnitOfWorkMock
-	var mapRegister []uow_mock.RegisterRepository
-	var groupRepositoryMock *repo_group_mock.GroupRepositoryMock
+func ContextInsertReturnErrorWhenCommitCommandUow(groupRepositoryMock *repo_group_mock.GroupRepositoryMock, uuidMock *uuid_mock.UUIDMock) *uow_mock.UnitOfWorkMock {
+	unitOfWork := new(uow_mock.UnitOfWorkMock)
+	err := &util.ValidationError{
+		Code:        "PIDB-235",
+		Status:      http.StatusInternalServerError,
+		LogError:    []string{"Commit error"},
+		ClientError: []string{"Internal Server Error"},
+	}
 
-	mapRegister = make([]uow_mock.RegisterRepository, 0)
-	groupRepositoryMock = &repo_group_mock.GroupRepositoryMock{
-		InsertGroupFunc: func(group repo_group.GroupModel) (string, *util.ValidationError) {
-			return "1", nil
-		},
-	}
-	mapRegister = []uow_mock.RegisterRepository{
-		{
-			Key:  util.GROUP_REPOSITORY_KEY,
-			Repo: groupRepositoryMock,
-		},
-	}
-	unitOfWork = &uow_mock.UnitOfWorkMock{
-		DoFunc: func(ctx context.Context, callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
-			return &util.ValidationError{
-				Code:        "PIDB-235",
-				Status:      http.StatusInternalServerError,
-				LogError:    []string{"Commit error"},
-				ClientError: []string{"Internal Server Error"},
-			}
-		},
-		RegisterFunc: func(name string, callback iuow.RepositoryFactory) {
-		},
-		GetRepositoryFunc: func(name string) any {
-			return nil
-		},
-		CommitOrRollbackFunc: func() *util.ValidationError {
-			return &util.ValidationError{
-				Code:        "PIDB-235",
-				Status:      http.StatusInternalServerError,
-				LogError:    []string{"Commit error"},
-				ClientError: []string{"Internal Server Error"},
-			}
-		},
-		RollbackFunc: func() *util.ValidationError {
-			return nil
-		},
-	}
-	uow := uow_mock.NewProxyUnitOfWorkMock(unitOfWork, mapRegister)
-	return uow
+	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, &util.ValidationError{})
+	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("1", nil)
+	uuidMock.On(uuid_mock.Generate).Return("123")
+
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
+		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
+		callback(unitOfWork)
+	}).Once()
+
+	unitOfWork.On(uow_mock.CommitOrRollback).Return(err).Run(func(args mock.Arguments) {
+		callback := args.Get(0).(func() *util.ValidationError)
+		callback()
+	}).Once()
+
+	unitOfWork.On(uow_mock.GetRepository, util.GROUP_REPOSITORY_KEY).Return(groupRepositoryMock)
+
+	return unitOfWork
 }
-func ContextInsertReturnErrorWhenRoolbackCommandUow() *uow_mock.UnitOfWorkMock {
-	var unitOfWork *uow_mock.UnitOfWorkMock
-	var mapRegister []uow_mock.RegisterRepository
-	var groupRepositoryMock *repo_group_mock.GroupRepositoryMock
+func ContextInsertReturnErrorWhenRollbackCommandUow(groupRepositoryMock *repo_group_mock.GroupRepositoryMock, uuidMock *uuid_mock.UUIDMock) *uow_mock.UnitOfWorkMock {
+	unitOfWork := new(uow_mock.UnitOfWorkMock)
 
-	mapRegister = make([]uow_mock.RegisterRepository, 0)
-	groupRepositoryMock = &repo_group_mock.GroupRepositoryMock{
-		InsertGroupFunc: func(group repo_group.GroupModel) (string, *util.ValidationError) {
-			return "1", nil
-		},
+	err := &util.ValidationError{
+		Code:        "PIDB-235",
+		Status:      http.StatusInternalServerError,
+		LogError:    []string{"Rollback error"},
+		ClientError: []string{"Internal Server Error"},
 	}
-	mapRegister = []uow_mock.RegisterRepository{
-		{
-			Key:  util.GROUP_REPOSITORY_KEY,
-			Repo: groupRepositoryMock,
-		},
+
+	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, nil)
+	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("1", nil)
+	uuidMock.On(uuid_mock.Generate).Return("123")
+
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
+		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
+		callback(unitOfWork)
+	}).Once()
+
+	unitOfWork.On(uow_mock.CommitOrRollback).Return(nil).Run(func(args mock.Arguments) {
+		callback := args.Get(0).(func() *util.ValidationError)
+		callback()
+	}).Once()
+
+	unitOfWork.On(uow_mock.Rollback).Return(err).Run(func(args mock.Arguments) {
+		callback := args.Get(0).(func() *util.ValidationError)
+		callback()
+	}).Once()
+
+	unitOfWork.On(uow_mock.GetRepository, util.GROUP_REPOSITORY_KEY).Return(&groupRepositoryMock)
+
+	return unitOfWork
+}
+func ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode(groupRepositoryMock *repo_group_mock.GroupRepositoryMock, uuidMock *uuid_mock.UUIDMock) *uow_mock.UnitOfWorkMock {
+	unitOfWork := new(uow_mock.UnitOfWorkMock)
+
+	err := &util.ValidationError{
+		Code:        "PIDB-235",
+		Status:      http.StatusInternalServerError,
+		LogError:    []string{"Select group error"},
+		ClientError: []string{"Internal Server Error"},
 	}
-	unitOfWork = &uow_mock.UnitOfWorkMock{
-		DoFunc: func(ctx context.Context, callback func(iuow.IUnitOfWork) *util.ValidationError) *util.ValidationError {
-			return &util.ValidationError{
-				Code:        "PIDB-235",
-				Status:      http.StatusInternalServerError,
-				LogError:    []string{"Rollback error"},
-				ClientError: []string{"Internal Server Error"},
-			}
-		},
-		RegisterFunc: func(name string, callback iuow.RepositoryFactory) {
-		},
-		GetRepositoryFunc: func(name string) any {
-			return nil
-		},
-		CommitOrRollbackFunc: func() *util.ValidationError {
-			return &util.ValidationError{
-				Code:        "PIDB-235",
-				Status:      http.StatusInternalServerError,
-				LogError:    []string{"Rollback error"},
-				ClientError: []string{"Internal Server Error"},
-			}
-		},
-		RollbackFunc: func() *util.ValidationError {
-			return &util.ValidationError{
-				Code:        "PIDB-235",
-				Status:      http.StatusInternalServerError,
-				LogError:    []string{"Rollback error"},
-				ClientError: []string{"Internal Server Error"},
-			}
-		},
+
+	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(&repo_group.GroupModel{}, err)
+	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("", &util.ValidationError{})
+	uuidMock.On(uuid_mock.Generate).Return("123")
+
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
+		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
+		callback(unitOfWork)
+	}).Once()
+
+	unitOfWork.On(uow_mock.GetRepository, util.GROUP_REPOSITORY_KEY).Return(groupRepositoryMock)
+
+	return unitOfWork
+
+}
+func ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup(groupRepositoryMock *repo_group_mock.GroupRepositoryMock, uuidMock *uuid_mock.UUIDMock) *uow_mock.UnitOfWorkMock {
+	unitOfWork := new(uow_mock.UnitOfWorkMock)
+
+	err := &util.ValidationError{
+		Code:        "VBR-0002",
+		LogError:    []string{"Group already exists"},
+		ClientError: []string{"Group already exists"},
+		Status:      http.StatusBadRequest,
 	}
-	uow := uow_mock.NewProxyUnitOfWorkMock(unitOfWork, mapRegister)
-	return uow
+
+	model := &repo_group.GroupModel{
+		ID:     util.StringToPointer("1"),
+		Name:   util.StringToPointer("Group 1"),
+		Code:   util.StringToPointer("G1"),
+		Status: util.StringToPointer("active"),
+	}
+
+	groupRepositoryMock.On(repo_group_mock.SelectOneGroupByNameAndCode, mock.Anything, mock.Anything).Return(model, &util.ValidationError{})
+	groupRepositoryMock.On(repo_group_mock.InsertGroup, mock.Anything).Return("", &util.ValidationError{})
+	uuidMock.On(uuid_mock.Generate).Return("123")
+	unitOfWork.On(uow_mock.Do, mock.AnythingOfType(uow_mock.DoParamFunc)).Return(err).Run(func(args mock.Arguments) {
+		callback := args.Get(0).(func(iuow.IUnitOfWork) *util.ValidationError)
+		callback(unitOfWork)
+
+	}).Once()
+
+	unitOfWork.On(uow_mock.GetRepository, util.GROUP_REPOSITORY_KEY).Return(groupRepositoryMock)
+
+	return unitOfWork
+
 }

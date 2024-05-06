@@ -6,6 +6,7 @@ import (
 )
 
 type SalesChannel struct {
+	ID           string
 	SalesChannel string
 	Code         string
 	StoreKey     string
@@ -19,6 +20,7 @@ type Config struct {
 
 func NewSalesChannel(salesChannel, code string, status *valueobject.Status, config bool) *SalesChannel {
 	return &SalesChannel{
+		ID:           "",
 		SalesChannel: salesChannel,
 		Code:         code,
 		Status:       *status,

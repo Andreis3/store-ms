@@ -27,5 +27,9 @@ func FormatDateTime() time.Time {
 func FormatDateString(date time.Time) string {
 	formattedDate := date.Format(layout)
 	return formattedDate
+}
 
+func FormatDateStringToPointerTime(date string) *time.Time {
+	parsedDate, _ := time.Parse(layout, date)
+	return &parsedDate
 }

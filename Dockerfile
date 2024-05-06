@@ -10,7 +10,7 @@ COPY . .
 RUN go mod download
 
 # Build the binary.
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags musl -o /go/bin/store cmd/store/store.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags musl -o /go/bin/store-ms cmd/store/store.go
 
 ##############################
 # STEP 2 time zone           #
@@ -28,7 +28,7 @@ RUN zip -q -r -0 /zoneinfo.zip .
 FROM scratch:latest
 
 # Copy our static executable.
-COPY --from=builder /go/bin/store /go/bin/store
+COPY --from=builder /go/bin/store-ms /go/bin/store-ms
 
 # Copy the zoneinfo.zip file from the time-zone stage.
 ENV ZONEINFO /zoneinfo.zip
@@ -36,4 +36,4 @@ COPY --from=time-zone /zoneinfo.zip /
 
 EXPOSE 8080
 
-ENTRYPOINT ["/go/bin/store"]
+ENTRYPOINT ["/go/bin/store-ms"]

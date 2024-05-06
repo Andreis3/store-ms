@@ -7,9 +7,16 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-type IPostgres interface {
+type IInstructionDB interface {
 	Exec(ctx context.Context, sql string, arguments ...any) (commandTag pgconn.CommandTag, err error)
 	Query(ctx context.Context, sql string, args ...any) (pgx.Rows, error)
 	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
-	Close()
+}
+
+type Queries struct {
+	IInstructionDB
+}
+
+func New(db IInstructionDB) *Queries {
+	return &Queries{db}
 }

@@ -8,6 +8,7 @@ import (
 )
 
 type Store struct {
+	ID          string
 	StoreKey    string
 	CompanyName string
 	CNPJ        valueobject.CNPJ
@@ -26,6 +27,7 @@ type Contact struct {
 
 func NewStore(storeKey, companyName, domain, groupCOD string, cnpj *valueobject.CNPJ, status *valueobject.Status, contacts []Contact) *Store {
 	return &Store{
+		ID:          "",
 		StoreKey:    storeKey,
 		CompanyName: companyName,
 		Status:      *status,
