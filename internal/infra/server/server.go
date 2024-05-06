@@ -27,8 +27,8 @@ func Start(conf *configs.Conf, log *logger.Logger) {
 	go func() {
 		proxy.ProxyDependency(mux, pool, log)
 		end := time.Now()
-		microseconds := end.Sub(start).Microseconds()
-		log.Info(fmt.Sprintf("Server started in %d microseconds", microseconds))
+		ms := end.Sub(start).Milliseconds()
+		log.Info(fmt.Sprintf("Server started in %d ms", ms))
 		log.Info(fmt.Sprintf("Start server on port %s", conf.ServerPort))
 		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Error(fmt.Sprintf("Error starting server: %s", err.Error()))

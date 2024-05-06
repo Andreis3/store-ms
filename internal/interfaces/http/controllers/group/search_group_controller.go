@@ -2,43 +2,43 @@ package group_controller
 
 import (
 	"context"
+	make_command "github.com/andreis3/stores-ms/internal/infra/make/command"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"net/http"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
 	"github.com/andreis3/stores-ms/internal/infra/common/uuid"
 
-	"github.com/andreis3/stores-ms/internal/app/command/group/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/helpers"
 )
 
 type SearchGroupController struct {
-	selectGroupCommand igroup_command.ISearchGroupCommand
-	logger             ilogger.ILogger
-	prometheus         imetric.IMetricAdapter
-	requestID          uuid.IUUID
-	mutex              sync.Mutex
+	logger     ilogger.ILogger
+	prometheus imetric.IMetricAdapter
+	requestID  uuid.IUUID
+	pool       *pgxpool.Pool
 }
 
 func NewSearchGroupController(
-	selectGroupCommand igroup_command.ISearchGroupCommand,
+	pool *pgxpool.Pool,
 	prometheus imetric.IMetricAdapter,
 	logger ilogger.ILogger,
 	requestID uuid.IUUID) *SearchGroupController {
 	return &SearchGroupController{
-		selectGroupCommand: selectGroupCommand,
-		logger:             logger,
-		prometheus:         prometheus,
-		requestID:          requestID,
+		logger:     logger,
+		prometheus: prometheus,
+		requestID:  requestID,
+		pool:       pool,
 	}
 }
 
 func (ggc *SearchGroupController) SearchOneGroup(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
+	selectGroupCommand := make_command.MakeSearchGroupCommand(ggc.pool, ggc.prometheus)
 	requestID := ggc.requestID.Generate()
 	err := helpers.PathRouterValidate(r, helpers.ID)
 	if err != nil {
@@ -55,9 +55,7 @@ func (ggc *SearchGroupController) SearchOneGroup(w http.ResponseWriter, r *http.
 		return
 	}
 	id := r.PathValue("id")
-	ggc.mutex.Lock()
-	group, err := ggc.selectGroupCommand.Execute(id)
-	ggc.mutex.Unlock()
+	group, err := selectGroupCommand.Execute(id)
 	if err != nil {
 		ggc.logger.Error("Select One Group Error",
 			"REQUEST_ID", requestID,
