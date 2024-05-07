@@ -21,9 +21,10 @@ type Postgres struct {
 	pool *pgxpool.Pool
 }
 
+var singleton sync.Once
+var pool *pgxpool.Pool
+
 func NewPostgresDB(conf configs.Conf) *Postgres {
-	var singleton sync.Once
-	var pool *pgxpool.Pool
 	log := logger.NewLogger()
 	singleton.Do(func() {
 		connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",

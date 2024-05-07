@@ -2,8 +2,8 @@ package group_controller
 
 import (
 	"context"
-	make_command "github.com/andreis3/stores-ms/internal/infra/make/command"
-	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/andreis3/stores-ms/internal/infra/adapters/database/interfaces"
+	"github.com/andreis3/stores-ms/internal/infra/make/command"
 	"net/http"
 	"strings"
 	"time"
@@ -20,11 +20,11 @@ type SearchGroupController struct {
 	logger     ilogger.ILogger
 	prometheus imetric.IMetricAdapter
 	requestID  uuid.IUUID
-	pool       *pgxpool.Pool
+	db         idatabase.IDatabase
 }
 
 func NewSearchGroupController(
-	pool *pgxpool.Pool,
+	db idatabase.IDatabase,
 	prometheus imetric.IMetricAdapter,
 	logger ilogger.ILogger,
 	requestID uuid.IUUID) *SearchGroupController {
@@ -32,13 +32,13 @@ func NewSearchGroupController(
 		logger:     logger,
 		prometheus: prometheus,
 		requestID:  requestID,
-		pool:       pool,
+		db:         db,
 	}
 }
 
 func (ggc *SearchGroupController) SearchOneGroup(w http.ResponseWriter, r *http.Request) {
 	start := time.Now()
-	selectGroupCommand := make_command.MakeSearchGroupCommand(ggc.pool, ggc.prometheus)
+	selectGroupCommand := make_command.MakeSearchGroupCommand(ggc.db, ggc.prometheus)
 	requestID := ggc.requestID.Generate()
 	err := helpers.PathRouterValidate(r, helpers.ID)
 	if err != nil {
