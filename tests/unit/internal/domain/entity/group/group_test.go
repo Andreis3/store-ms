@@ -4,12 +4,12 @@
 package group_test
 
 import (
+	"github.com/andreis3/stores-ms/internal/domain/entity"
 	"testing"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 )
 
@@ -29,7 +29,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 		Context("When I call the method Validate", func() {
 			It("Should return a notification when group name is empty", func() {
 				status := valueobject.NewStatus("active")
-				group := entity_group.NewGroup("", "123", status)
+				group := entity.NewGroup("", "123", status)
 
 				notification := group.Validate()
 
@@ -39,7 +39,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 			It("Should return a notification when code is empty", func() {
 				status := valueobject.NewStatus("active")
-				group := entity_group.NewGroup("group", "", status)
+				group := entity.NewGroup("group", "", status)
 
 				notification := group.Validate()
 
@@ -49,7 +49,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 			It("Should return a notification when status is empty", func() {
 				status := valueobject.NewStatus("")
-				group := entity_group.NewGroup("group", "123", status)
+				group := entity.NewGroup("group", "123", status)
 
 				notification := group.Validate()
 
@@ -59,7 +59,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 			It("Should return a notification when group name, code and status are empty", func() {
 				status := valueobject.NewStatus("")
-				group := entity_group.NewGroup("", "", status)
+				group := entity.NewGroup("", "", status)
 
 				notification := group.Validate()
 
@@ -71,7 +71,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 			It("Should return a notification when status is invalid", func() {
 				status := valueobject.NewStatus("invalid")
-				group := entity_group.NewGroup("group", "123", status)
+				group := entity.NewGroup("group", "123", status)
 
 				notification := group.Validate()
 
@@ -81,7 +81,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 			It("Should return not return a notification when status is active", func() {
 				status := valueobject.NewStatus("active")
-				group := entity_group.NewGroup("group", "123", status)
+				group := entity.NewGroup("group", "123", status)
 
 				notification := group.Validate()
 
@@ -90,7 +90,7 @@ var _ = Describe("DOMAIN :: ENTITY :: GROUP", func() {
 
 			It("Should return not return a notification when status is inactive", func() {
 				status := valueobject.NewStatus("inactive")
-				group := entity_group.NewGroup("group", "123", status)
+				group := entity.NewGroup("group", "123", status)
 
 				notification := group.Validate()
 

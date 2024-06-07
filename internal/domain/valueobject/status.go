@@ -1,9 +1,8 @@
 package valueobject
 
 import (
+	error2 "github.com/andreis3/stores-ms/internal/domain/notification"
 	"slices"
-
-	"github.com/andreis3/stores-ms/internal/domain/error/notification"
 )
 
 const (
@@ -23,7 +22,7 @@ func NewStatus(status string) *Status {
 	}
 }
 
-func (s *Status) Validate(notification *notification.NotificationError) {
+func (s *Status) Validate(notification *error2.NotificationError) {
 	if s.Status == "" {
 		notification.AddNotification(`status: is required`)
 	}

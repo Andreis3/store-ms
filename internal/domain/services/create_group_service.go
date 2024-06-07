@@ -1,9 +1,9 @@
-package group_service
+package services
 
 import (
+	"github.com/andreis3/stores-ms/internal/domain/entity"
 	"net/http"
 
-	"github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/infra/common/uuid"
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group/interfaces"
@@ -23,7 +23,7 @@ func NewCreateGroupService(uow iuow.IUnitOfWork, uuid uuid.IUUID) *CreateGroupSe
 		uuid: uuid,
 	}
 }
-func (igs *CreateGroupService) CreateGroup(data entity_group.Group) (group_dto.GroupOutputDTO, *util.ValidationError) {
+func (igs *CreateGroupService) CreateGroup(data entity.Group) (group_dto.GroupOutputDTO, *util.ValidationError) {
 	groupModel := new(repo_group.GroupModel)
 	data.ID = igs.uuid.Generate()
 	validate := data.Validate()

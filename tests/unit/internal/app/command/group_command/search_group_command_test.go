@@ -4,10 +4,10 @@
 package group_command_test
 
 import (
+	"github.com/andreis3/stores-ms/internal/app/command"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/andreis3/stores-ms/internal/app/command/group"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
@@ -16,7 +16,7 @@ var _ = Describe("APP :: COMMAND :: GROUP :: SEARCH_GROUP_COMMAND", func() {
 		Context("When I call the method SearchOneGroup of the search_group_service", func() {
 			It("Should search a new group not return errors", func() {
 				searchServiceMock := ContextSearchSuccess()
-				command := group_command.NewSearchGroupCommand(searchServiceMock)
+				command := command.NewSearchGroupCommand(searchServiceMock)
 
 				id := "1"
 
@@ -34,7 +34,7 @@ var _ = Describe("APP :: COMMAND :: GROUP :: SEARCH_GROUP_COMMAND", func() {
 
 			It("Should return an error when the method SearchOneGroup of the search_group_service is call", func() {
 				searchServiceMock := ContextSearchReturnErrorGroupServiceInsertGroup()
-				command := group_command.NewSearchGroupCommand(searchServiceMock)
+				command := command.NewSearchGroupCommand(searchServiceMock)
 
 				id := "1"
 

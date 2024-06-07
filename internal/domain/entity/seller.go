@@ -1,7 +1,7 @@
-package entity_seller
+package entity
 
 import (
-	"github.com/andreis3/stores-ms/internal/domain/error/notification"
+	error2 "github.com/andreis3/stores-ms/internal/domain/notification"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 )
 
@@ -11,10 +11,10 @@ type Seller struct {
 	Code       string
 	StoreKey   string
 	Status     valueobject.Status
-	Config
-	notification.NotificationError
+	ConfigSeller
+	error2.NotificationError
 }
-type Config struct {
+type ConfigSeller struct {
 	AutomaticActive bool
 }
 
@@ -24,12 +24,12 @@ func NewSeller(sellerName, code string, status *valueobject.Status, config bool)
 		SellerName: sellerName,
 		Code:       code,
 		Status:     *status,
-		Config: Config{
+		ConfigSeller: ConfigSeller{
 			AutomaticActive: config,
 		},
 	}
 }
-func (s *Seller) Validate() notification.NotificationError {
+func (s *Seller) Validate() error2.NotificationError {
 	if s.SellerName == "" {
 		s.AddNotification(`seller_name: is required`)
 	}

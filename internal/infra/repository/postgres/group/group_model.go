@@ -1,9 +1,9 @@
 package repo_group
 
 import (
+	"github.com/andreis3/stores-ms/internal/domain/entity"
 	"time"
 
-	"github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
@@ -16,7 +16,7 @@ type GroupModel struct {
 	UpdatedAt *time.Time `db:"updated_at"`
 }
 
-func MapperGroupModel(group entity_group.Group) *GroupModel {
+func MapperGroupModel(group entity.Group) *GroupModel {
 	dateTime := util.FormatDateTime()
 	return &GroupModel{
 		ID:        &group.ID,

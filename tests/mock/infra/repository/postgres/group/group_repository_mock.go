@@ -1,9 +1,9 @@
 package repo_group_mock
 
 import (
+	entity_group "github.com/andreis3/stores-ms/internal/domain/entity"
 	"github.com/stretchr/testify/mock"
 
-	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/internal/util"
 )

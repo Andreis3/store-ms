@@ -2,6 +2,7 @@ package group_controller
 
 import (
 	"context"
+	"github.com/andreis3/stores-ms/internal/app/command/interfaces"
 	"net/http"
 	"strings"
 	"time"
@@ -9,21 +10,20 @@ import (
 	"github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
 	"github.com/andreis3/stores-ms/internal/infra/common/uuid"
 
-	"github.com/andreis3/stores-ms/internal/app/command/group/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger/interfaces"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/helpers"
 )
 
 type CreateGroupController struct {
-	createGroupCommand igroup_command.ICreateGroupCommand
+	createGroupCommand icommand.ICreateGroupCommand
 	logger             ilogger.ILogger
 	requestID          uuid.IUUID
 	prometheus         imetric.IMetricAdapter
 }
 
 func NewCreateGroupController(
-	createGroupCommand igroup_command.ICreateGroupCommand,
+	createGroupCommand icommand.ICreateGroupCommand,
 	prometheus imetric.IMetricAdapter,
 	logger ilogger.ILogger,
 	requestID uuid.IUUID) *CreateGroupController {

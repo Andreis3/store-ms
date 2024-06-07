@@ -1,4 +1,4 @@
-package istore_command
+package icommand
 
 type IInsertStoreCommand interface {
 }

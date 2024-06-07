@@ -4,12 +4,12 @@
 package seller_test
 
 import (
+	"github.com/andreis3/stores-ms/internal/domain/entity"
 	"testing"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 
-	"github.com/andreis3/stores-ms/internal/domain/entity/seller"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 )
 
@@ -29,7 +29,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 		Context("When I call the method Validate", func() {
 			It("Should return a notification when seller name is empty", func() {
 				status := valueobject.NewStatus("active")
-				seller := entity_seller.NewSeller("", "123", status, true)
+				seller := entity.NewSeller("", "123", status, true)
 
 				notification := seller.Validate()
 
@@ -39,7 +39,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 
 			It("Should return a notification when code is empty", func() {
 				status := valueobject.NewStatus("active")
-				seller := entity_seller.NewSeller("seller", "", status, true)
+				seller := entity.NewSeller("seller", "", status, true)
 
 				notification := seller.Validate()
 
@@ -49,7 +49,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 
 			It("Should return a notification when status is empty", func() {
 				status := valueobject.NewStatus("")
-				seller := entity_seller.NewSeller("seller", "123", status, true)
+				seller := entity.NewSeller("seller", "123", status, true)
 
 				notification := seller.Validate()
 
@@ -59,7 +59,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 
 			It("Should return a notification when seller name, code and status are empty", func() {
 				status := valueobject.NewStatus("")
-				seller := entity_seller.NewSeller("", "", status, true)
+				seller := entity.NewSeller("", "", status, true)
 
 				notification := seller.Validate()
 
@@ -71,7 +71,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 
 			It("Should return a notification when status is invalid", func() {
 				status := valueobject.NewStatus("invalid")
-				seller := entity_seller.NewSeller("seller", "123", status, true)
+				seller := entity.NewSeller("seller", "123", status, true)
 
 				notification := seller.Validate()
 
@@ -81,7 +81,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 
 			It("Should not return a notification when status is active", func() {
 				status := valueobject.NewStatus("active")
-				seller := entity_seller.NewSeller("seller", "123", status, true)
+				seller := entity.NewSeller("seller", "123", status, true)
 
 				notification := seller.Validate()
 
@@ -90,7 +90,7 @@ var _ = Describe("DOMAIN :: ENTITY :: SELLER", func() {
 
 			It("Should not return a notification when status is inactive", func() {
 				status := valueobject.NewStatus("inactive")
-				seller := entity_seller.NewSeller("seller", "123", status, true)
+				seller := entity.NewSeller("seller", "123", status, true)
 
 				notification := seller.Validate()
 

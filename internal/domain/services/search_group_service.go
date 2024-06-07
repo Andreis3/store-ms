@@ -1,4 +1,4 @@
-package group_service
+package services
 
 import (
 	"net/http"

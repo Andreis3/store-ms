@@ -1,9 +1,9 @@
-package entity_store
+package entity
 
 import (
 	"fmt"
+	error2 "github.com/andreis3/stores-ms/internal/domain/notification"
 
-	"github.com/andreis3/stores-ms/internal/domain/error/notification"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 )
 
@@ -16,7 +16,7 @@ type Store struct {
 	GroupCOD    string
 	Status      valueobject.Status
 	Contacts    []Contact
-	notification.NotificationError
+	error2.NotificationError
 }
 type Contact struct {
 	Name  string
@@ -38,7 +38,7 @@ func NewStore(storeKey, companyName, domain, groupCOD string, cnpj *valueobject.
 	}
 }
 
-func (s *Store) Validate() notification.NotificationError {
+func (s *Store) Validate() error2.NotificationError {
 	if s.StoreKey == "" {
 		s.AddNotification(`store_key: is required`)
 	}

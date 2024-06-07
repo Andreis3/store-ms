@@ -4,11 +4,12 @@
 package group_service_test
 
 import (
+	entity_group "github.com/andreis3/stores-ms/internal/domain/entity"
+	"github.com/andreis3/stores-ms/internal/domain/services"
 	"net/http"
 
 	"github.com/stretchr/testify/mock"
 
-	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 	"github.com/andreis3/stores-ms/internal/util"
 	"github.com/andreis3/stores-ms/tests/mock/infra/common/uuid_mock"
@@ -17,8 +18,6 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-
-	"github.com/andreis3/stores-ms/internal/domain/service/group"
 )
 
 var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", func() {
@@ -28,7 +27,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertSuccess(groupRepositoryMock, uuidMock)
-				service := group_service.NewCreateGroupService(uowMock, uuidMock)
+				service := services.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -65,7 +64,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorGroupRepositoryInsertGroup(groupRepositoryMock, uuidMock)
-				service := group_service.NewCreateGroupService(uowMock, uuidMock)
+				service := services.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -92,7 +91,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorWhenCommitCommandUow(groupRepositoryMock, uuidMock)
-				service := group_service.NewCreateGroupService(uowMock, uuidMock)
+				service := services.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -119,7 +118,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertSuccess(groupRepositoryMock, uuidMock)
-				service := group_service.NewCreateGroupService(uowMock, uuidMock)
+				service := services.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -146,7 +145,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCode(groupRepositoryMock, uuidMock)
-				service := group_service.NewCreateGroupService(uowMock, uuidMock)
+				service := services.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}
@@ -173,7 +172,7 @@ var _ = Describe("DOMAIN :: SERVICE :: GROUP_SERVICE :: INSERT_GROUP_SERVICE", f
 				groupRepositoryMock := new(repo_group_mock.GroupRepositoryMock)
 				uuidMock := new(uuid_mock.UUIDMock)
 				uowMock := ContextInsertReturnErrorWhenSelectOneGroupByNameAndCodeReturnGroup(groupRepositoryMock, uuidMock)
-				service := group_service.NewCreateGroupService(uowMock, uuidMock)
+				service := services.NewCreateGroupService(uowMock, uuidMock)
 				status := valueobject.Status{
 					Status: "active",
 				}

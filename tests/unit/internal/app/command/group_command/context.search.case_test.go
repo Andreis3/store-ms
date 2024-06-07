@@ -6,11 +6,11 @@ package group_command_test
 import (
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
-	"github.com/andreis3/stores-ms/tests/mock/domain/service/group_service"
+	"github.com/andreis3/stores-ms/tests/mock/domain/service"
 )
 
-func ContextSearchSuccess() *group_service_mock.SearchGroupServiceMock {
-	searchServiceMock := new(group_service_mock.SearchGroupServiceMock)
+func ContextSearchSuccess() *service_mock.SearchGroupServiceMock {
+	searchServiceMock := new(service_mock.SearchGroupServiceMock)
 	id := "1"
 
 	groupOutputDTO := group_dto.GroupOutputDTO{
@@ -22,13 +22,13 @@ func ContextSearchSuccess() *group_service_mock.SearchGroupServiceMock {
 		UpdatedAt: "2021-01-01T00:00:00Z",
 	}
 
-	searchServiceMock.On(group_service_mock.SearchOneGroup, id).Return(groupOutputDTO, (*util.ValidationError)(nil))
+	searchServiceMock.On(service_mock.SearchOneGroup, id).Return(groupOutputDTO, (*util.ValidationError)(nil))
 	return searchServiceMock
 }
 
-func ContextSearchReturnErrorGroupServiceInsertGroup() *group_service_mock.SearchGroupServiceMock {
+func ContextSearchReturnErrorGroupServiceInsertGroup() *service_mock.SearchGroupServiceMock {
 
-	searchServiceMock := new(group_service_mock.SearchGroupServiceMock)
+	searchServiceMock := new(service_mock.SearchGroupServiceMock)
 	id := "1"
 
 	groupOutputDTO := group_dto.GroupOutputDTO{}
@@ -39,6 +39,6 @@ func ContextSearchReturnErrorGroupServiceInsertGroup() *group_service_mock.Searc
 		LogError:    []string{"Insert group error"},
 	}
 
-	searchServiceMock.On(group_service_mock.SearchOneGroup, id).Return(groupOutputDTO, err)
+	searchServiceMock.On(service_mock.SearchOneGroup, id).Return(groupOutputDTO, err)
 	return searchServiceMock
 }

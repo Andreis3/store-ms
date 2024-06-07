@@ -1,7 +1,7 @@
-package entity_saleschannel
+package entity
 
 import (
-	"github.com/andreis3/stores-ms/internal/domain/error/notification"
+	error2 "github.com/andreis3/stores-ms/internal/domain/notification"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 )
 
@@ -11,10 +11,10 @@ type SalesChannel struct {
 	Code         string
 	StoreKey     string
 	Status       valueobject.Status
-	Config
-	notification.NotificationError
+	ConfigSalesChannel
+	error2.NotificationError
 }
-type Config struct {
+type ConfigSalesChannel struct {
 	AutomaticActive bool
 }
 
@@ -24,13 +24,13 @@ func NewSalesChannel(salesChannel, code string, status *valueobject.Status, conf
 		SalesChannel: salesChannel,
 		Code:         code,
 		Status:       *status,
-		Config: Config{
+		ConfigSalesChannel: ConfigSalesChannel{
 			AutomaticActive: config,
 		},
 	}
 }
 
-func (sc *SalesChannel) Validate() notification.NotificationError {
+func (sc *SalesChannel) Validate() error2.NotificationError {
 	if sc.SalesChannel == "" {
 		sc.AddNotification(`sales_channel: is required`)
 	}

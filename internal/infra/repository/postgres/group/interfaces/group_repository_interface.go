@@ -1,7 +1,7 @@
 package irepo_group
 
 import (
-	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
+	entity_group "github.com/andreis3/stores-ms/internal/domain/entity"
 	"github.com/andreis3/stores-ms/internal/infra/repository/postgres/group"
 	"github.com/andreis3/stores-ms/internal/util"
 )

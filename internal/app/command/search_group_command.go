@@ -1,16 +1,16 @@
-package group_command
+package command
 
 import (
-	"github.com/andreis3/stores-ms/internal/domain/service/group/interfaces"
+	iservices "github.com/andreis3/stores-ms/internal/domain/services/interfaces"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type SearchGroupCommand struct {
-	GroupService igroup_service.ISearchGroupService
+	GroupService iservices.ISearchGroupService
 }
 
-func NewSearchGroupCommand(service igroup_service.ISearchGroupService) *SearchGroupCommand {
+func NewSearchGroupCommand(service iservices.ISearchGroupService) *SearchGroupCommand {
 	return &SearchGroupCommand{
 		GroupService: service,
 	}

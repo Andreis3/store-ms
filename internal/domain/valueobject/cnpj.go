@@ -1,11 +1,10 @@
 package valueobject
 
 import (
+	error2 "github.com/andreis3/stores-ms/internal/domain/notification"
 	"regexp"
 	"slices"
 	"strconv"
-
-	"github.com/andreis3/stores-ms/internal/domain/error/notification"
 )
 
 var blackListCNPJ = []string{
@@ -29,7 +28,7 @@ func NewCNPJ(cnpj string) *CNPJ {
 	return &CNPJ{CNPJ: cnpj}
 }
 
-func (c *CNPJ) Validate(ctx *notification.NotificationError) {
+func (c *CNPJ) Validate(ctx *error2.NotificationError) {
 	regex := regexp.MustCompile("[^0-9]")
 	cnpj := regex.ReplaceAllString(c.CNPJ, "")
 	if cnpj == "" {

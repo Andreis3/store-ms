@@ -1,7 +1,7 @@
 package group_dto
 
 import (
-	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
+	entity_group "github.com/andreis3/stores-ms/internal/domain/entity"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 )
 

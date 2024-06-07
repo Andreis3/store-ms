@@ -1,16 +1,16 @@
-package group_command
+package command
 
 import (
-	"github.com/andreis3/stores-ms/internal/domain/service/group/interfaces"
+	iservices "github.com/andreis3/stores-ms/internal/domain/services/interfaces"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
 
 type CreateGroupCommand struct {
-	GroupService igroup_service.ICreateGroupService
+	GroupService iservices.ICreateGroupService
 }
 
-func NewCreateGroupCommand(service igroup_service.ICreateGroupService) *CreateGroupCommand {
+func NewCreateGroupCommand(service iservices.ICreateGroupService) *CreateGroupCommand {
 	return &CreateGroupCommand{
 		GroupService: service,
 	}

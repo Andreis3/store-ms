@@ -3,6 +3,7 @@ package repo_group
 import (
 	"context"
 	"fmt"
+	entity_group "github.com/andreis3/stores-ms/internal/domain/entity"
 	"net/http"
 	"time"
 
@@ -10,7 +11,6 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/pkg/errors"
 
-	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
 	ipostgres "github.com/andreis3/stores-ms/internal/infra/adapters/database/postgres/interfaces"
 	imetric "github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
 	"github.com/andreis3/stores-ms/internal/util"

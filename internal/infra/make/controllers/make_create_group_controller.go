@@ -1,8 +1,8 @@
 package make_controller
 
 import (
-	"github.com/andreis3/stores-ms/internal/app/command/group"
-	"github.com/andreis3/stores-ms/internal/domain/service/group"
+	"github.com/andreis3/stores-ms/internal/app/command"
+	"github.com/andreis3/stores-ms/internal/domain/services"
 	"github.com/andreis3/stores-ms/internal/infra/adapters/database/interfaces"
 	"github.com/andreis3/stores-ms/internal/infra/common/logger"
 	"github.com/andreis3/stores-ms/internal/infra/common/metrics/interface"
@@ -18,8 +18,8 @@ func MakeCreateGroupController(db idatabase.IDatabase, prometheus imetric.IMetri
 	uow := uow.NewProxyUnitOfWork(pool, prometheus)
 	logger := logger.NewLogger()
 	uuid := uuid.NewUUID()
-	createGroupService := group_service.NewCreateGroupService(uow, uuid)
-	createGroupCommand := group_command.NewCreateGroupCommand(createGroupService)
+	createGroupService := services.NewCreateGroupService(uow, uuid)
+	createGroupCommand := command.NewCreateGroupCommand(createGroupService)
 	createGroupController := group_controller.NewCreateGroupController(createGroupCommand, prometheus, logger, uuid)
 	return createGroupController
 }

@@ -1,7 +1,7 @@
-package entity_group
+package entity
 
 import (
-	"github.com/andreis3/stores-ms/internal/domain/error/notification"
+	error2 "github.com/andreis3/stores-ms/internal/domain/notification"
 	"github.com/andreis3/stores-ms/internal/domain/valueobject"
 )
 
@@ -10,7 +10,7 @@ type Group struct {
 	Name   string
 	Code   string
 	Status valueobject.Status
-	notification.NotificationError
+	error2.NotificationError
 }
 
 func NewGroup(name, code string, status *valueobject.Status) *Group {
@@ -21,7 +21,7 @@ func NewGroup(name, code string, status *valueobject.Status) *Group {
 		Status: *status,
 	}
 }
-func (g *Group) Validate() *notification.NotificationError {
+func (g *Group) Validate() *error2.NotificationError {
 	if g.Name == "" {
 		g.AddNotification(`name: is required`)
 	}

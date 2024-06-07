@@ -1,4 +1,4 @@
-package group_service_mock
+package service_mock
 
 import (
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"

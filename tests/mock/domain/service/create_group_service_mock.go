@@ -1,9 +1,9 @@
-package group_service_mock
+package service_mock
 
 import (
+	entity_group "github.com/andreis3/stores-ms/internal/domain/entity"
 	"github.com/stretchr/testify/mock"
 
-	entity_group "github.com/andreis3/stores-ms/internal/domain/entity/group"
 	"github.com/andreis3/stores-ms/internal/interfaces/http/controllers/group/dto"
 	"github.com/andreis3/stores-ms/internal/util"
 )
